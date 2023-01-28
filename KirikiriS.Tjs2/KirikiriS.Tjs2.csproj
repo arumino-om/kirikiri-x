@@ -5,8 +5,4 @@
     <LangVersion>9</LangVersion>
   </PropertyGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\KirikiriS.Tjs2\KirikiriS.Tjs2.csproj" />
-  </ItemGroup>
-
 </Project>

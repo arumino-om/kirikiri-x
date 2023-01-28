@@ -5,7 +5,9 @@ VisualStudioVersion = 17.3.32929.385
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KirikiriS", "KirikiriS\KirikiriS.csproj", "{896393BC-EA7F-4D57-A37E-2DA596815A54}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KirikiriS.Runtime.Windows", "KirikiriS.Runtime.Windows\KirikiriS.Runtime.Windows.csproj", "{84751B3C-F6E3-478F-8F33-17B42D353EB1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KirikiriS.Runtime.Windows", "KirikiriS.Runtime.Windows\KirikiriS.Runtime.Windows.csproj", "{84751B3C-F6E3-478F-8F33-17B42D353EB1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KirikiriS.Tjs2", "KirikiriS.Tjs2\KirikiriS.Tjs2.csproj", "{905AB976-FEF9-4888-BF79-ACD3327F2BE6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{84751B3C-F6E3-478F-8F33-17B42D353EB1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{84751B3C-F6E3-478F-8F33-17B42D353EB1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{84751B3C-F6E3-478F-8F33-17B42D353EB1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{905AB976-FEF9-4888-BF79-ACD3327F2BE6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{905AB976-FEF9-4888-BF79-ACD3327F2BE6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{905AB976-FEF9-4888-BF79-ACD3327F2BE6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{905AB976-FEF9-4888-BF79-ACD3327F2BE6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
