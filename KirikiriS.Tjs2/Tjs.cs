@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using KirikiriS.Tjs2.Interfaces;
 
 namespace KirikiriS.Tjs2
 {
@@ -12,6 +13,7 @@ namespace KirikiriS.Tjs2
         
         private int _refCount = 1;
         private Dictionary<string, int> _ppValues = new();
+        private IDispatch GlobalObject;
 
         public Tjs()
         {
