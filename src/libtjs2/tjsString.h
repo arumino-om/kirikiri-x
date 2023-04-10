@@ -115,14 +115,15 @@ public:
 
 	const std::wstring AsStdString() const
 	{
+        // このコードについて，一旦Unicode優先にする．
 		if(!Ptr) return std::wstring(TJS_W(""));
-#ifdef UNICODE
+//#ifdef UNICODE
 		return std::wstring(c_str());
-#else
-			// this constant string value must match std::string in type
-		tTJSNarrowStringHolder holder(Ptr->operator const tjs_char*());
-		return std::string(holder.operator const char *());
-#endif
+//#else
+//			// this constant string value must match std::string in type
+//		tTJSNarrowStringHolder holder(Ptr->operator const tjs_char*());
+//		return std::string(holder.operator const char *());
+//#endif
 	}
 	const std::string AsNarrowStdString() const
 	{
