@@ -6,10 +6,10 @@ project(oniguruma
 set(PACKAGE onig)
 set(PACKAGE_VERSION ${PROJECT_VERSION})
 
-option(BUILD_SHARED_LIBS "Build shared libraries" ON)
+option(BUILD_SHARED_LIBS "Build shared libraries" OFF)
 option(ENABLE_POSIX_API  "Include POSIX API" OFF)
 option(ENABLE_BINARY_COMPATIBLE_POSIX_API  "Include Binary compatible POSIX API" OFF)
-option(INSTALL_DOCUMENTATION "Install documentation" ON)
+option(INSTALL_DOCUMENTATION "Install documentation" OFF)
 option(INSTALL_EXAMPLES "Install examples" OFF)
 if(MSVC)
   option(MSVC_STATIC_RUNTIME "Build with static runtime" OFF)

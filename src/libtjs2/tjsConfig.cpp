@@ -18,20 +18,10 @@
 #include <intrin.h>
 #endif
 
-/*
- * core/utils/cp932_uni.cpp
- * core/utils/uni_cp932.cpp
- * を一緒にリンクしてください。
- * CP932(ShiftJIS) と Unicode 変換に使用しています。
- * Win32 APIの同等の関数は互換性等の問題があることやマルチプラットフォームの足かせとなる
- * ため使用が中止されました。
- */
-extern tjs_size SJISToUnicodeString(const char * in, tjs_char *out);
-extern tjs_size SJISToUnicodeString(const char * in, tjs_char *out, tjs_size limit );
-extern bool IsSJISLeadByte( tjs_nchar b );
-extern tjs_uint UnicodeToSJIS(tjs_char in);
-extern tjs_size UnicodeToSJISString(const tjs_char *in, tjs_nchar* out );
-extern tjs_size UnicodeToSJISString(const tjs_char *in, tjs_nchar* out, tjs_size limit );
+// core/utils/cp932_uni.cpp と core/utils/uni_cp932.cpp をリンクする代わりに
+// ファイルを埋め込む(ポータビリティを高める)
+#include "coreutils/cp932_uni.h"
+#include "coreutils/uni_cp932.h"
 
 namespace TJS
 {
@@ -402,8 +392,8 @@ void TJSSetFPUE()
 // 例外マスクを解除し元に戻す
 void TJSRestoreFPUE()
 {
-	if(!TJSFPUInit) return;
 #if defined(__WIN32__) && !defined(__GNUC__)
+    if(!TJSFPUInit) return;
 #if defined(_M_X64)
 	_MM_SET_EXCEPTION_MASK(TJSDefaultMMCW);
 #else
