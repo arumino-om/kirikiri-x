@@ -113,18 +113,18 @@ public:
 	}
 #endif
 
-	const std::wstring AsStdString() const
+	const std::wstring AsStdWString(bool null_str = false) const
 	{
         // このコードについて，一旦Unicode優先にする．
-		if(!Ptr) return std::wstring(TJS_W(""));
-//#ifdef UNICODE
+		if(!Ptr) return std::wstring(null_str ? TJS_W("(NULL)") : TJS_W(""));
 		return std::wstring(c_str());
-//#else
-//			// this constant string value must match std::string in type
-//		tTJSNarrowStringHolder holder(Ptr->operator const tjs_char*());
-//		return std::string(holder.operator const char *());
-//#endif
 	}
+    const std::string AsStdString(bool null_str = false) const
+    {
+        if (!Ptr) return std::string(null_str ? "(NULL)" : "");
+        tTJSNarrowStringHolder holder(Ptr->operator const tjs_char*());
+        return std::string(holder.operator const char *());
+    }
 	const std::string AsNarrowStdString() const
 	{
 		if(!Ptr) return std::string("");

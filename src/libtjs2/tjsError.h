@@ -189,8 +189,7 @@ void TJS_eTJS();
 class eTJSError : public eTJS
 {
 public:
-	eTJSError(const ttstr & Msg) :
-		Message(Msg) {;}
+	eTJSError(const ttstr & Msg) : Message(Msg) {}
 	const ttstr & GetMessage() const { return Message; }
 
 	void AppendMessage(const ttstr & msg) { Message += msg; }
