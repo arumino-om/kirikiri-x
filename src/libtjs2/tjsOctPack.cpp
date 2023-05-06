@@ -452,7 +452,7 @@ static tTJSVariantOctet* Pack( const std::vector<OctPackTemplate>& templ, const 
 		}
 		case OctPack_base64: {	// m : Base64 encode / decode
 			ttstr tmp = args[argindex];
-			decodeBase64(tmp.AsStdWString(), result );
+			decodeBase64( tmp.AsStdString(), result );
 			break;
 		}
 		}
