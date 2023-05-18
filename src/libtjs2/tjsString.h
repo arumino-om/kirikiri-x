@@ -13,6 +13,7 @@
 #define tjsStringH
 
 #include "tjsConfig.h"
+#include <string>
 #ifdef TJS_SUPPORT_VCL
 	#include <vcl.h>
 #endif

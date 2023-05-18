@@ -17,7 +17,7 @@
 #ifndef _UNI_CP932_H_
 #define _UNI_CP932_H_
 
-#include "tjs.h"
+#include "../tjs.h"
 
 //---------------------------------------------------------------------------
 tjs_uint UnicodeToSJIS(tjs_char in);

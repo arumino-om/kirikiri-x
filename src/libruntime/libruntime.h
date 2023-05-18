@@ -1,10 +1,6 @@
-#include "tjs.h"
 #pragma once
 
-class GCOT : public iTJSConsoleOutput {
+class KrkrRuntime {
 public:
-    void ExceptionPrint(const tjs_char *message) override;
-    void Print(const tjs_char* message) override;
+    static int start_runtime();
 };
-
-int start();

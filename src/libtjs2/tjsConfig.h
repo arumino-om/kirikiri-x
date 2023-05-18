@@ -13,6 +13,11 @@
 #ifndef tjsConfigH
 #define tjsConfigH
 
+// TODO: autoconf integration
+
+#include "tjsTypes.h"
+#include "stdarg.h"
+
 namespace TJS
 {
 //---------------------------------------------------------------------------
@@ -27,11 +32,6 @@ namespace TJS
 	configuration about Critical Section for multithreading support is there in
 	tjsUtils.cpp/h.
 */
-
-// TODO: autoconf integration
-
-#include "tjsTypes.h"
-#include "stdarg.h"
 
 
 // #define TJS_NO_AVOID_ISWDIGIT
