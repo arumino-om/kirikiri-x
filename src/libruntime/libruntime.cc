@@ -5,13 +5,10 @@
 #include <script_manager.h>
 
 int KrkrRuntime::start_runtime() {
-    tTJS *tjsengine = new tTJS();
-    TJSSyntaxError.AssignMessage(TJS_W("Syntax Error"));
+    ScriptManager::init(TJS_W("startup.tjs"), TJS_W("UTF-8"), true);
 
     try {
-        tTJSVariant result;
-        tjsengine->ExecScript(TJS_W("function te"), &result, nullptr, TJS_W("test code"));
-        std::cout << "Result: " << (int)result << std::endl;
+        ScriptManager::run(TJS_W("function hoge("));
     } catch (eTJSError &e) {
         std::wcerr << "Error Occured: " << e.GetMessage().AsStdWString() << std::endl;
     } catch (...) {
