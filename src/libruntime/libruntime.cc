@@ -12,8 +12,6 @@ IFileSystem* KrkrRuntime::filesystem = new FileSystemFallbackImpl();
 int KrkrRuntime::start_runtime() {
     ScriptManager::init(TJS_W("startup.tjs"), TJS_W("UTF-8"), true);
 
-    std::wcout << variable << std::endl;
-
     system("PAUSE");
     return 0;
 }
