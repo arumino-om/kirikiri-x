@@ -1,5 +1,7 @@
+#include "filesystem.h"
 #include "libruntime.h"
 
 int main() {
-    KrkrRuntime::start_runtime();
+    LibRuntime::KrkrRuntime::filesystem = new WindowsFileSystem();
+    LibRuntime::KrkrRuntime::start_runtime();
 }

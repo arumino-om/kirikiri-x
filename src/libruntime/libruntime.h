@@ -1,7 +1,11 @@
 #pragma once
+#include "interfaces/filesystem_interface.h"
 
-class KrkrRuntime {
-public:
-    static int start_runtime();
-    static
-};
+namespace LibRuntime {
+    class KrkrRuntime {
+    public:
+        static int start_runtime();
+
+        static IFileSystem *filesystem;
+    };
+}
