@@ -1,4 +1,4 @@
-#include "filesystem.h"
+#include "filesystem_impl.h"
 #include <windows.h>
 
 bool WindowsFileSystem::get_current_directory(wchar_t *result, size_t result_size) {

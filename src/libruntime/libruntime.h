@@ -1,5 +1,5 @@
 #pragma once
-#include "interfaces/filesystem_interface.h"
+#include "interfaces/filesystem.h"
 
 namespace LibRuntime {
     class KrkrRuntime {

@@ -8,5 +8,5 @@ add_subdirectory(src/liboniguruma)
 add_subdirectory(src/libtjs2)
 add_subdirectory(src/libruntime)
 
-add_executable(krkrs src/windows/main.cc src/windows/filesystem.cc src/windows/filesystem.h)
+add_executable(krkrs src/windows/main.cc src/windows/filesystem_impl.cc src/windows/filesystem_impl.h)
 target_link_libraries(krkrs PUBLIC onig libtjs2 libruntime)

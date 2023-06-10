@@ -1,5 +1,5 @@
 #pragma once
-#include "interfaces/filesystem_interface.h"
+#include "interfaces/filesystem.h"
 
 class WindowsFileSystem: public LibRuntime::IFileSystem {
 public:
