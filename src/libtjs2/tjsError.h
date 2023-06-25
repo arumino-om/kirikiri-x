@@ -20,6 +20,7 @@
 #include "tjsVariant.h"
 #include "tjsString.h"
 #include "tjsMessage.h"
+#include "tjs.h"
 
 namespace TJS
 {
