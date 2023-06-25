@@ -1,5 +1,4 @@
 #include <tjs.h>
-#include <tjsError.h>
 #include "script_manager.h"
 
 using namespace LibRuntime;
@@ -14,15 +13,11 @@ bool ScriptManager::init(const ttstr &startup_script_name, const ttstr &encoding
     if (initialized) return true;
 
     ScriptManager::tjs_engine = new tTJS;
-    init_message();
 
     initialized = true;
     return true;
 }
 
-void ScriptManager::init_message() {
-    TJSSyntaxError.AssignMessage(TJS_W("Syntax Error"));
-}
 
 void ScriptManager::run(const ttstr &script) {
     ScriptManager::tjs_engine->ExecScript(script);

@@ -12,7 +12,6 @@ namespace LibRuntime {
          * @return 初期化が成功したかどうか (初期化済みの場合は初期化せずに true が返されます)
          */
         static bool init(const ttstr& startup_script_name, const ttstr& encoding, int krkr_compatible);
-        static void init_message();
         static void run(const ttstr& script);
 
     private:
