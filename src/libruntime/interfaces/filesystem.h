@@ -28,7 +28,7 @@ namespace LibRuntime {
         };
 
         std::wfstream get_file(const wchar_t *path) override {
-            return nullptr;
+            path;
         };
 
         int get_maxpath_length() override {

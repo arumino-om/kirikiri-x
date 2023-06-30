@@ -1,7 +1,9 @@
 #include "tjs.h"
 #include "libruntime.h"
 #include "messages.h"
+#include "tjsError.h"
 #include <script_manager.h>
+#include <iostream>
 
 using namespace LibRuntime;
 
