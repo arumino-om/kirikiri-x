@@ -18,7 +18,7 @@ namespace LibRuntime {
     /**
      * IFileSystem のフォールバック実装
      */
-    class FileSystemFallbackImpl: public IFileSystem {
+    class FileSystemFallbackImpl : public IFileSystem {
     public:
         bool get_current_directory(wchar_t *result, size_t result_size) override {
             return false;
