@@ -9,11 +9,13 @@ add_subdirectory(src/libsdl2 EXCLUDE_FROM_ALL)
 add_subdirectory(src/libtjs2)
 add_subdirectory(src/libruntime)
 
+add_definitions(-DDEBUG)
+
 if (UNIX)
     add_executable(krkrx src/linux/main.cc)
 elseif (WIN32)
     set(CMAKE_CXX_FLAGS "-DUNICODE")
-    add_executable(krkrx WIN32 src/windows/main.cc src/windows/filesystem_impl.cc src/windows/filesystem_impl.h)
+    add_executable(krkrx WIN32 src/windows/main.cc src/windows/filesystem_impl.cc src/windows/filesystem_impl.h src/windows/console_impl.cc src/windows/console_impl.h)
 endif (UNIX)
 
 if(TARGET SDL2::SDL2main)
