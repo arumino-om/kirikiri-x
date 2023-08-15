@@ -2520,7 +2520,7 @@ void tTJSInterCodeContext::AddClassInstanceInfo(tTJSVariant *ra,
 	}
 }
 //---------------------------------------------------------------------------
-static tjs_char *StrFuncs[] =
+static const tjs_char *StrFuncs[] =
 { 
 	TJS_W("charAt"), 
 	TJS_W("indexOf"), 
@@ -2562,7 +2562,7 @@ static void InitTJSStrFunc()
 	TJSStrFuncInit = true;
 	for(tjs_int i=0; i<TJS_STRFUNC_MAX; i++)
 	{
-		tjs_char *p = StrFuncs[i];
+		const tjs_char *p = StrFuncs[i];
 		tjs_int32 hash = 0;
 		while(*p) hash += *p, p++;
 		StrFuncHash[i] = hash;
@@ -3045,10 +3045,10 @@ void tTJSInterCodeContext::RegisterObjectMember(iTJSDispatch2 * dest)
 
 	tCallback callback;
 	callback.Dest = dest;
+    tTJSVariantClosure clo(&callback, (iTJSDispatch2*)NULL);
 
 	// enumerate members
-	EnumMembers(TJS_IGNOREPROP,
-		&tTJSVariantClosure(&callback, (iTJSDispatch2*)NULL), this);
+	EnumMembers(TJS_IGNOREPROP, &clo, this);
 }
 //---------------------------------------------------------------------------
 #define TJS_DO_SUPERCLASS_PROXY_BEGIN \

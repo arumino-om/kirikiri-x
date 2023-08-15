@@ -152,7 +152,7 @@ tjs_char * tTJSScriptBlock::GetLine(tjs_int line, tjs_int *linelength) const
 {
 	if( Script == NULL ) {
 		*linelength = 10;
-		return TJS_W("Bytecode.");
+		return (tjs_char*)TJS_W("Bytecode.");
 	}
 	// note that this function DOES matter LineOffset
 	line -= LineOffset;
