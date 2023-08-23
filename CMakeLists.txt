@@ -21,6 +21,6 @@ endif (UNIX)
 if(TARGET SDL2::SDL2main)
     target_link_libraries(krkrx PRIVATE SDL2::SDL2main)
 endif()
-target_link_libraries(krkrx PRIVATE SDL2::SDL2)
+target_link_libraries(krkrx PUBLIC SDL2::SDL2)
 
 target_link_libraries(krkrx PUBLIC onig libtjs2 libruntime)
