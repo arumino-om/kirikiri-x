@@ -1,7 +1,12 @@
 #include "graphics.h"
+#include "SDL.h"
 
 using namespace LibRuntime;
 
-void Graphics::init_sdl() {
-    //TODO: Initialize the SDL2
+bool Graphics::init() {
+    if (SDL_Init(SDL_INIT_VIDEO) < 0) {
+        return false;
+    }
+
+    return true;
 }

@@ -1,7 +1,7 @@
 #pragma once
 #include <fstream>
 
-namespace LibRuntime {
+namespace LibRuntime::Interfaces {
     /**
      * ファイルシステムへアクセスするためのインターフェース
      */
@@ -28,7 +28,7 @@ namespace LibRuntime {
         };
 
         std::wfstream get_file(const wchar_t *path) override {
-            path;
+            return path;
         };
 
         int get_maxpath_length() override {

@@ -4,7 +4,8 @@
 
 namespace LibRuntime {
     class Graphics {
-    private:
-        void init_sdl();
+    public:
+        bool init();
+        bool draw();
     };
 }

@@ -1,7 +1,7 @@
 #pragma once
 #include "interfaces/filesystem.h"
 
-class WindowsFileSystem: public LibRuntime::IFileSystem {
+class WindowsFileSystem: public LibRuntime::Interfaces::IFileSystem {
 public:
     bool get_current_directory(wchar_t *result, size_t result_size) override;
     bool set_current_directory(const wchar_t *path) override;
