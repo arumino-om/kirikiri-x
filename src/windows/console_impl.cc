@@ -19,18 +19,8 @@ void WindowsConsole::error(const tjs_char *text) {
 }
 
 size_t WindowsConsole::readline(const tjs_char *&result) {
-    // wcin で受け取ると色々痛い目に合ったので、cinで受け取ってwchar_tに変換する
     auto input_text = new std::string();
     std::getline(std::cin, *input_text);
-
-    // for debug
-    std::byte bytes[input_text->length()];
-    std::memcpy(bytes, input_text->data(), input_text->length());
-
-    for (auto &b: bytes) {
-        std::cout << std::hex << std::to_integer<int>(b) << ' ';
-    }
-    std::cout << std::endl;
 
     int buffer_size = MultiByteToWideChar(CP_ACP, 0, input_text->c_str(), -1, nullptr, 0);
     result = new tjs_char[buffer_size];
