@@ -7,7 +7,10 @@ namespace LibRuntime {
     public:
         static int start_runtime();
 
-        static IFileSystem *filesystem;
-        static IConsole *console;
+        static Interfaces::IFileSystem *filesystem;
+        static Interfaces::IConsole *console;
+
+    private:
+        static bool interpreter();
     };
 }
