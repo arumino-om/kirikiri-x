@@ -3,6 +3,11 @@
 #include "interfaces/console.h"
 
 namespace LibRuntime {
+    typedef struct RuntimeConfig {
+        bool verbose;
+        bool enable_console_output;
+    } RuntimeConfig;
+
     class KrkrRuntime {
     public:
         static int start_runtime();

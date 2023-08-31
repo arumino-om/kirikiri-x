@@ -21,7 +21,12 @@ namespace LibRuntime::Interfaces {
         }
 
         size_t readline(const tjs_char *&result) {
-            return 0;
+            auto input_text = new std::wstring();
+            std::getline(std::wcin, *input_text);
+
+            result = new tjs_char[input_text->length()];
+            wcscpy_s(const_cast<tjs_char*>(result), input_text->length(), input_text->c_str());
+            return input_text->length();
         }
     };
 }

@@ -7,16 +7,18 @@
 #include <fcntl.h>
 
 void alloc_console() {
-    if (!AttachConsole(ATTACH_PARENT_PROCESS)) AllocConsole();
+    if (!AttachConsole(ATTACH_PARENT_PROCESS)) {
+#if DEBUG
+        AllocConsole();
+#endif
+    }
     freopen("CON", "r", stdin);
     freopen("CON", "w", stdout);
     freopen("CON", "w", stderr);
 }
 
 int main(int argv, char** args) {
-#if DEBUG
     alloc_console();
-#endif
     setlocale(LC_ALL,"");
 
     LibRuntime::KrkrRuntime::filesystem = new WindowsFileSystem();
