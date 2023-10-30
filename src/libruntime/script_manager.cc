@@ -1,5 +1,6 @@
 #include <tjs.h>
 #include "native_objects/minimal.h"
+#include "native_objects/system.h"
 #include "script_manager.h"
 
 using namespace LibRuntime;
@@ -47,7 +48,8 @@ bool ScriptManager::init(const ttstr &startup_script_name, const ttstr &encoding
         dsp->Release(); \
         global->PropSet(TJS_MEMBERENSURE|TJS_IGNOREPROP, TJS_W(#classname), NULL, \
             &val, global);
-    REGISTER_OBJECT(mini, NativeObjects::MinimalNativeClass);
+    REGISTER_OBJECT(mini, NativeObjects::MinimalNativeClass)
+    REGISTER_OBJECT(System, NativeObjects::SystemNativeClass)
 
     // --- Finalize ---
     initialized = true;

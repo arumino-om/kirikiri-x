@@ -1,6 +1,7 @@
 #pragma once
 #include "interfaces/filesystem.h"
 #include "interfaces/console.h"
+#include "interfaces/system_gui.h"
 
 namespace LibRuntime {
     typedef struct RuntimeConfig {
@@ -14,6 +15,7 @@ namespace LibRuntime {
 
         static Interfaces::IFileSystem *filesystem;
         static Interfaces::IConsole *console;
+        static Interfaces::ISystemGUI *system_gui;
 
     private:
         static bool interpreter();

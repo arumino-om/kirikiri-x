@@ -1,4 +1,4 @@
-#include "system.h"
+#include "./system.h"
 #include "libruntime.h"
 #include <tjs.h>
 
@@ -16,6 +16,7 @@ SystemNativeClass::SystemNativeClass() : tTJSNativeClass(TJS_W("System"))  {
 
         // methods
         TJS_BEGIN_NATIVE_METHOD_DECL(addContinuousHandler)
+
         TJS_END_NATIVE_STATIC_METHOD_DECL(addContinuousHandler)
 
         TJS_BEGIN_NATIVE_METHOD_DECL(assignMessage)
@@ -46,6 +47,18 @@ SystemNativeClass::SystemNativeClass() : tTJSNativeClass(TJS_W("System"))  {
         TJS_END_NATIVE_STATIC_METHOD_DECL(getTickCount)
 
         TJS_BEGIN_NATIVE_METHOD_DECL(inform)
+            if (numparams < 1) return TJS_E_BADPARAMCOUNT;
+
+            ttstr text = *param[0];
+            ttstr caption;
+            if (numparams >= 2 && param[1]->Type() != tvtVoid) caption = *param[1];
+            else caption = TJS_W("Information");
+
+            LibRuntime::KrkrRuntime::system_gui->show_message_box(text.c_str(), caption.c_str(), Interfaces::INFO);
+
+            if (result) result->Clear();
+
+            return TJS_S_OK;
         TJS_END_NATIVE_STATIC_METHOD_DECL(inform)
 
         TJS_BEGIN_NATIVE_METHOD_DECL(readRegValue)
@@ -75,4 +88,8 @@ SystemNativeClass::SystemNativeClass() : tTJSNativeClass(TJS_W("System"))  {
         // properties
         //TODO:後で定義
     TJS_END_NATIVE_MEMBERS
+}
+
+tTJSNativeInstance *SystemNativeClass::CreateNativeInstance() {
+    return nullptr;
 }

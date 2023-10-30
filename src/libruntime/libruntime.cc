@@ -10,6 +10,7 @@ using namespace LibRuntime;
 // --- Init global variables ---
 Interfaces::IFileSystem* KrkrRuntime::filesystem = new Interfaces::FileSystemFallbackImpl();
 Interfaces::IConsole* KrkrRuntime::console = new Interfaces::ConsoleFallbackImpl();
+Interfaces::ISystemGUI* KrkrRuntime::system_gui = new Interfaces::SystemGUIFallbackImpl();
 
 int KrkrRuntime::start_runtime() {
     console->write(TJS_W("--- Kirikiri X Runtime ---\n"));
