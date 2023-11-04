@@ -86,7 +86,7 @@ extern int TJS_wctomb(tjs_nchar *s, tjs_char wc);
 	extern tjs_int TJS_sprintf(tjs_char *s, const tjs_char *format, ...);
 	#define TJS_timezone timezone
 	#define TJS_snprintf swprintf
-#elif __WIN32__
+#elif __WIN32__ || WIN32
 	#define TJS_cdecl __cdecl
 #ifdef _MSC_VER
 	#define TJS_vsnprintf		_vsnwprintf
@@ -175,7 +175,7 @@ public:
 struct tTJSNarrowStringHolder
 {
 	bool Allocated;
-	tjs_nchar *Buf;
+	const tjs_nchar *Buf;
 public:
 	tTJSNarrowStringHolder(const wchar_t *wide);
 

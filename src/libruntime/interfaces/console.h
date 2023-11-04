@@ -1,5 +1,6 @@
 #pragma once
 #include <iostream>
+#include <string>
 #include "tjsTypes.h"
 
 namespace LibRuntime::Interfaces {

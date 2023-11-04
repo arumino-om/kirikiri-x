@@ -31,4 +31,6 @@ int main(int argv, char** args) {
     system("PAUSE");
     FreeConsole();
 #endif
+
+    return 0;
 }

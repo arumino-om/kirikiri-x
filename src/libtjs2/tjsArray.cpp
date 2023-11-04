@@ -129,29 +129,26 @@ void tTJSStringAppender::Append(const tjs_char *string, tjs_int len)
 //---------------------------------------------------------------------------
 // tTJSArraySortCompare  : a class for comarison operator
 //---------------------------------------------------------------------------
-class tTJSArraySortCompare_NormalAscending :
-	public std::binary_function<const tTJSVariant &, const tTJSVariant &, bool>
+class tTJSArraySortCompare_NormalAscending
 {
 public:
-	result_type operator () (first_argument_type lhs, second_argument_type rhs) const
+	bool operator () (const tTJSVariant &lhs, const tTJSVariant &rhs) const
 	{
 		return (lhs < rhs).operator bool();
 	}
 };
-class tTJSArraySortCompare_NormalDescending :
-	public std::binary_function<const tTJSVariant &, const tTJSVariant &, bool>
+class tTJSArraySortCompare_NormalDescending
 {
 public:
-	result_type operator () (first_argument_type lhs, second_argument_type rhs) const
+    bool operator () (const tTJSVariant &lhs, const tTJSVariant &rhs) const
 	{
 		return (lhs > rhs).operator bool();
 	}
 };
-class tTJSArraySortCompare_NumericAscending :
-	public std::binary_function<const tTJSVariant &, const tTJSVariant &, bool>
+class tTJSArraySortCompare_NumericAscending
 {
 public:
-	result_type operator () (first_argument_type lhs, second_argument_type rhs) const
+    bool operator () (const tTJSVariant &lhs, const tTJSVariant &rhs) const
 	{
 		if(lhs.Type() == tvtString && rhs.Type() == tvtString)
 		{
@@ -163,11 +160,10 @@ public:
 		return (lhs < rhs).operator bool();
 	}
 };
-class tTJSArraySortCompare_NumericDescending :
-	public std::binary_function<const tTJSVariant &, const tTJSVariant &, bool>
+class tTJSArraySortCompare_NumericDescending
 {
 public:
-	result_type operator () (first_argument_type lhs, second_argument_type rhs) const
+    bool operator () (const tTJSVariant &lhs, const tTJSVariant &rhs) const
 	{
 		if(lhs.Type() == tvtString && rhs.Type() == tvtString)
 		{
@@ -179,30 +175,27 @@ public:
 		return (lhs > rhs).operator bool();
 	}
 };
-class tTJSArraySortCompare_StringAscending :
-	public std::binary_function<const tTJSVariant &, const tTJSVariant &, bool>
+class tTJSArraySortCompare_StringAscending
 {
 public:
-	result_type operator () (first_argument_type lhs, second_argument_type rhs) const
+    bool operator () (const tTJSVariant &lhs, const tTJSVariant &rhs) const
 	{
 		if(lhs.Type() == tvtString && rhs.Type() == tvtString)
 			return (lhs < rhs).operator bool();
 		return (ttstr)lhs < (ttstr)rhs;
 	}
 };
-class tTJSArraySortCompare_StringDescending :
-	public std::binary_function<const tTJSVariant &, const tTJSVariant &, bool>
+class tTJSArraySortCompare_StringDescending
 {
 public:
-	result_type operator () (first_argument_type lhs, second_argument_type rhs) const
+    bool operator () (const tTJSVariant &lhs, const tTJSVariant &rhs) const
 	{
 		if(lhs.Type() == tvtString && rhs.Type() == tvtString)
 			return (lhs > rhs).operator bool();
 		return (ttstr)lhs > (ttstr)rhs;
 	}
 };
-class tTJSArraySortCompare_Functional :
-	public std::binary_function<const tTJSVariant &, const tTJSVariant &, bool>
+class tTJSArraySortCompare_Functional
 {
 	tTJSVariantClosure Closure;
 public:
@@ -211,7 +204,7 @@ public:
 	{
 	}
 
-	result_type operator () (first_argument_type lhs, second_argument_type rhs) const
+    bool operator () (const tTJSVariant &lhs, const tTJSVariant &rhs) const
 	{
 
 		tTJSVariant result;

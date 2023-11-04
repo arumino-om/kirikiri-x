@@ -10,7 +10,7 @@ bool WindowsFileSystem::set_current_directory(const wchar_t *path) {
     return true;
 }
 std::wfstream WindowsFileSystem::get_file(const wchar_t *path) {
-    return {path};
+    return std::wfstream(path);
 }
 int WindowsFileSystem::get_maxpath_length() {
     return MAX_PATH;

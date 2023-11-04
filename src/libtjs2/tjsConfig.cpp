@@ -311,9 +311,13 @@ tTJSNarrowStringHolder::tTJSNarrowStringHolder(const wchar_t * wide)
 		Allocated = false;
 		return;
 	}
-	Buf = new tjs_nchar[n+1];
+
+    auto newBuf = new tjs_nchar[n+1];
+    auto newBufLength = TJS_wcstombs(newBuf, wide, n);
+    newBuf[newBufLength] = 0;
+
+    Buf = newBuf;
 	Allocated = true;
-	Buf[TJS_wcstombs(Buf, wide, n)] = 0;
 }
 //---------------------------------------------------------------------------
 tTJSNarrowStringHolder::~tTJSNarrowStringHolder()

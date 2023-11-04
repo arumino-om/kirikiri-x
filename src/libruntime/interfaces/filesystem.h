@@ -28,7 +28,7 @@ namespace LibRuntime::Interfaces {
         };
 
         std::wfstream get_file(const wchar_t *path) override {
-            return path;
+            return std::wfstream(path);
         };
 
         int get_maxpath_length() override {

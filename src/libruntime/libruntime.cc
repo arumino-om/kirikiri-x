@@ -43,4 +43,6 @@ bool KrkrRuntime::interpreter() {
 
         delete readresult;
     }
+
+    return true;
 }
