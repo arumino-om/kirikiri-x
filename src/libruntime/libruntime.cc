@@ -27,7 +27,7 @@ int KrkrRuntime::start_runtime() {
 bool KrkrRuntime::interpreter() {
     console->write(TJS_W("You are currently in interpreter mode. Type \"exit();\" to exit.\n"));
     while (true) {
-        const tjs_char *readresult = nullptr;
+        tjs_char *readresult = nullptr;
         console->write(TJS_W(">> "));
         console->readline(readresult);
 
@@ -45,4 +45,8 @@ bool KrkrRuntime::interpreter() {
     }
 
     return true;
+}
+
+void KrkrRuntime::stop_runtime() {
+    return;
 }

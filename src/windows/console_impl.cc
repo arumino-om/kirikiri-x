@@ -22,14 +22,14 @@ void WindowsConsole::error(const tjs_char *text) {
     delete mbtext;
 }
 
-size_t WindowsConsole::readline(const tjs_char *&result) {
+size_t WindowsConsole::readline(tjs_char *&result) {
     auto input_text = new std::string();
     std::getline(std::cin, *input_text);
 
     int buffer_size = MultiByteToWideChar(CP_ACP, 0, input_text->c_str(), -1, nullptr, 0);
     result = new tjs_char[buffer_size];
 
-    MultiByteToWideChar(CP_ACP, 0, input_text->c_str(), -1, const_cast<tjs_char*>(result), buffer_size);
+    MultiByteToWideChar(CP_ACP, 0, input_text->c_str(), -1, result, buffer_size);
 
     delete input_text;
     return buffer_size;
