@@ -1,11 +1,20 @@
 #pragma once
-#include "windows.h"
+#include <iostream>
+#include <string>
+#include <windows.h>
 #include "interfaces/console.h"
 
-class WindowsConsole: public LibRuntime::Interfaces::IConsole {
+class WindowsConsole : public LibRuntime::Interfaces::IConsole {
 public:
-    void write(const tjs_char *text) override;
-    void error(const tjs_char *text) override;
-    size_t readline(tjs_char *&result) override;
-    void output(const tjs_char *text, std::ostream *out_stream);
+    WindowsConsole();
+    ~WindowsConsole();
+    void write(const std::wstring &text) override;
+    void error(const std::wstring &text) override;
+    std::wstring readline() override;
+
+private:
+    constexpr static int MAX_INPUT_BUFFER_SIZE = 5;
+    HANDLE stdout_handle = nullptr;
+    HANDLE stdin_handle = nullptr;
+    HANDLE stderr_handle = nullptr;
 };

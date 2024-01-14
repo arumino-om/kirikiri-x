@@ -1,15 +1,14 @@
 #pragma once
 
-#ifdef ERROR
-#undef ERROR
-#endif
-
 namespace LibRuntime::Interfaces {
-    enum MessageBoxType {
-        NONE,
-        INFO,
-        WARNING,
-        ERROR
+    enum class MessageBoxType {
+        //NOTE: MSGTYPE 接頭辞をつけないと、ERRORが定数に置き換えられてしまう。(Windows環境下なら確定で起きるはず)
+        //NOTE: wingdi.h 許すまじ
+
+        MSGTYPE_NONE,
+        MSGTYPE_INFO,
+        MSGTYPE_WARNING,
+        MSGTYPE_ERROR
     };
 
     /**
@@ -17,7 +16,7 @@ namespace LibRuntime::Interfaces {
      */
     class ISystemGUI {
     public:
-        virtual int show_message_box(const wchar_t *message, const wchar_t *title, MessageBoxType type) = 0;
+        virtual int show_message_box(const std::wstring &message, const std::wstring &title, MessageBoxType type) = 0;
     };
 
     /**
@@ -25,7 +24,8 @@ namespace LibRuntime::Interfaces {
      */
     class SystemGUIFallbackImpl : public ISystemGUI {
     public:
-        int show_message_box(const wchar_t *message, const wchar_t *title, MessageBoxType type) override {
+        int show_message_box(const std::wstring &message, const std::wstring &title, LibRuntime::Interfaces::MessageBoxType type) override {
+            // 完全にシステム依存のため、フォールバック実装は不可能。
             return -1;
         }
     };

@@ -6,28 +6,25 @@
 namespace LibRuntime::Interfaces {
     class IConsole {
     public:
-        virtual void write(const tjs_char *text) = 0;
-        virtual void error(const tjs_char *text) = 0;
-        virtual size_t readline(tjs_char *&result) = 0;
+        virtual void write(const std::wstring &text) = 0;
+        virtual void error(const std::wstring &text) = 0;
+        virtual std::wstring readline() = 0;
     };
 
     class ConsoleFallbackImpl : public IConsole {
     public:
-        void write(const tjs_char *text) {
+        void write(const std::wstring &text) override {
             std::wcout << text;
         }
 
-        void error(const tjs_char *text) {
-            std::wcout << text;
+        void error(const std::wstring &text) override {
+            std::wcerr << text;
         }
 
-        size_t readline(tjs_char *&result) {
-            auto input_text = new std::wstring();
-            std::getline(std::wcin, *input_text);
-
-            result = new tjs_char[input_text->length()];
-            wcscpy_s(result, input_text->length(), input_text->c_str());
-            return input_text->length();
+        std::wstring readline() override {
+            std::wstring result;
+            std::getline(std::wcin, result);
+            return result;
         }
     };
 }

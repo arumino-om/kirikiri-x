@@ -18,11 +18,13 @@ elseif(WIN32)
     add_compile_options("$<$<C_COMPILER_ID:MSVC>:/utf-8>")
     add_compile_options("$<$<CXX_COMPILER_ID:MSVC>:/utf-8>")
 
-    add_executable(krkrx WIN32 src/windows/main.cc src/windows/filesystem_impl.cc src/windows/filesystem_impl.h src/windows/console_impl.cc src/windows/console_impl.h
+    add_executable(krkrx WIN32 src/windows/main.cc
             src/windows/systemgui_impl.cc
             src/windows/systemgui_impl.h
             src/windows/windows_utils.cc
-            src/windows/windows_utils.h)
+            src/windows/windows_utils.h
+            src/windows/console_impl.cc
+            src/windows/console_impl.h)
 endif()
 
 if(TARGET SDL2::SDL2main)

@@ -62,7 +62,7 @@ SystemNativeClass::SystemNativeClass() : tTJSNativeClass(TJS_W("System"))  {
             if (numparams >= 2 && param[1]->Type() != tvtVoid) caption = *param[1];
             else caption = TJS_W("Information");
 
-            LibRuntime::KrkrRuntime::system_gui->show_message_box(text.c_str(), caption.c_str(), Interfaces::INFO);
+            LibRuntime::KrkrRuntime::system_gui->show_message_box(text.c_str(), caption.c_str(), Interfaces::MessageBoxType::MSGTYPE_INFO);
 
             if (result) result->Clear();
 
