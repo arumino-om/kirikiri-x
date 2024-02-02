@@ -17,6 +17,6 @@ add_library(libruntime STATIC ${LIBRUNTIME_SOURCES} interfaces/filesystem.h mess
         native_objects/system.cc
         native_objects/system.h
         interfaces/system_gui.h
-        events.cpp
+        events.cc
         events.h)
 target_link_libraries(libruntime libtjs2)
