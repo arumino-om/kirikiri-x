@@ -12,7 +12,15 @@ add_subdirectory(src/libruntime)
 add_definitions(-DDEBUG)
 
 if(UNIX)
-    add_executable(krkrx src/linux/main.cc)
+    find_package(PkgConfig REQUIRED)
+    pkg_check_modules(GTK3 REQUIRED gtk+-3.0)
+
+    add_executable(krkrx src/linux/main.cc
+            src/linux/systemgui_impl.cc
+            src/linux/systemgui_impl.h)
+
+    target_link_libraries(krkrx PRIVATE ${GTK3_LIBRARIES})
+    include_directories(${GTK3_INCLUDE_DIRS})
 elseif(WIN32)
     # UTF-8を明記
     add_compile_options("$<$<C_COMPILER_ID:MSVC>:/utf-8>")
