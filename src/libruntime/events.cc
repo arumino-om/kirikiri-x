@@ -3,13 +3,13 @@
 using namespace LibRuntime;
 
 void Events::add_continuous_handler(TJS::tTJSVariantClosure closure) {
-    Events::continuous_handlers.push_back(closure);
+    continuous_handlers.push_back(closure);
 }
 
 void Events::remove_continuous_handler(TJS::tTJSVariantClosure closure) {
     std::vector<tTJSVariantClosure>::iterator i;
-    i = std::find(Events::continuous_handlers.begin(), Events::continuous_handlers.end(), closure);
-    if (i != Events::continuous_handlers.end()) continuous_handlers.erase(i);
+    i = std::find(continuous_handlers.begin(), continuous_handlers.end(), closure);
+    if (i != continuous_handlers.end()) continuous_handlers.erase(i);
 }
 
 void Events::call_continuous_handler() {
