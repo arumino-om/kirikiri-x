@@ -16,5 +16,7 @@ include_directories(../libsdl2/include)
 add_library(libruntime STATIC ${LIBRUNTIME_SOURCES} interfaces/filesystem.h messages.cc messages.h interfaces/console.h graphics.cc graphics.h native_objects/minimal.cc native_objects/minimal.h
         native_objects/system.cc
         native_objects/system.h
-        interfaces/system_gui.h)
+        interfaces/system_gui.h
+        events.cpp
+        events.h)
 target_link_libraries(libruntime libtjs2)
