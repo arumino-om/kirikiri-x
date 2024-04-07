@@ -61,7 +61,7 @@ typedef int tjs_int;    /* at least 32bits */
 typedef unsigned int tjs_uint;    /* at least 32bits */
 
 #ifdef __cplusplus
-typedef wchar_t tjs_char;
+typedef char16_t tjs_char;
 #else
 typedef unsigned short tjs_char;
 #endif
@@ -128,7 +128,7 @@ typedef uintptr_t tjs_uintptr_t;
 	typedef uint64_t tjs_uint64;
 #endif
 
-typedef wchar_t tjs_char;
+typedef char16_t tjs_char;
 
 typedef char tjs_nchar;
 typedef double tjs_real;
@@ -157,7 +157,7 @@ typedef uintptr_t tjs_uintptr_t;
 #endif /* end of defined(_WIN32) && !defined(__GNUC__) */
 
 /*[*/
-#define TJS_W(X) L##X
+#define TJS_W(X) u##X
 #define TJS_N(X) X
 
 
