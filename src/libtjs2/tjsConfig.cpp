@@ -290,6 +290,21 @@ int TJS_wctomb(tjs_nchar *s, tjs_char wc)
 	return size;
 }
 //---------------------------------------------------------------------------
+int TJS_u16strcmp(const tjs_char *s1, const tjs_char *s2)
+{
+    std::u16string_view s1View(s1);
+    return s1View.compare(s2);
+}
+//---------------------------------------------------------------------------
+tjs_char *TJS_u16strchr(const tjs_char *search, const tjs_char c)
+{
+    for(; *search != c; search++) {
+        if (*search == '\0') return nullptr;
+    }
+
+    return (tjs_char*)search;
+}
+//---------------------------------------------------------------------------
 
 //---------------------------------------------------------------------------
 

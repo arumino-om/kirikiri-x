@@ -17,6 +17,7 @@
 
 #include "tjsTypes.h"
 #include "stdarg.h"
+#include <algorithm>
 
 namespace TJS
 {
@@ -50,14 +51,16 @@ TJS_EXP_FUNC_DEF(tjs_int, TJS_stricmp, (const tjs_char *s1, const tjs_char *s2))
 TJS_EXP_FUNC_DEF(void, TJS_strcpy_maxlen, (tjs_char *d, const tjs_char *s, size_t len));
 TJS_EXP_FUNC_DEF(void, TJS_strcpy, (tjs_char *d, const tjs_char *s));
 TJS_EXP_FUNC_DEF(size_t, TJS_strlen, (const tjs_char *d));
+TJS_EXP_FUNC_DEF(int, TJS_u16strcmp, (const tjs_char *s1, const tjs_char *s2));
+TJS_EXP_FUNC_DEF(tjs_char *, TJS_u16strchr, (const tjs_char *s1, const tjs_char *s2));
 
 /*[*/
-#define TJS_strcmp			wcscmp
+#define TJS_strcmp			TJS_u16strcmp
 #define TJS_strncmp			wcsncmp
 #define TJS_strncpy			wcsncpy
 #define TJS_strcat			wcscat
 #define TJS_strstr			wcsstr
-#define TJS_strchr			wcschr
+#define TJS_strchr			TJS_u16strchr
 #define TJS_malloc			malloc
 #define TJS_free			free
 #define TJS_realloc			realloc
