@@ -91,7 +91,7 @@ public:
 	tTJSString(const AnsiString &str) { Ptr = TJSAllocVariantString(str.c_str()); }
 	tTJSString(const WideString &str) { Ptr = TJSAllocVariantString(str.c_bstr()); }
 #endif
-	tTJSString(const std::wstring &str) { Ptr = TJSAllocVariantString(str.c_str()); }
+//  tTJSString(const std::wstring &str) { Ptr = TJSAllocVariantString(str.c_str()); }
 
 	//--------------------------------------------------------- destructor --
 	TJS_METHOD_DEF(TJS_METHOD_RET_EMPTY, ~tTJSString, ()) { if(Ptr) Ptr->Release(); }
@@ -114,19 +114,24 @@ public:
 	}
 #endif
 
-	const std::wstring AsStdWString(bool null_str = false) const
-	{
-        // このコードについて，一旦Unicode優先にする．
-		if(!Ptr) return std::wstring(null_str ? TJS_W("(NULL)") : TJS_W(""));
-		return std::wstring(c_str());
-	}
-	const std::string AsNarrowStdString() const
-	{
-		if(!Ptr) return std::string("");
-			// this constant string value must match std::string in type
-		tTJSNarrowStringHolder holder(Ptr->operator const tjs_char*());
-		return std::string(holder.operator const char *());
-	}
+//	const std::wstring AsStdWString(bool null_str = false) const
+//	{
+//        // このコードについて，一旦Unicode優先にする．
+//		if(!Ptr) return std::wstring(null_str ? L"(NULL)" : L"");
+//		return std::wstring(c_str());
+//	}
+    const std::u16string AsU16String(bool null_str = false) const
+    {
+        if (!Ptr) return std::u16string(null_str ? TJS_W("(NULL)") : TJS_W(""));
+        return std::u16string(c_str());
+    }
+//	const std::string AsNarrowStdString() const
+//	{
+//		if(!Ptr) return std::string("");
+//			// this constant string value must match std::string in type
+//		tTJSNarrowStringHolder holder(Ptr->operator const tjs_char*());
+//		return std::string(holder.operator const char *());
+//	}
 
 	TJS_CONST_METHOD_DEF(tTJSVariantString *, AsVariantStringNoAddRef, ())
 	{
