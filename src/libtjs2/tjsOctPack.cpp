@@ -305,7 +305,7 @@ static void encodeBase64( const tjs_uint8* inbuf, tjs_uint insize, std::wstring&
 		break;
 	}
 }
-static void decodeBase64( const std::wstring& inbuf, std::vector<tjs_uint8>& outbuf ) {
+static void decodeBase64( const std::u16string& inbuf, std::vector<tjs_uint8>& outbuf ) {
 	tjs_int len = (tjs_int)inbuf.length();
 	const tjs_char* data = inbuf.c_str();
 	if( len < 4 ) { // too short
@@ -452,7 +452,7 @@ static tTJSVariantOctet* Pack( const std::vector<OctPackTemplate>& templ, const 
 		}
 		case OctPack_base64: {	// m : Base64 encode / decode
 			ttstr tmp = args[argindex];
-			decodeBase64( tmp.AsStdWString(), result );
+			decodeBase64( tmp.AsU16String(), result );
 			break;
 		}
 		}
