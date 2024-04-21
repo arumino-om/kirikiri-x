@@ -1,4 +1,5 @@
 #pragma once
+#include "tjsTypes.h"
 #include <fstream>
 
 namespace LibRuntime::Interfaces {
@@ -7,10 +8,10 @@ namespace LibRuntime::Interfaces {
      */
     class IFileSystem {
     public:
-        virtual bool get_current_directory(wchar_t *result, size_t result_size) = 0;
-        virtual bool set_current_directory(const wchar_t *path) = 0;
+        virtual size_t get_current_directory(tjs_char *result) = 0;
+        virtual bool set_current_directory(const tjs_char *path) = 0;
 
-        virtual std::wfstream get_file(const wchar_t *path) = 0;
+        virtual std::fstream get_file(const tjs_char *path) = 0;
 
         virtual int get_maxpath_length() = 0;
     };
@@ -20,15 +21,15 @@ namespace LibRuntime::Interfaces {
      */
     class FileSystemFallbackImpl : public IFileSystem {
     public:
-        bool get_current_directory(wchar_t *result, size_t result_size) override {
-            return false;
+        size_t get_current_directory(tjs_char *result) override {
+            return -1;
         };
-        bool set_current_directory(const wchar_t *path) override {
+        bool set_current_directory(const tjs_char *path) override {
             return false;
         };
 
-        std::wfstream get_file(const wchar_t *path) override {
-            return path;
+        std::fstream get_file(const tjs_char *path) override {
+            return nullptr;
         };
 
         int get_maxpath_length() override {
