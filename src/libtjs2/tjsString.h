@@ -13,11 +13,42 @@
 #define tjsStringH
 
 #include "tjsConfig.h"
-#include <string>
 #ifdef TJS_SUPPORT_VCL
 	#include <vcl.h>
 #endif
 #include "tjsVariantString.h"
+
+#if defined (__clang__) && (ANDROID)
+template<typename T>
+tjs_string to_format_str( T value, const tjs_char* format ) {
+    tjs_char buff[128];
+	TJS_snprintf( buff, 128, format, value);
+	return tjs_string(buff);
+}
+#else
+#include <sstream>
+template<typename T>
+tjs_string to_format_str( T value, const tjs_char* format ) {
+#if 0
+	tjs_char buff[128];
+	TJS_snprintf( buff, 128, format, value);
+	return tjs_string(buff);
+#else
+	std::basic_ostringstream<tjs_char> sout;
+	sout << value;
+	return sout.str();
+#endif
+}
+#endif
+inline tjs_string to_tjs_string( int value ) { return to_format_str( value, TJS_W("%d") ); }
+inline tjs_string to_tjs_string( long value ) { return to_format_str( value, TJS_W("%ld") ); }
+inline tjs_string to_tjs_string( long long value ) { return to_format_str( value, TJS_W("%lld") ); }
+inline tjs_string to_tjs_string( unsigned value ) { return to_format_str( value, TJS_W("%u") ); }
+inline tjs_string to_tjs_string( unsigned long value ) { return to_format_str( value, TJS_W("%lu") ); }
+inline tjs_string to_tjs_string( unsigned long long value ) { return to_format_str( value, TJS_W("%llu") ); }
+inline tjs_string to_tjs_string( float value ) { return to_format_str( value, TJS_W("%f") ); }
+inline tjs_string to_tjs_string( double value ) { return to_format_str( value, TJS_W("%lf") ); }
+
 
 namespace TJS
 {
@@ -91,7 +122,7 @@ public:
 	tTJSString(const AnsiString &str) { Ptr = TJSAllocVariantString(str.c_str()); }
 	tTJSString(const WideString &str) { Ptr = TJSAllocVariantString(str.c_bstr()); }
 #endif
-	tTJSString(const std::wstring &str) { Ptr = TJSAllocVariantString(str.c_str()); }
+	tTJSString(const tjs_string &str) { Ptr = TJSAllocVariantString(str.c_str()); }
 
 	//--------------------------------------------------------- destructor --
 	TJS_METHOD_DEF(TJS_METHOD_RET_EMPTY, ~tTJSString, ()) { if(Ptr) Ptr->Release(); }
@@ -109,16 +140,15 @@ public:
 	}
 	const WideString AsWideString() const
 	{
-		if(!Ptr) return L"";
+		if(!Ptr) return TJS_W("");
 		return WideString(Ptr->operator const tjs_char *());
 	}
 #endif
 
-	const std::wstring AsStdWString(bool null_str = false) const
+	const tjs_string AsStdString() const
 	{
-        // このコードについて，一旦Unicode優先にする．
-		if(!Ptr) return std::wstring(null_str ? TJS_W("(NULL)") : TJS_W(""));
-		return std::wstring(c_str());
+		if(!Ptr) return tjs_string(TJS_W(""));
+		return tjs_string(c_str());
 	}
 	const std::string AsNarrowStdString() const
 	{

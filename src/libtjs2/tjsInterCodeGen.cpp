@@ -104,7 +104,15 @@ int _yyerror(const tjs_char * msg, void *pm, tjs_int pos)
 	TJS_snprintf(buf, sizeof(buf)/sizeof(tjs_char), TJS_W(" at line %d"), 1+sb->SrcPosToLine(errpos));
 	str += buf;
 
-	sb->GetTJS()->OutputToConsole(str.c_str());
+	if( sb->GetTJS() )
+	{
+		sb->GetTJS()->OutputToConsole( str.c_str() );
+	}
+	else
+	{
+		str = sb->GetName() + ttstr(TJS_W(" : ")) + str;
+		TJS_eTJSError( str.c_str() );
+	}
 
 	return 0;
 }
@@ -577,7 +585,7 @@ void tTJSInterCodeContext::OutputWarning(const tjs_char *msg, tjs_int pos)
 	TJS_snprintf(buf, sizeof(buf)/sizeof(tjs_char), TJS_W(" line %d"), 1+Block->SrcPosToLine(errpos));
 	str += buf;
 
-	Block->GetTJS()->OutputToConsole(str.c_str());
+	if( Block->GetTJS() ) Block->GetTJS()->OutputToConsole(str.c_str());
 }
 //---------------------------------------------------------------------------
 
@@ -1480,6 +1488,25 @@ tjs_int tTJSInterCodeContext::GenNodeCode(tjs_int & frame, tTJSExprNode *node,
 		}
 		resaddr2 = _GenNodeCode(frame, (*node)[1], TJS_RT_NEEDED, 0, tSubParam());
 		PutCode(VM_CHKINS, node_pos);
+		PutCode(TJS_TO_VM_REG_ADDR(resaddr1), node_pos);
+		PutCode(TJS_TO_VM_REG_ADDR(resaddr2), node_pos);
+        return resaddr1;
+	  }
+
+	case T_IN:	// 'in' operator
+	  {
+		// in operator
+		tjs_int resaddr1, resaddr2;
+		resaddr1 = _GenNodeCode(frame, (*node)[0], TJS_RT_NEEDED, 0, tSubParam());
+		if( !TJSIsFrame( resaddr1 ) ) {
+			PutCode( VM_CP, node_pos );
+			PutCode( TJS_TO_VM_REG_ADDR( frame ), node_pos );
+			PutCode( TJS_TO_VM_REG_ADDR( resaddr1 ), node_pos );
+			resaddr1 = frame;
+			frame++;
+		}
+		resaddr2 = _GenNodeCode(frame, (*node)[1], TJS_RT_NEEDED, 0, tSubParam());
+		PutCode(VM_CHKIN, node_pos);
 		PutCode(TJS_TO_VM_REG_ADDR(resaddr1), node_pos);
 		PutCode(TJS_TO_VM_REG_ADDR(resaddr2), node_pos);
         return resaddr1;

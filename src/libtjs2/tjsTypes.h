@@ -13,7 +13,7 @@
 #define __TJSTYPES_H__
 
 #include <stdint.h>
-#include "cstddef"
+#include <string>
 
 #ifdef HAVE_CONFIG_H
  #include "config.h"
@@ -43,12 +43,11 @@
 #define TJS_METHOD_RET(type)
 
 
-
+/*[*/
 #if defined(_WIN32)  && !defined(__GNUC__)
 
 /* VC++/BCC */
 
-/*[*/
 typedef __int8 tjs_int8;
 typedef unsigned __int8 tjs_uint8;
 typedef __int16 tjs_int16;
@@ -61,7 +60,8 @@ typedef int tjs_int;    /* at least 32bits */
 typedef unsigned int tjs_uint;    /* at least 32bits */
 
 #ifdef __cplusplus
-typedef wchar_t tjs_char;
+typedef char16_t tjs_char;
+typedef std::u16string tjs_string;
 #else
 typedef unsigned short tjs_char;
 #endif
@@ -90,7 +90,8 @@ typedef double tjs_real;
 typedef intptr_t tjs_intptr_t;
 typedef uintptr_t tjs_uintptr_t;
 
-/*]*/
+#define TJS_W(X) L##X
+
 
 #else
 
@@ -128,7 +129,12 @@ typedef uintptr_t tjs_uintptr_t;
 	typedef uint64_t tjs_uint64;
 #endif
 
-typedef wchar_t tjs_char;
+#ifdef __cplusplus
+typedef char16_t tjs_char;
+typedef std::u16string tjs_string;
+#else
+typedef unsigned short tjs_char;
+#endif
 
 typedef char tjs_nchar;
 typedef double tjs_real;
@@ -153,11 +159,12 @@ typedef uintptr_t tjs_uintptr_t;
 #define TJS_INTF_METHOD
 #define TJS_USERENTRY
 
+#define TJS_W(X) u##X
 
 #endif /* end of defined(_WIN32) && !defined(__GNUC__) */
+/*]*/
 
 /*[*/
-#define TJS_W(X) L##X
 #define TJS_N(X) X
 
 
