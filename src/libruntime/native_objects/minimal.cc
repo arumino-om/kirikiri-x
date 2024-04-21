@@ -23,6 +23,8 @@ MinimalNativeClass::MinimalNativeClass() : tTJSNativeClass(TJS_W("mini")) {
                 LibRuntime::KrkrRuntime::console->write(param[0]->GetString());
                 LibRuntime::KrkrRuntime::console->write(TJS_W("\n"));
             }
+
+            return TJS_S_OK;
         TJS_END_NATIVE_STATIC_METHOD_DECL(print)
 
     TJS_END_NATIVE_MEMBERS

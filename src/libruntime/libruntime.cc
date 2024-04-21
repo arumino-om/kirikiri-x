@@ -28,11 +28,11 @@ int KrkrRuntime::start_runtime() {
 bool KrkrRuntime::interpreter() {
     console->write(TJS_W("You are currently in interpreter mode. Type \"exit();\" to exit.\n"));
     while (true) {
-        const tjs_char *readresult = nullptr;
-//        console->write(TJS_W(">> "));
-        // console->readline(readresult);
+        tjs_string readresult;
+        console->write(TJS_W(">> "));
+        console->readline(readresult);
 
-        // if (wcscmp(readresult, TJS_W("exit();")) == 0) break;
+        if (readresult == TJS_W("exit();")) break;
 
         try {
             ScriptManager::run(readresult);
@@ -41,7 +41,5 @@ bool KrkrRuntime::interpreter() {
             console->error(err.GetMessage().c_str());
             console->error(TJS_W("\n"));
         }
-
-        delete readresult;
     }
 }
