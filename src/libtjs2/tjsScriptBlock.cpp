@@ -148,11 +148,11 @@ tjs_uint tTJSScriptBlock::GetTotalVMDataSize() const
 	return size;
 }
 //---------------------------------------------------------------------------
-tjs_char * tTJSScriptBlock::GetLine(tjs_int line, tjs_int *linelength) const
+const tjs_char * tTJSScriptBlock::GetLine(tjs_int line, tjs_int *linelength) const
 {
 	if( Script == NULL ) {
 		*linelength = 10;
-		return (tjs_char*)TJS_W("Bytecode.");
+		return TJS_W("Bytecode.");
 	}
 	// note that this function DOES matter LineOffset
 	line -= LineOffset;
@@ -671,6 +671,7 @@ void tTJSScriptBlock::TranslateCodeAddress( tjs_int32* code, const tjs_int32 cod
 		OP2_DISASM(VM_CLT);
 		OP2_DISASM(VM_CGT);
 		OP2_DISASM(VM_CHKINS);
+		OP2_DISASM(VM_CHKIN);
 #undef OP2_DISASM
 
 #define OP2_DISASM(c) \

@@ -10,23 +10,37 @@
 //---------------------------------------------------------------------------
 
 
-#include <climits>
 #include "tjsCommHead.h"
-
+#include <string>
+#include <locale>
+#include <errno.h>
+//#include <codecvt>
 
 #ifdef __WIN32__
 #include <float.h>
 #include <intrin.h>
 #endif
 
-// core/utils/cp932_uni.cpp と core/utils/uni_cp932.cpp をリンクする代わりに
-// ファイルを埋め込む(ポータビリティを高める)
-#include "coreutils/cp932_uni.h"
-#include "coreutils/uni_cp932.h"
+/*
+ * core/utils/cp932_uni.cpp
+ * core/utils/uni_cp932.cpp
+ * base/CharacterSet.cpp
+ * を一緒にリンクしてください。
+ * CP932(ShiftJIS) と Unicode 変換に使用しています。
+ * Win32 APIの同等の関数は互換性等の問題があることやマルチプラットフォームの足かせとなる
+ * ため使用が中止されました。
+ */
+extern tjs_size SJISToUnicodeString(const char * in, tjs_char *out);
+extern tjs_size SJISToUnicodeString(const char * in, tjs_char *out, tjs_size limit );
+extern bool IsSJISLeadByte( tjs_nchar b );
+extern tjs_uint UnicodeToSJIS(tjs_char in);
+extern tjs_size UnicodeToSJISString(const tjs_char *in, tjs_nchar* out );
+extern tjs_size UnicodeToSJISString(const tjs_char *in, tjs_nchar* out, tjs_size limit );
+extern bool TVPUtf8ToUtf16( tjs_string& out, const std::string& in );
+extern bool TVPUtf16ToUtf8( std::string& out, const tjs_string& in );
 
 namespace TJS
 {
-
 //---------------------------------------------------------------------------
 // debug support
 //---------------------------------------------------------------------------
@@ -40,7 +54,7 @@ tjs_uint TJSGetTickCount()
 
 
 //---------------------------------------------------------------------------
-// some wchar_t support functions
+// some tjs_char support functions
 //---------------------------------------------------------------------------
 tjs_int TJS_atoi(const tjs_char *s)
 {
@@ -124,10 +138,13 @@ tjs_int TJS_strnicmp(const tjs_char *s1, const tjs_char *s2,
 {
 	while(maxlen--)
 	{
-		if(*s1 == TJS_W('\0')) return (*s2 == TJS_W('\0')) ? 0 : -1;
-		if(*s2 == TJS_W('\0')) return (*s1 == TJS_W('\0')) ? 0 : 1;
-		if(*s1 < *s2) return -1;
-		if(*s1 > *s2) return 1;
+		tjs_char c1 = *s1, c2 = *s2;
+		if(c1 >= TJS_W('a') && c1 <= TJS_W('z')) c1 += TJS_W('Z')-TJS_W('z');
+		if(c2 >= TJS_W('a') && c2 <= TJS_W('z')) c2 += TJS_W('Z')-TJS_W('z');
+		if(c1 == TJS_W('\0')) return (c2 == TJS_W('\0')) ? 0 : -1;
+		if(c2 == TJS_W('\0')) return (c1 == TJS_W('\0')) ? 0 : 1;
+		if(c1 < c2) return -1;
+		if(c1 > c2) return 1;
 		s1++;
 		s2++;
 	}
@@ -176,19 +193,7 @@ size_t TJS_strlen(const tjs_char *d)
 	return d-p;
 }
 //---------------------------------------------------------------------------
-#if  defined(__GNUC__)
-tjs_int TJS_sprintf(tjs_char *s, const tjs_char *format, ...)
-{
-	tjs_int r;
-	va_list param;
-	va_start(param, format);
-	r = TJS_vsnprintf(s, INT_MAX, format, param);
-	va_end(param);
-	return r;
-}
-#endif
-//---------------------------------------------------------------------------
-
+#ifdef TJS_DEBUG_TRACE
 void TJS_cdecl TJS_debug_out(const tjs_char *format, ...)
 {
 	va_list param;
@@ -197,7 +202,7 @@ void TJS_cdecl TJS_debug_out(const tjs_char *format, ...)
 	va_end(param);
 }
 //---------------------------------------------------------------------------
-
+#endif
 
 //---------------------------------------------------------------------------
 #define TJS_MB_MAX_CHARLEN 2
@@ -290,19 +295,248 @@ int TJS_wctomb(tjs_nchar *s, tjs_char wc)
 	return size;
 }
 //---------------------------------------------------------------------------
-int TJS_u16strcmp(const tjs_char *s1, const tjs_char *s2)
+// 以下 bionic からコピーして tjs_char へ書き換え
+tjs_char * TJS_strstr(const tjs_char *big, const tjs_char *little)
 {
-    std::u16string_view s1View(s1);
-    return s1View.compare(s2);
+	const tjs_char *p;
+	const tjs_char *q;
+	const tjs_char *r;
+
+	if (!*little) {
+		/* LINTED interface specification */
+		return (tjs_char *)big;
+	}
+	if (TJS_strlen(big) < TJS_strlen(little))
+		return nullptr;
+
+	p = big;
+	q = little;
+	while (*p) {
+		q = little;
+		r = p;
+		while (*q) {
+			if (*r != *q)
+				break;
+			q++;
+			r++;
+		}
+		if (!*q) {
+			/* LINTED interface specification */
+			return (tjs_char *)p;
+		}
+		p++;
+	}
+	return nullptr;
 }
 //---------------------------------------------------------------------------
-tjs_char *TJS_u16strchr(const tjs_char *search, const tjs_char c)
+tjs_int TJS_strcmp(const tjs_char *s1, const tjs_char *s2)
 {
-    for(; *search != c; search++) {
-        if (*search == '\0') return nullptr;
-    }
+	while (*s1 == *s2++)
+		if (*s1++ == '\0')
+			return (0);
+	return (*s1 - *(--s2));
+}
+//---------------------------------------------------------------------------
+tjs_int TJS_strncmp(const tjs_char *s1, const tjs_char *s2, size_t n)
+{
+	if (n == 0)
+		return (0);
+	do {
+		if (*s1 != *s2++) {
+			return (*s1 - *(--s2));
+		}
+		if (*s1++ == 0)
+			break;
+	} while (--n != 0);
+	return (0);
+}
+//---------------------------------------------------------------------------
+tjs_char * TJS_strncpy(tjs_char * __restrict dst, const tjs_char * __restrict src, size_t n)
+{
+	if (n != 0) {
+		tjs_char *d = dst;
+		const tjs_char *s = src;
 
-    return (tjs_char*)search;
+		do {
+			if ((*d++ = *s++) == TJS_W('\0')) {
+				/* NUL pad the remaining n-1 bytes */
+				while (--n != 0)
+					*d++ = TJS_W('\0');
+				break;
+			}
+		} while (--n != 0);
+	}
+	return (dst);
+}
+//---------------------------------------------------------------------------
+tjs_char * TJS_strncpy_s(tjs_char * __restrict dst, size_t dstCount, const tjs_char * __restrict src, size_t n)
+{
+	if (n != 0 && dstCount != 0) {
+		tjs_char *d = dst;
+		size_t dn = dstCount;
+		const tjs_char *s = src;
+
+		do {
+			*d = *s; d++; s++;
+			if( (*s) == TJS_W('\0') ) {
+				/* NUL pad the remaining n-1 bytes */
+				n--; dn--;
+				while( n != 0 && dn != 0 ) {
+					*d++ = TJS_W('\0');
+					n--; dn--;
+				}
+				break;
+			}
+			n--; dn--;
+		} while( n != 0 && dn != 0 );
+		dst[dstCount-1] = TJS_W('\0');
+	}
+	return (dst);
+}
+//---------------------------------------------------------------------------
+tjs_char * TJS_strcat(tjs_char * __restrict s1, const tjs_char * __restrict s2)
+{
+	tjs_char *cp;
+
+	cp = s1;
+	while (*cp != TJS_W('\0'))
+		cp++;
+	while ((*cp++ = *s2++) != TJS_W('\0'))
+		;
+
+	return (s1);
+}
+//---------------------------------------------------------------------------
+tjs_char * TJS_strchr(const tjs_char *s, tjs_char c)
+{
+	while (*s != c && *s != TJS_W('\0'))
+		s++;
+	if (*s == c)
+		return ((tjs_char *)s);
+	return (nullptr);
+}
+//---------------------------------------------------------------------------
+tjs_size TJS_strspn(const tjs_char *s, const tjs_char *set)
+{
+	const tjs_char *p;
+	const tjs_char *q;
+
+	p = s;
+	while (*p) {
+		q = set;
+		while (*q) {
+			if (*p == *q)
+				break;
+			q++;
+		}
+		if (!*q)
+			goto done;
+		p++;
+	}
+
+done:
+	return (p - s);
+}
+//---------------------------------------------------------------------------
+tjs_real TJS_strtod(const tjs_char *nptr, tjs_char **endptr)
+{
+//#ifdef _WIN32
+#if 0
+	return static_cast<tjs_real>(wcstod( reinterpret_cast<const wchar_t*>(nptr), reinterpret_cast<wchar_t**>(endptr) ));
+#else
+	const tjs_char *src;
+	tjs_size size;
+	const tjs_char *start;
+	const tjs_char *aftersign;
+
+	/*
+	 * check length of string and call strtod
+	 */
+	src = nptr;
+
+	/* skip space first */
+	while (TJS_iswspace(*src)) {
+		src++;
+	}
+
+	/* get length of string */
+	start = src;
+	if (*src && TJS_strchr(TJS_W("+-"), *src))
+		src++;
+	aftersign = src;
+	if (TJS_strnicmp(src, TJS_W("inf"), 3) == 0) {
+		src += 3;
+		if (TJS_strnicmp(src, TJS_W("inity"), 5) == 0)
+			src += 5;
+		goto match;
+	}
+	if (TJS_strnicmp(src, TJS_W("nan"), 3) == 0) {
+		src += 3;
+		if (*src == TJS_W('(')) {
+			size = 1;
+			while (src[size] != TJS_W('\0') && src[size] != TJS_W(')'))
+				size++;
+			if (src[size] == TJS_W(')'))
+				src += size + 1;
+		}
+		goto match;
+	}
+	size = TJS_strspn(src, TJS_W("0123456789"));
+	src += size;
+	if (*src == TJS_W('.')) {/* XXX use localeconv */
+		src++;
+		size = TJS_strspn(src, TJS_W("0123456789"));
+		src += size;
+	}
+	if (*src && TJS_strchr(TJS_W("Ee"), *src)) {
+		src++;
+		if (*src && TJS_strchr(TJS_W("+-"), *src))
+			src++;
+		size = TJS_strspn(src, TJS_W("0123456789"));
+		src += size;
+	}
+match:
+	size = src - start;
+
+	/*
+	 * convert to a char-string and pass it to strtod.
+	 */
+	if (src > aftersign) {
+		// rewrite c++11 TODO Test
+		tjs_string u16str(start, size);
+		std::string u8str;
+		TVPUtf16ToUtf8(u8str, u16str);
+		double result = 0.0;
+		size_t idx = 0;
+		try {
+			char *end;
+			const char *u8start = u8str.c_str();
+			result = strtod(u8start, &end);
+			if (endptr) {
+				idx = static_cast<size_t>(end - u8start );
+				if (idx != u8str.size()) {
+					std::string u8end(u8str.c_str(), idx);
+					tjs_string u16end;
+					TVPUtf8ToUtf16(u16end, u8end);
+					*endptr = (tjs_char *) start + u16end.size();
+				} else {
+					*endptr = const_cast<tjs_char *>(src);
+				}
+			}
+		} catch (...) {
+			errno = EILSEQ;
+			goto fail;
+		}
+		return result;
+	}
+
+fail:
+	if (endptr)
+		/* LINTED bad interface */
+		*endptr = (tjs_char *) nptr;
+
+	return 0;
+#endif
 }
 //---------------------------------------------------------------------------
 
@@ -312,7 +546,7 @@ tjs_char *TJS_u16strchr(const tjs_char *search, const tjs_char c)
 //---------------------------------------------------------------------------
 // tTJSNarrowStringHolder
 //---------------------------------------------------------------------------
-tTJSNarrowStringHolder::tTJSNarrowStringHolder(const wchar_t * wide)
+tTJSNarrowStringHolder::tTJSNarrowStringHolder(const tjs_char * wide)
 {
 	int n;
 	if(!wide)
@@ -409,7 +643,7 @@ void TJSSetFPUE()
 void TJSRestoreFPUE()
 {
 #if defined(__WIN32__) && !defined(__GNUC__)
-    if(!TJSFPUInit) return;
+	if(!TJSFPUInit) return;
 #if defined(_M_X64)
 	_MM_SET_EXCEPTION_MASK(TJSDefaultMMCW);
 #else

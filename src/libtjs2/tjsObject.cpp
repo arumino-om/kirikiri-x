@@ -1199,7 +1199,7 @@ bool tTJSCustomObject::CallEnumCallbackForData(
 	}
 
 	tTJSVariant res;
-	if(TJS_FAILED(callback.FuncCall(NULL, NULL, NULL, &res,
+	if(TJS_FAILED(callback.FuncCall( 0, NULL, NULL, &res,
 		(flags & TJS_ENUM_NO_VALUE) ? 2 : 3, params, NULL))) return false;
 	return 0!=(tjs_int)(res);
 }
@@ -1854,7 +1854,11 @@ tjs_error TJSDefaultIsInstanceOf(tjs_uint32 flag, tTJSVariant &targ, const tjs_c
 	case tvtVoid:
 		return TJS_S_FALSE; // returns always false about tvtVoid
 	case tvtInteger:
+		if(!TJS_strcmp(name, TJS_W("Integer"))) return TJS_S_TRUE;
+		if(!TJS_strcmp(name, TJS_W("Number"))) return TJS_S_TRUE;
+		return TJS_S_FALSE;
 	case tvtReal:
+		if(!TJS_strcmp(name, TJS_W("Real"))) return TJS_S_TRUE;
 		if(!TJS_strcmp(name, TJS_W("Number"))) return TJS_S_TRUE;
 		return TJS_S_FALSE;
 	case tvtString:

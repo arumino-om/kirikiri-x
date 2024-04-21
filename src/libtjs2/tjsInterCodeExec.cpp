@@ -1322,6 +1322,11 @@ tjs_int tTJSInterCodeContext::ExecuteCode(tTJSVariant *ra_org, tjs_int startip,
 				code += 3;
 				break;
 
+			case VM_CHKIN:
+				InMember( TJS_GET_VM_REG( ra, code[1] ), TJS_GET_VM_REG( ra, code[2] ) );
+				code += 3;
+				break;
+
 			case VM_CALL:
 			case VM_NEW:
 				code += CallFunction(ra, code, args, numargs);
@@ -1516,7 +1521,7 @@ tjs_int tTJSInterCodeContext::ExecuteCode(tTJSVariant *ra_org, tjs_int startip,
 		DisplayExceptionGeneratedCode((tjs_int)(codesave - CodeArea), ra_org);
 		TJS_eTJSScriptError(e.what(), this, (tjs_int)(codesave-CodeArea));
 	}
-	catch(const wchar_t *text)
+	catch(const tjs_char *text)
 	{
 		DEBUGGER_EXCEPTION_HOOK;
 		DisplayExceptionGeneratedCode((tjs_int)(codesave - CodeArea), ra_org);
@@ -2520,7 +2525,7 @@ void tTJSInterCodeContext::AddClassInstanceInfo(tTJSVariant *ra,
 	}
 }
 //---------------------------------------------------------------------------
-static const tjs_char *StrFuncs[] =
+static const tjs_char * const StrFuncs[] =
 { 
 	TJS_W("charAt"), 
 	TJS_W("indexOf"), 
@@ -2534,7 +2539,10 @@ static const tjs_char *StrFuncs[] =
 	TJS_W("split"),
 	TJS_W("trim"),
 	TJS_W("reverse"),
-	TJS_W("repeat") 
+	TJS_W("repeat"),
+	TJS_W("startsWith"),
+	TJS_W("endsWith"),
+	TJS_W("parseNumber")
 };
 
 enum tTJSStringMethodNameIndex
@@ -2551,7 +2559,10 @@ enum tTJSStringMethodNameIndex
 	TJSStrMethod_split,
 	TJSStrMethod_trim,
 	TJSStrMethod_reverse,
-	TJSStrMethod_repeat
+	TJSStrMethod_repeat,
+	TJSStrMethod_startsWith,
+	TJSStrMethod_endsWith,
+	TJSStrMethod_parseNumber
 };
 
 #define TJS_STRFUNC_MAX (sizeof(StrFuncs) / sizeof(StrFuncs[0]))
@@ -2863,6 +2874,52 @@ void tTJSInterCodeContext::ProcessStringFunction(const tjs_char *member,
 
 		return;
 	}
+	else if(TJS_STR_METHOD_IS(startsWith))
+	{
+		if(numargs != 1) TJSThrowFrom_tjs_error( TJS_E_BADPARAMCOUNT );
+		if(!result) return;
+		*result = target.StartsWith( args[0]->AsStringNoAddRef() ) ? 1 : 0;
+		return;
+	}
+	else if(TJS_STR_METHOD_IS(endsWith))
+	{
+		if( numargs != 1 ) TJSThrowFrom_tjs_error( TJS_E_BADPARAMCOUNT );
+		if( !result ) return;
+		tTJSVariantString* str = args[0]->AsStringNoAddRef();
+		const tjs_char* d = *str;
+		tjs_int len = str->GetLength();
+		if( len > s_len )
+		{
+			*result = 0;
+		}
+		else
+		{
+			bool ret = true;
+			s += s_len - len;
+			while( *s != TJS_W( '\0' ) )
+			{
+				if( *s != *d )
+				{
+					ret = false;
+				}
+				s++, d++;
+			}
+			*result = ret ? 1 : 0;
+		}
+		return;
+	}
+	else if (TJS_STR_METHOD_IS(parseNumber))
+	{
+		if (!result) return;
+		// if (numargs != 1) TJSThrowFrom_tjs_error(TJS_E_BADPARAMCOUNT); // 現在基数指定は未対応
+		const tjs_char* d = target .c_str();
+		if (TJSParseNumber(*result, &d)) {
+			return;
+		}
+		// 変換に失敗したら void を返す
+		*result = tTJSVariant();
+		return;
+	}
 
 #undef TJS_STR_METHOD_IS
 
@@ -2874,7 +2931,7 @@ void tTJSInterCodeContext::ProcessOctetFunction(const tjs_char *member, const tT
 {
 	if(!member) TJSThrowFrom_tjs_error(TJS_E_MEMBERNOTFOUND, TJS_W(""));
 	switch( member[0] ) {
-	case L'u':
+	case TJS_W('u'):
 		if( !TJS_strcmp( TJS_W("unpack"), member) ) {
 			tjs_error err = TJSOctetUnpack( target, args, numargs, result );
 			if( err != TJS_S_OK ) {
@@ -2884,7 +2941,7 @@ void tTJSInterCodeContext::ProcessOctetFunction(const tjs_char *member, const tT
 		}
 		break;
 #if 0
-	case L'p':
+	case TJS_W('p'):
 		if( !TJS_strcmp( TJS_W("pack"), member) ) {
 			if(numargs < 2) TJSThrowFrom_tjs_error(TJS_E_BADPARAMCOUNT);
 			ttstr templ = *args[0];
@@ -3006,6 +3063,36 @@ void tTJSInterCodeContext::InstanceOf(const tTJSVariant &name, tTJSVariant &targ
 	targ = false;
 }
 //---------------------------------------------------------------------------
+void tTJSInterCodeContext::InMember( tTJSVariant &name, tTJSVariant &obj ) {
+	// checks contains member.
+	tTJSVariantString *str = name.AsString();
+	if( str )
+	{
+		tjs_error hr;
+		try
+		{
+			tTJSVariant tmp;
+			hr = obj.AsObjectClosureNoAddRef().PropGet( TJS_MEMBERMUSTEXIST, *str, nullptr, &tmp, obj.AsObjectThisNoAddRef() );
+		}
+		catch(...)
+		{
+			str->Release();
+			throw;
+		}
+		str->Release();
+		if( hr == TJS_E_MEMBERNOTFOUND )
+		{
+			name = false;
+			return;
+		}
+		else if( TJS_FAILED( hr ) ) TJSThrowFrom_tjs_error( hr );
+
+		name = ( hr == TJS_S_OK );
+		return;
+	}
+	name = false;
+}
+//---------------------------------------------------------------------------
 void tTJSInterCodeContext::RegisterObjectMember(iTJSDispatch2 * dest)
 {
 	// register this object member to 'dest' (destination object).
@@ -3045,9 +3132,9 @@ void tTJSInterCodeContext::RegisterObjectMember(iTJSDispatch2 * dest)
 
 	tCallback callback;
 	callback.Dest = dest;
-    tTJSVariantClosure clo(&callback, (iTJSDispatch2*)NULL);
 
 	// enumerate members
+	tTJSVariantClosure clo(&callback, (iTJSDispatch2*)NULL);
 	EnumMembers(TJS_IGNOREPROP, &clo, this);
 }
 //---------------------------------------------------------------------------

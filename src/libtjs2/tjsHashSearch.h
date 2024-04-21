@@ -616,7 +616,7 @@ public:
 		inherited::Add(key, value);
 		if(inherited::GetCount() > MaxCount)
 		{
-			ChopLast(inherited::GetCount() - MaxCount);
+			inherited::ChopLast(inherited::GetCount() - MaxCount);
 		}
 	}
 
