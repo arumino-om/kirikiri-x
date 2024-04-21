@@ -7,11 +7,9 @@
 #include <fcntl.h>
 
 void alloc_console() {
-    if (!AttachConsole(ATTACH_PARENT_PROCESS)) {
 #if DEBUG
-        AllocConsole();
+    AllocConsole();
 #endif
-    }
     freopen("CON", "r", stdin);
     freopen("CON", "w", stdout);
     freopen("CON", "w", stderr);
@@ -20,13 +18,17 @@ void alloc_console() {
 int main(int argv, char** args) {
     alloc_console();
     setlocale(LC_ALL,"");
+    UINT sav = GetConsoleOutputCP();
+    SetConsoleOutputCP(65001);
 
     LibRuntime::KrkrRuntime::filesystem = new WindowsFileSystem();
-//    LibRuntime::KrkrRuntime::console = new WindowsConsole();
+    LibRuntime::KrkrRuntime::console = new WindowsConsole();
     LibRuntime::KrkrRuntime::start_runtime();
 
+    SetConsoleOutputCP(sav);
+
 #if DEBUG
-    system("PAUSE");
     FreeConsole();
 #endif
+    return 0;
 }
