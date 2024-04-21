@@ -8,25 +8,22 @@
 */
 //---------------------------------------------------------------------------
 //! @file
-//! @brief CP932(≒SJIS)->UNICODE 変換
+//! @brief UNICODE->CP932(≒SJIS) 変換
 //---------------------------------------------------------------------------
 // UNICODEとSJIS(cp932)の変換マップについては unicode.org を参照のこと
 
 
 
-#ifndef _CP932_UNI_
-#define _CP932_UNI_
+#ifndef _UNI_CP932_H_
+#define _UNI_CP932_H_
 
-#include "../tjs.h"
-
-//---------------------------------------------------------------------------
-
-tjs_size SJISToUnicodeString(const char * in, tjs_char *out);
-tjs_size SJISToUnicodeString(const char * in, tjs_char *out, tjs_size limit );
-tjs_char SJISToUnicode(tjs_uint sjis);
-bool IsSJISLeadByte( tjs_nchar b );
+#include "../tjsTypes.h"
 
 //---------------------------------------------------------------------------
+tjs_uint UnicodeToSJIS(tjs_char in);
+tjs_size UnicodeToSJISString(const tjs_char *in, tjs_nchar* out );
+tjs_size UnicodeToSJISString(const tjs_char *in, tjs_nchar* out, tjs_size limit );
+//---------------------------------------------------------------------------
+
 
 #endif
-

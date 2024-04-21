@@ -13,7 +13,7 @@
 // UNICODEとSJIS(cp932)の変換マップについては unicode.org を参照のこと
 
 
-#include "../tjsCommHead.h"
+#include "tjsCommHead.h"
 
 //---------------------------------------------------------------------------
 
@@ -2663,4 +2663,3 @@ int main(void)
 }
 
 #endif
-

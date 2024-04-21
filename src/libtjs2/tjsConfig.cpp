@@ -22,13 +22,11 @@
 #endif
 
 /*
- * core/utils/cp932_uni.cpp
- * core/utils/uni_cp932.cpp
- * base/CharacterSet.cpp
- * を一緒にリンクしてください。
- * CP932(ShiftJIS) と Unicode 変換に使用しています。
- * Win32 APIの同等の関数は互換性等の問題があることやマルチプラットフォームの足かせとなる
- * ため使用が中止されました。
+ * ポータビリティを高めるため、krkrz/krkrz の dev_multi_platform ブランチに存在する
+ * 以下のファイルは libtjs2/encodings に配置しました。
+ *  - core/utils/cp932_uni.cpp
+ *  - core/utils/uni_cp932.cpp
+ *  - base/CharacterSet.cpp
  */
 extern tjs_size SJISToUnicodeString(const char * in, tjs_char *out);
 extern tjs_size SJISToUnicodeString(const char * in, tjs_char *out, tjs_size limit );
