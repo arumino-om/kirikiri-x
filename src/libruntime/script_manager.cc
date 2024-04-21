@@ -1,4 +1,4 @@
-#include <tjs.h>
+#include <tjsTypes.h>
 #include "native_objects/minimal.h"
 #include "script_manager.h"
 

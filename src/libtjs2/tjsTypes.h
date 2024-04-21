@@ -13,6 +13,7 @@
 #define __TJSTYPES_H__
 
 #include <stdint.h>
+#include <string>
 
 #ifdef HAVE_CONFIG_H
  #include "config.h"

@@ -22,7 +22,7 @@ int main(int argv, char** args) {
     setlocale(LC_ALL,"");
 
     LibRuntime::KrkrRuntime::filesystem = new WindowsFileSystem();
-    LibRuntime::KrkrRuntime::console = new WindowsConsole();
+//    LibRuntime::KrkrRuntime::console = new WindowsConsole();
     LibRuntime::KrkrRuntime::start_runtime();
 
 #if DEBUG

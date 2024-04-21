@@ -148,13 +148,7 @@ public:
 	const tjs_string AsStdString() const
 	{
 		if(!Ptr) return tjs_string(TJS_W(""));
-#ifdef UNICODE
 		return tjs_string(c_str());
-#else
-			// this constant string value must match std::string in type
-		tTJSNarrowStringHolder holder(Ptr->operator const tjs_char*());
-		return std::string(holder.operator const char *());
-#endif
 	}
 	const std::string AsNarrowStdString() const
 	{

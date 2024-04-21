@@ -8,10 +8,9 @@
 //---------------------------------------------------------------------------
 // Character code conversion
 //---------------------------------------------------------------------------
-#include "tjsCommHead.h"
+#include "../tjsCommHead.h"
 
 #include "CharacterSet.h"
-#include "MsgIntf.h"
 //---------------------------------------------------------------------------
 static tjs_int inline TVPWideCharToUtf8(tjs_char in, char * out)
 {
@@ -46,7 +45,8 @@ static tjs_int inline TVPWideCharToUtf8(tjs_char in, char * out)
 #if 1
     else
     {
-        TVPThrowExceptionMessage( TVPIllegalCharacterConversionUTF16toUTF8 );
+//        TVPThrowExceptionMessage( TVPIllegalCharacterConversionUTF16toUTF8 );
+        return -1;
     }
 #else
     // 以下オリジナルのコードだけど、通らないはず。

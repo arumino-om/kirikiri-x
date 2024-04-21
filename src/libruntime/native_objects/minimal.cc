@@ -1,3 +1,5 @@
+#include "tjsCommHead.h"
+#include <tjsTypes.h>
 #include "minimal.h"
 #include "../libruntime.h"
 

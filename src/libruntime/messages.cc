@@ -1,4 +1,5 @@
 #include "messages.h"
+#include "tjsCommHead.h"
 #include "tjsError.h"
 
 using namespace LibRuntime;

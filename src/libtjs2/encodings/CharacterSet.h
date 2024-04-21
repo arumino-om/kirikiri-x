@@ -14,7 +14,7 @@
 
 // various character conding conversion.
 // currently only utf-8 related functions are implemented.
-#include "tjsTypes.h"
+#include "../tjsTypes.h"
 
 
 TJS_EXP_FUNC_DEF(tjs_int, TVPWideCharToUtf8String, (const tjs_char *in, char * out));

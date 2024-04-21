@@ -18,6 +18,7 @@
 #include "tjsInterface.h"
 #include "tjsString.h"
 #include "tjsMessage.h"
+#include "tjsTypes.h"
 
 
 namespace TJS

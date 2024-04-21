@@ -19,7 +19,16 @@
 #ifdef __WIN32__
 #define _CRT_SECURE_NO_WARNINGS
 #define WIN32_LEAN_AND_MEAN
-#include "targetver.h"
+
+// --- targetVer.h contents from krkrz/krkrz ---
+#ifndef __TARGET_VER_H__
+#define __TARGET_VER_H__
+#define WINVER 0x0601 // Window 7
+#define _WIN32_WINNT 0x0601 // Windows 7
+#include <SDKDDKVer.h>
+#endif
+// --------------------------------------------
+
 #include <windows.h>
 
 #include <vector>

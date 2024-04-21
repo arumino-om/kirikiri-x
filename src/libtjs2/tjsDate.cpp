@@ -23,11 +23,11 @@ note:
 	are not given here.
 */
 #ifdef WIN32
-typedef struct timeval {
+typedef struct TJSTimeval {
 	time_t tv_sec;
 	long tv_usec;
-} timeval;
-int gettimeofday(struct timeval * tp, struct timezone * tzp)
+} TJSTimeval;
+int gettimeofday(struct TJSTimeval * tp, struct timezone * tzp)
 {
 	static const uint64_t EPOCH = ((uint64_t) 116444736000000000ULL);
 	FILETIME file_time;
@@ -75,7 +75,7 @@ TJS_BEGIN_NATIVE_CONSTRUCTOR_DECL(/*var. name*/_this, /*var. type*/tTJSNI_Date,
 {
 	if(numparams == 0)
 	{
-		struct timeval tv;
+		struct TJSTimeval tv;
 		gettimeofday( &tv, nullptr );
 		_this->DateTime = tv.tv_sec;
 		_this->MillSeconds = tv.tv_usec / 1000;
