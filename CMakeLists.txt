@@ -15,7 +15,9 @@ if (UNIX)
     add_executable(krkrx src/linux/main.cc)
 elseif (WIN32)
     set(CMAKE_CXX_FLAGS "-DUNICODE")
-    add_executable(krkrx WIN32 src/windows/main.cc src/windows/filesystem_impl.cc src/windows/filesystem_impl.h src/windows/console_impl.cc src/windows/console_impl.h)
+    add_executable(krkrx WIN32 src/windows/main.cc src/windows/filesystem_impl.cc src/windows/filesystem_impl.h src/windows/console_impl.cc src/windows/console_impl.h
+            src/windows/localfile_stream.cpp
+            src/windows/localfile_stream.h)
 endif (UNIX)
 
 if(TARGET SDL2::SDL2main)
