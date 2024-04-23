@@ -12,6 +12,9 @@
 
 #ifndef tjsConfigH
 #define tjsConfigH
+:wq
+#include "tjsTypes.h"
+#include "stdarg.h"
 
 namespace TJS
 {
@@ -29,9 +32,6 @@ namespace TJS
 */
 
 // TODO: autoconf integration
-
-#include "tjsTypes.h"
-#include "stdarg.h"
 
 
 // #define TJS_NO_AVOID_ISWDIGIT
