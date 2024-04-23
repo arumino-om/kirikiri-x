@@ -1,17 +1,26 @@
 #include "filesystem_impl.h"
 #include <windows.h>
 
-bool WindowsFileSystem::get_current_directory(wchar_t *result, size_t result_size) {
-    GetCurrentDirectoryW(result_size, static_cast<LPWSTR>(result));
-    return true;
+size_t WindowsFileSystem::get_current_directory(tjs_char *result) {
+    return 0;
 }
-bool WindowsFileSystem::set_current_directory(const wchar_t *path) {
-    SetCurrentDirectoryW(static_cast<LPWSTR>(const_cast<wchar_t*>(path)));
-    return true;
+
+bool WindowsFileSystem::set_current_directory(const tjs_char *path) {
+    return false;
 }
-std::wfstream WindowsFileSystem::get_file(const wchar_t *path) {
-    return {path};
+
+tTJSBinaryStream *WindowsFileSystem::open(const tjs_char *path, tjs_uint32 flags) {
+    return nullptr;
 }
+
+bool WindowsFileSystem::file_exists(const tjs_char *path) {
+    return false;
+}
+
+bool WindowsFileSystem::directory_exists(const tjs_char *path) {
+    return false;
+}
+
 int WindowsFileSystem::get_maxpath_length() {
-    return MAX_PATH;
+    return 0;
 }
