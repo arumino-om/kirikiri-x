@@ -12,7 +12,7 @@
 
 #ifndef tjsConfigH
 #define tjsConfigH
-:wq
+
 #include "tjsTypes.h"
 #include "stdarg.h"
 
