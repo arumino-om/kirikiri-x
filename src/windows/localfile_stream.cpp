@@ -42,21 +42,48 @@ WindowsLocalFileStream::~WindowsLocalFileStream() {
 }
 
 tjs_uint64 WindowsLocalFileStream::Seek(tjs_int64 offset, tjs_int whence) {
-    return 0;
+    DWORD move_method = FILE_CURRENT;
+    switch (whence) {
+        case TJS_BS_SEEK_SET:
+            move_method = FILE_BEGIN;
+            break;
+
+        case TJS_BS_SEEK_END:
+            move_method = FILE_END;
+            break;
+
+        default:
+            move_method = FILE_CURRENT;
+            break;
+    }
+
+    LARGE_INTEGER large_int;
+    large_int.QuadPart = offset;
+    PLARGE_INTEGER new_fileptr;
+
+    SetFilePointerEx(_handle, large_int, new_fileptr, move_method);
+
+    return new_fileptr->QuadPart;
 }
 
 tjs_uint WindowsLocalFileStream::Read(void *buffer, tjs_uint read_size) {
-    return 0;
+    DWORD retval = 0;
+    ReadFile(_handle, buffer, read_size, &retval, nullptr);
+    return retval;
 }
 
 tjs_uint WindowsLocalFileStream::Write(const void *buffer, tjs_uint write_size) {
-    return 0;
+    DWORD retval = 0;
+    WriteFile(_handle, buffer, write_size, &retval, nullptr);
+    return retval;
 }
 
 tjs_uint64 WindowsLocalFileStream::GetSize() {
-    return 0;
+    PLARGE_INTEGER filesize;
+    GetFileSizeEx(_handle, filesize);
+    return filesize->QuadPart;
 }
 
 void WindowsLocalFileStream::SetEndOfStorage() {
-    tTJSBinaryStream::SetEndOfStorage();
+    SetEndOfFile(_handle);
 }
