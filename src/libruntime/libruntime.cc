@@ -1,10 +1,10 @@
 //TODO: include関連を整理する
-#include "tjsCommHead.h"
-#include "tjsTypes.h"
+#include <tjsCommHead.h>
+#include <tjsTypes.h>
 #include "libruntime.h"
 #include "messages.h"
-#include "tjsError.h"
-#include <script_manager.h>
+#include <tjsError.h>
+#include "script_manager.h"
 #include <iostream>
 
 using namespace LibRuntime;
