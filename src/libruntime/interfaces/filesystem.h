@@ -18,6 +18,8 @@ namespace LibRuntime::Interfaces {
         virtual bool directory_exists(const tjs_char *path) = 0;
 
         virtual tjs_int get_maxpath_length() = 0;
+
+        virtual bool path_combine(const tjs_char *path1, const tjs_char *path2, tjs_char *out) = 0;
     };
 
     /**
@@ -47,6 +49,10 @@ namespace LibRuntime::Interfaces {
         tjs_int get_maxpath_length() override {
             return 260;
         };
+
+        bool path_combine(const tjs_char *path1, const tjs_char *path2, tjs_char *out) override {
+            return false;
+        }
     };
 }
 

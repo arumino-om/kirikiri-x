@@ -1,7 +1,7 @@
 #include "filesystem_impl.h"
 #include "localfile_stream.h"
 #include <windows.h>
-#include <shlwapi.h>
+#include <pathcch.h>
 
 size_t WindowsFileSystem::get_current_directory(tjs_char *result) {
     DWORD buflen = GetCurrentDirectoryW(0, nullptr);
@@ -34,4 +34,9 @@ bool WindowsFileSystem::directory_exists(const tjs_char *path) {
 
 tjs_int WindowsFileSystem::get_maxpath_length() {
     return MAX_PATH;
+}
+
+bool WindowsFileSystem::path_combine(const tjs_char *path1, const tjs_char *path2, tjs_char *out) {
+    HRESULT result = PathCchCombine((PWSTR)out, sizeof(out), (PCWSTR)path1, (PCWSTR)path2);
+    return result == S_OK;
 }
