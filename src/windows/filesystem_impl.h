@@ -11,5 +11,5 @@ public:
     bool file_exists(const tjs_char *path) override;
     bool directory_exists(const tjs_char *path) override;
 
-    int get_maxpath_length() override;
+    tjs_int get_maxpath_length() override;
 };

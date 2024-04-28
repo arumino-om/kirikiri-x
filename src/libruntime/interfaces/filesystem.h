@@ -17,7 +17,7 @@ namespace LibRuntime::Interfaces {
         virtual bool file_exists(const tjs_char *path) = 0;
         virtual bool directory_exists(const tjs_char *path) = 0;
 
-        virtual int get_maxpath_length() = 0;
+        virtual tjs_int get_maxpath_length() = 0;
     };
 
     /**
@@ -44,8 +44,8 @@ namespace LibRuntime::Interfaces {
             return nullptr;
         };
 
-        int get_maxpath_length() override {
-            return 256;
+        tjs_int get_maxpath_length() override {
+            return 260;
         };
     };
 }
