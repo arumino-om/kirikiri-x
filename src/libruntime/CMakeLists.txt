@@ -13,8 +13,8 @@ add_library(libruntime STATIC
         messages.h
         graphics.cc
         graphics.h
-        storage.cc
-        storage.h)
+        native_objects/system.cc
+        native_objects/system.h)
 
 target_include_directories(libruntime PUBLIC ../libtjs2)
 target_include_directories(libruntime PUBLIC ../libsdl2/include)
