@@ -2,6 +2,7 @@
 #include "tjs.h"
 #include "tjsNative.h"
 #include "../script_manager.h"
+#include "../libruntime.h"
 
 namespace LibRuntime::NativeObjects {
     /**

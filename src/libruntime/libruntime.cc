@@ -43,3 +43,7 @@ bool KrkrRuntime::interpreter() {
         }
     }
 }
+
+void KrkrRuntime::request_exit(int code = 0) {
+
+}
