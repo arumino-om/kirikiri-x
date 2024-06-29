@@ -42,6 +42,7 @@ int gettimeofday(struct TJSTimeval * tp, struct timezone * tzp)
 }
 #else
 #include <sys/time.h>
+#define TJSTimeval timeval
 #endif
 namespace TJS
 {

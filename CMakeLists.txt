@@ -1,26 +1,40 @@
-cmake_minimum_required(VERSION 3.13)
-add_definitions( -std=c++20 )
+cmake_minimum_required(VERSION 3.21)
 project(kirikiri_x LANGUAGES C CXX)
 
-include_directories(src/liboniguruma/src src/libtjs2 src/libruntime)
+# Define the C/C++ standard
+set(CMAKE_C_STANDARD 17)
+set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_STANDARD_REQUIRED True)
 
+# Add the subdirectories
 add_subdirectory(src/liboniguruma)
 add_subdirectory(src/libsdl2 EXCLUDE_FROM_ALL)
 add_subdirectory(src/libtjs2)
 add_subdirectory(src/libruntime)
 
-add_definitions(-DDEBUG)
-
+# Add the krkrx executable
 if (UNIX)
+    # Kirikiri X for Linux
     add_executable(krkrx src/linux/main.cc)
 elseif (WIN32)
-    set(CMAKE_CXX_FLAGS "-DUNICODE")
-    add_executable(krkrx WIN32 src/windows/main.cc src/windows/filesystem_impl.cc src/windows/filesystem_impl.h src/windows/console_impl.cc src/windows/console_impl.h)
+    # Kirikiri X for Windows
+    add_compile_definitions(UNICODE)
+    add_executable(krkrx WIN32 src/windows/main.cc src/windows/filesystem_impl.cc src/windows/filesystem_impl.h src/windows/console_impl.cc src/windows/console_impl.h
+            src/windows/localfile_stream.cpp
+            src/windows/localfile_stream.h)
+
+    target_link_libraries(krkrx PUBLIC pathcch) # Uses in PathCchCombine()
 endif (UNIX)
 
+# Add the include directories
+target_include_directories(krkrx PUBLIC src/libtjs2)
+target_include_directories(krkrx PUBLIC src/libruntime)
+
+# Link the SDL2
 if(TARGET SDL2::SDL2main)
     target_link_libraries(krkrx PRIVATE SDL2::SDL2main)
 endif()
 target_link_libraries(krkrx PUBLIC SDL2::SDL2)
 
+# Link other required libraries
 target_link_libraries(krkrx PUBLIC onig libtjs2 libruntime)

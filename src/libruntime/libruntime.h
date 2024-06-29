@@ -11,6 +11,7 @@ namespace LibRuntime {
     class KrkrRuntime {
     public:
         static int start_runtime();
+        static void request_exit(int code);
 
         static Interfaces::IFileSystem *filesystem;
         static Interfaces::IConsole *console;
