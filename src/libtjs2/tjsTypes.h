@@ -90,7 +90,7 @@ typedef double tjs_real;
 typedef intptr_t tjs_intptr_t;
 typedef uintptr_t tjs_uintptr_t;
 
-#define TJS_W(X) L##X
+#define TJS_W(X) u##X
 
 
 #else
