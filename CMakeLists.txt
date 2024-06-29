@@ -1,6 +1,7 @@
 cmake_minimum_required(VERSION 3.13)
-add_definitions( -std=c++20 )
 project(kirikiri_x LANGUAGES C CXX)
+set(CMAKE_C_STANDARD 17)
+set(CMAKE_CXX_STANDARD 20)
 
 include_directories(src/liboniguruma/src src/libtjs2 src/libruntime)
 
