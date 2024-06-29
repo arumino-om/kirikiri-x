@@ -18,7 +18,7 @@ jobs:
 
       - name: Build
         run: |
-          cmake --build .
+          cmake --build build
 
   windows-build:
     runs-on: windows-latest
@@ -36,7 +36,7 @@ jobs:
 
       - name: Build
         run: |
-          cmake --build . --config Release
+          cmake --build build --config Release
 
   macos-intel-build:
     runs-on: macos-13
@@ -54,7 +54,7 @@ jobs:
 
       - name: Build
         run: |
-            cmake --build . --config Release
+            cmake --build build --config Release
 
   macos-arm-build:
     runs-on: macos-14
