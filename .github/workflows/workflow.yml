@@ -72,4 +72,4 @@ jobs:
 
       - name: Build
         run: |
-          cmake --build . --config Release
+          cmake --build build --config Release
