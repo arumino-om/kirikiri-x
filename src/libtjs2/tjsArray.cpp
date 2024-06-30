@@ -924,7 +924,8 @@ TJS_BEGIN_NATIVE_METHOD_DECL(/* func.name */find)
 		if(i == ni->Items.end())
 			*result = -1;
 		else
-			*result = i - ni->Items.begin();
+			//TODO: 本当にキャストする型はこれであってる？
+			*result = (tjs_int64)(i - ni->Items.begin());
 	}
 
 	return TJS_S_OK;
