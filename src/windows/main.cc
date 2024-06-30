@@ -8,8 +8,9 @@
 
 void alloc_console() {
 #if DEBUG
-    AllocConsole();
+
 #endif
+    AllocConsole();
     freopen("CON", "r", stdin);
     freopen("CON", "w", stdout);
     freopen("CON", "w", stderr);
