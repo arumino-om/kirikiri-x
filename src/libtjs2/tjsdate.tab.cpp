@@ -90,7 +90,7 @@
 /* tjsdate.y */
 /* TJS2 date string parser */
 
-#include <malloc.h>
+#include <stdlib.h>
 
 #include "tjsTypes.h"
 #include "tjsDateParser.h"
@@ -283,7 +283,7 @@ YYID (yyi)
 #   elif defined _AIX
 #    define YYSTACK_ALLOC __alloca
 #   elif defined _MSC_VER
-#    include <malloc.h> /* INFRINGES ON USER NAME SPACE */
+#    include <stdlib.h> /* INFRINGES ON USER NAME SPACE */
 #    define alloca _alloca
 #   else
 #    define YYSTACK_ALLOC alloca
