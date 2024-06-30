@@ -119,32 +119,24 @@ void tTJSStringAppender::Append(const tjs_char *string, tjs_int len)
 //---------------------------------------------------------------------------
 // tTJSArraySortCompare  : a class for comarison operator
 //---------------------------------------------------------------------------
-class tTJSArraySortCompare_NormalAscending :
-	public std::binary_function<const tTJSVariant &, const tTJSVariant &, bool>
-{
+class tTJSArraySortCompare_NormalAscending {
 public:
-	result_type operator () (first_argument_type lhs, second_argument_type rhs) const
-	{
+	bool operator()(const tTJSVariant &lhs, const tTJSVariant &rhs) const {
 		return (lhs < rhs).operator bool();
 	}
 };
-class tTJSArraySortCompare_NormalDescending :
-	public std::binary_function<const tTJSVariant &, const tTJSVariant &, bool>
-{
+
+class tTJSArraySortCompare_NormalDescending {
 public:
-	result_type operator () (first_argument_type lhs, second_argument_type rhs) const
-	{
+	bool operator()(const tTJSVariant &lhs, const tTJSVariant &rhs) const {
 		return (lhs > rhs).operator bool();
 	}
 };
-class tTJSArraySortCompare_NumericAscending :
-	public std::binary_function<const tTJSVariant &, const tTJSVariant &, bool>
-{
+
+class tTJSArraySortCompare_NumericAscending {
 public:
-	result_type operator () (first_argument_type lhs, second_argument_type rhs) const
-	{
-		if(lhs.Type() == tvtString && rhs.Type() == tvtString)
-		{
+	bool operator()(const tTJSVariant &lhs, const tTJSVariant &rhs) const {
+		if (lhs.Type() == tvtString && rhs.Type() == tvtString) {
 			tTJSVariant ltmp(lhs), rtmp(rhs);
 			ltmp.tonumber();
 			rtmp.tonumber();
@@ -153,14 +145,11 @@ public:
 		return (lhs < rhs).operator bool();
 	}
 };
-class tTJSArraySortCompare_NumericDescending :
-	public std::binary_function<const tTJSVariant &, const tTJSVariant &, bool>
-{
+
+class tTJSArraySortCompare_NumericDescending {
 public:
-	result_type operator () (first_argument_type lhs, second_argument_type rhs) const
-	{
-		if(lhs.Type() == tvtString && rhs.Type() == tvtString)
-		{
+	bool operator()(const tTJSVariant &lhs, const tTJSVariant &rhs) const {
+		if (lhs.Type() == tvtString && rhs.Type() == tvtString) {
 			tTJSVariant ltmp(lhs), rtmp(rhs);
 			ltmp.tonumber();
 			rtmp.tonumber();
@@ -169,51 +158,40 @@ public:
 		return (lhs > rhs).operator bool();
 	}
 };
-class tTJSArraySortCompare_StringAscending :
-	public std::binary_function<const tTJSVariant &, const tTJSVariant &, bool>
-{
+
+class tTJSArraySortCompare_StringAscending {
 public:
-	result_type operator () (first_argument_type lhs, second_argument_type rhs) const
-	{
-		if(lhs.Type() == tvtString && rhs.Type() == tvtString)
+	bool operator()(const tTJSVariant &lhs, const tTJSVariant &rhs) const {
+		if (lhs.Type() == tvtString && rhs.Type() == tvtString)
 			return (lhs < rhs).operator bool();
 		return (ttstr)lhs < (ttstr)rhs;
 	}
 };
-class tTJSArraySortCompare_StringDescending :
-	public std::binary_function<const tTJSVariant &, const tTJSVariant &, bool>
-{
+
+class tTJSArraySortCompare_StringDescending {
 public:
-	result_type operator () (first_argument_type lhs, second_argument_type rhs) const
-	{
-		if(lhs.Type() == tvtString && rhs.Type() == tvtString)
+	bool operator()(const tTJSVariant &lhs, const tTJSVariant &rhs) const {
+		if (lhs.Type() == tvtString && rhs.Type() == tvtString)
 			return (lhs > rhs).operator bool();
 		return (ttstr)lhs > (ttstr)rhs;
 	}
 };
-class tTJSArraySortCompare_Functional :
-	public std::binary_function<const tTJSVariant &, const tTJSVariant &, bool>
-{
+
+class tTJSArraySortCompare_Functional {
 	tTJSVariantClosure Closure;
 public:
-	tTJSArraySortCompare_Functional(const tTJSVariantClosure &clo) :
-		Closure(clo)
-	{
-	}
+	tTJSArraySortCompare_Functional(const tTJSVariantClosure &clo) : Closure(clo) {}
 
-	result_type operator () (first_argument_type lhs, second_argument_type rhs) const
-	{
-
+	bool operator()(const tTJSVariant &lhs, const tTJSVariant &rhs) const {
 		tTJSVariant result;
-
 		tjs_error hr;
 		tTJSVariant *param[] = {
-			const_cast<tTJSVariant *>(&lhs), // note that doing cast to non-const pointer
-			const_cast<tTJSVariant *>(&rhs) };
+			const_cast<tTJSVariant *>(&lhs),
+			const_cast<tTJSVariant *>(&rhs)
+		};
 
 		hr = Closure.FuncCall(0, NULL, NULL, &result, 2, param, NULL);
-
-		if(TJS_FAILED(hr))
+		if (TJS_FAILED(hr))
 			TJSThrowFrom_tjs_error(hr);
 
 		return result.operator bool();
