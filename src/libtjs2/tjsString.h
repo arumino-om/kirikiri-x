@@ -18,14 +18,13 @@
 #endif
 #include "tjsVariantString.h"
 
-#if defined (__clang__) && (ANDROID)
 template<typename T>
 tjs_string to_format_str( T value, const tjs_char* format ) {
     tjs_char buff[128];
 	TJS_snprintf( buff, 128, format, value);
 	return tjs_string(buff);
 }
-#else
+#if 0
 #include <sstream>
 template<typename T>
 tjs_string to_format_str( T value, const tjs_char* format ) {

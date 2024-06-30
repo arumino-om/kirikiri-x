@@ -42,6 +42,8 @@ bool KrkrRuntime::interpreter() {
             console->error(TJS_W("\n"));
         }
     }
+
+    return true;
 }
 
 void KrkrRuntime::request_exit(int code = 0) {

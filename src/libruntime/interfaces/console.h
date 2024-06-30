@@ -28,6 +28,7 @@ namespace LibRuntime::Interfaces {
         }
 
         size_t readline(tjs_string &result) {
+#ifndef _MSC_VER
             auto input_text = new std::string();
             std::getline(std::cin, *input_text);
 
@@ -39,6 +40,9 @@ namespace LibRuntime::Interfaces {
             delete input_text;
             delete out;
             return out->length();
+#else
+            return 0;
+#endif
         }
     };
 }

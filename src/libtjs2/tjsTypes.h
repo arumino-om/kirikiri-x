@@ -60,8 +60,8 @@ typedef int tjs_int;    /* at least 32bits */
 typedef unsigned int tjs_uint;    /* at least 32bits */
 
 #ifdef __cplusplus
-typedef char16_t tjs_char;
-typedef std::u16string tjs_string;
+typedef wchar_t tjs_char;
+typedef std::wstring tjs_string;
 #else
 typedef unsigned short tjs_char;
 #endif

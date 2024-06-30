@@ -83,7 +83,7 @@
 /* TJS2 bison input file */
 
 
-#include <malloc.h>
+#include <stdlib.h>
 
 
 #include "tjsInterCodeGen.h"
@@ -118,7 +118,7 @@ namespace TJS {
 /* yylex/yyerror prototype decl */
 #define YYLEX_PROTO_DECL int yylex(YYSTYPE *yylex, void *pm);
 
-int __yyerror(char * msg, void *pm);
+int __yyerror(const char * msg, void *pm);
 
 
 #define yyerror(msg) __yyerror(msg, pm);
@@ -415,7 +415,7 @@ YYID (yyi)
 #   elif defined _AIX
 #    define YYSTACK_ALLOC __alloca
 #   elif defined _MSC_VER
-#    include <malloc.h> /* INFRINGES ON USER NAME SPACE */
+#    include <stdlib.h> /* INFRINGES ON USER NAME SPACE */
 #    define alloca _alloca
 #   else
 #    define YYSTACK_ALLOC alloca
@@ -1673,7 +1673,6 @@ int yydebug;
 # define YYMAXDEPTH 10000
 #endif
 
-
 
 #if YYERROR_VERBOSE
 
@@ -1883,8 +1882,7 @@ yysyntax_error (char *yyresult, int yystate, int yychar)
       return yysize;
     }
 }
-#endif /* YYERROR_VERBOSE */
-
+#endif /* YYERROR_VERBOSE *
 
 /*-----------------------------------------------.
 | Release the memory associated to this symbol.  |

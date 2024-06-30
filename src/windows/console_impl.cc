@@ -19,8 +19,13 @@ size_t WindowsConsole::readline(tjs_string &result) {
     std::wstring readresult;
     std::getline(std::wcin, readresult);
 
+#ifdef _MSC_VER
+    result = readresult;
+    return result.length();
+#else
     std::u16string res((const char16_t*)readresult.c_str());
     result = res;
     return result.length();
+#endif
 }
 

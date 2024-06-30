@@ -118,7 +118,7 @@ int _yyerror(const tjs_char * msg, void *pm, tjs_int pos)
 }
 
 //---------------------------------------------------------------------------
-int __yyerror(char * msg, void * pm)
+int __yyerror(const char * msg, void * pm)
 {
 	// yyerror ( for bison )
 	ttstr str(msg);

@@ -16,7 +16,7 @@
 #ifndef tjsCommHeadH
 #define tjsCommHeadH
 
-#ifdef __WIN32__
+#if defined(__WIN32__) || defined(_WIN32)
 #define _CRT_SECURE_NO_WARNINGS
 #define WIN32_LEAN_AND_MEAN
 
@@ -61,7 +61,6 @@
 #include <wchar.h>
 #include <stdlib.h>
 #include <stdio.h>
-#include <malloc.h>
 
 #include <vector>
 #include <string>
