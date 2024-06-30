@@ -1,5 +1,7 @@
 cmake_minimum_required(VERSION 3.21)
 project(kirikiri_x LANGUAGES C CXX)
+set(CMAKE_C_STANDARD 17)
+set(CMAKE_CXX_STANDARD 20)
 
 # Define the C/C++ standard
 set(CMAKE_C_STANDARD 17)
