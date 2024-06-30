@@ -19,6 +19,11 @@ if (UNIX)
 elseif (WIN32)
     # Kirikiri X for Windows
     add_compile_definitions(UNICODE)
+    if (MSVC)
+#        add_compile_options("/utf-8")
+        add_compile_options("/std:c++20")
+        add_compile_options("/source-charset:utf-8")
+    endif()
     add_executable(krkrx WIN32 src/windows/main.cc src/windows/filesystem_impl.cc src/windows/filesystem_impl.h src/windows/console_impl.cc src/windows/console_impl.h
             src/windows/localfile_stream.cpp
             src/windows/localfile_stream.h)
