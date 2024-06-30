@@ -1,17 +1,42 @@
 #include "filesystem_impl.h"
+#include "localfile_stream.h"
 #include <windows.h>
+#include <pathcch.h>
 
-bool WindowsFileSystem::get_current_directory(wchar_t *result, size_t result_size) {
-    GetCurrentDirectoryW(result_size, static_cast<LPWSTR>(result));
-    return true;
+size_t WindowsFileSystem::get_current_directory(tjs_char *result) {
+    DWORD buflen = GetCurrentDirectoryW(0, nullptr);
+    if (result == nullptr) {
+        return buflen;
+    }
+
+    DWORD written = GetCurrentDirectoryW(buflen, (LPWSTR)result);
+    return written;
 }
-bool WindowsFileSystem::set_current_directory(const wchar_t *path) {
-    SetCurrentDirectoryW(static_cast<LPWSTR>(const_cast<wchar_t*>(path)));
-    return true;
+
+bool WindowsFileSystem::set_current_directory(const tjs_char *path) {
+    BOOL result = SetCurrentDirectoryW((LPWSTR)path);
+    return (bool)result;
 }
-std::wfstream WindowsFileSystem::get_file(const wchar_t *path) {
-    return {path};
+
+tTJSBinaryStream *WindowsFileSystem::open(const tjs_char *path, tjs_uint32 flags) {
+    return new WindowsLocalFileStream(path, flags);
 }
-int WindowsFileSystem::get_maxpath_length() {
+
+bool WindowsFileSystem::file_exists(const tjs_char *path) {
+    DWORD attr = GetFileAttributesW((LPCWSTR)path);
+    return (attr != INVALID_FILE_ATTRIBUTES && !(attr & FILE_ATTRIBUTE_DIRECTORY));
+}
+
+bool WindowsFileSystem::directory_exists(const tjs_char *path) {
+    DWORD attr = GetFileAttributesW((LPCWSTR)path);
+    return (attr != INVALID_FILE_ATTRIBUTES && (attr & FILE_ATTRIBUTE_DIRECTORY));
+}
+
+tjs_int WindowsFileSystem::get_maxpath_length() {
     return MAX_PATH;
+}
+
+bool WindowsFileSystem::path_combine(const tjs_char *path1, const tjs_char *path2, tjs_char *out) {
+    HRESULT result = PathCchCombine((PWSTR)out, sizeof(out), (PCWSTR)path1, (PCWSTR)path2);
+    return result == S_OK;
 }

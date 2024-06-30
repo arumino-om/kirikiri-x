@@ -3,9 +3,15 @@
 
 class WindowsFileSystem: public LibRuntime::Interfaces::IFileSystem {
 public:
-    bool get_current_directory(wchar_t *result, size_t result_size) override;
-    bool set_current_directory(const wchar_t *path) override;
+    size_t get_current_directory(tjs_char *result) override;
+    bool set_current_directory(const tjs_char *path) override;
 
-    std::wfstream get_file(const wchar_t* path) override;
-    int get_maxpath_length() override;
+    tTJSBinaryStream *open(const tjs_char *path, tjs_uint32 flags) override;
+
+    bool file_exists(const tjs_char *path) override;
+    bool directory_exists(const tjs_char *path) override;
+
+    tjs_int get_maxpath_length() override;
+
+    bool path_combine(const tjs_char *path1, const tjs_char *path2, tjs_char *out) override;
 };
