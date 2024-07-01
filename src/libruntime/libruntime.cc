@@ -12,17 +12,46 @@ using namespace LibRuntime;
 // --- Init global variables ---
 Interfaces::IFileSystem* KrkrRuntime::filesystem = new Interfaces::FileSystemFallbackImpl();
 Interfaces::IConsole* KrkrRuntime::console = new Interfaces::ConsoleFallbackImpl();
+std::map<tjs_string, tjs_string> KrkrRuntime::arguments;
 
-int KrkrRuntime::start_runtime() {
+int KrkrRuntime::start_runtime(int argc, char *argv[]) {
     console->write(TJS_W("--- Kirikiri X Runtime ---\n"));
     console->write(TJS_W("Initializing runtime\n"));
 
+    KrkrRuntime::parse_args(argc, argv);
     Messages::init_tjs_messages();
     ScriptManager::init(TJS_W("startup.tjs"), TJS_W("UTF-8"), 1);
 
     KrkrRuntime::interpreter();
 
     return 0;
+}
+
+void KrkrRuntime::parse_args(int argc, char *argv[]) {
+    char *name, *value;
+    tjs_string name_s, value_s;
+    for (int i = 0; i < argc; i++) {
+        if (*argv[i] != '-') continue;
+
+        name = strtok(argv[i], const_cast<const char*>("="));
+        value = strtok(nullptr, const_cast<const char*>("="));
+
+        TVPUtf8ToUtf16(name_s, name);
+        if (value == nullptr) {
+            KrkrRuntime::arguments.emplace(name_s, tjs_string(u"yes"));
+        } else {
+            KrkrRuntime::arguments.emplace(name_s, value_s);
+        }
+    }
+}
+
+bool KrkrRuntime::get_argument(tjs_string name, tjs_string &result) {
+    if (auto iter = KrkrRuntime::arguments.find(name); iter != std::end(KrkrRuntime::arguments)) {
+        return false;
+    } else {
+        result = iter->second;
+        return true;
+    }
 }
 
 bool KrkrRuntime::interpreter() {
