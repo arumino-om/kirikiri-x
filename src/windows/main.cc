@@ -24,7 +24,7 @@ int main(int argv, char* args[]) {
 
     LibRuntime::KrkrRuntime::filesystem = new WindowsFileSystem();
     LibRuntime::KrkrRuntime::console = new WindowsConsole();
-    LibRuntime::KrkrRuntime::start_runtime(argv, const_cast<const char **>(args));
+    LibRuntime::KrkrRuntime::start_runtime(argv, args);
 
     SetConsoleOutputCP(sav);
 
