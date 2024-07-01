@@ -40,6 +40,7 @@ void KrkrRuntime::parse_args(int argc, char *argv[]) {
         if (value == nullptr) {
             KrkrRuntime::arguments.emplace(name_s, tjs_string(u"yes"));
         } else {
+            TVPUtf8ToUtf16(value_s, value);
             KrkrRuntime::arguments.emplace(name_s, value_s);
         }
     }
@@ -47,11 +48,10 @@ void KrkrRuntime::parse_args(int argc, char *argv[]) {
 
 bool KrkrRuntime::get_argument(tjs_string name, tjs_string &result) {
     if (auto iter = KrkrRuntime::arguments.find(name); iter != std::end(KrkrRuntime::arguments)) {
-        return false;
-    } else {
         result = iter->second;
         return true;
     }
+    return false;
 }
 
 bool KrkrRuntime::interpreter() {
