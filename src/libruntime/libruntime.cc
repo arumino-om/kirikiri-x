@@ -54,6 +54,10 @@ bool KrkrRuntime::get_argument(tjs_string name, tjs_string &result) {
     return false;
 }
 
+void KrkrRuntime::set_argument(tjs_string name, tjs_string value) {
+    KrkrRuntime::arguments[name] = value;
+}
+
 bool KrkrRuntime::interpreter() {
     console->write(TJS_W("You are currently in interpreter mode. Type \"exit();\" to exit.\n"));
     while (true) {

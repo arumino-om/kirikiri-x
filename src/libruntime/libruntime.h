@@ -15,6 +15,7 @@ namespace LibRuntime {
         static int start_runtime(int argc, char *argv[]);
         static void request_exit(int code);
         static bool get_argument(tjs_string name, tjs_string &result);
+        static void set_argument(tjs_string name, tjs_string value);
 
         static Interfaces::IFileSystem *filesystem;
         static Interfaces::IConsole *console;
