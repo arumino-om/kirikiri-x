@@ -16,7 +16,7 @@ void alloc_console() {
     freopen("CON", "w", stderr);
 }
 
-int main(int argv, char** args) {
+int main(int argv, char* args[]) {
     alloc_console();
     setlocale(LC_ALL,"");
     UINT sav = GetConsoleOutputCP();
