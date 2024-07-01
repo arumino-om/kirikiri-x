@@ -38,7 +38,7 @@ void KrkrRuntime::parse_args(int argc, char *argv[]) {
 
         TVPUtf8ToUtf16(name_s, name);
         if (value == nullptr) {
-            KrkrRuntime::arguments.emplace(name_s, tjs_string(u"yes"));
+            KrkrRuntime::arguments.emplace(name_s, tjs_string(TJS_W("yes")));
         } else {
             TVPUtf8ToUtf16(value_s, value);
             KrkrRuntime::arguments.emplace(name_s, value_s);
