@@ -13,6 +13,7 @@ namespace LibRuntime {
          */
         static bool init(const ttstr& startup_script_name, const ttstr& encoding, int krkr_compatible);
         static void run(const ttstr& script);
+        static bool assign_message(const tjs_string& msg, const tjs_string& val);
 
     private:
         static bool debug_mode;

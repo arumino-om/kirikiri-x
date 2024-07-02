@@ -60,3 +60,7 @@ bool ScriptManager::init(const ttstr &startup_script_name, const ttstr &encoding
 void ScriptManager::run(const ttstr &script) {
     ScriptManager::tjs_engine->ExecScript(script);
 }
+
+bool ScriptManager::assign_message(const tjs_string& msg, const tjs_string& val) {
+    return TJSAssignMessage(msg.c_str(), val.c_str());
+}

@@ -46,7 +46,7 @@ void KrkrRuntime::parse_args(int argc, char *argv[]) {
     }
 }
 
-bool KrkrRuntime::get_argument(tjs_string name, tjs_string &result) {
+bool KrkrRuntime::get_argument(const tjs_string &name, tjs_string &result) {
     if (auto iter = KrkrRuntime::arguments.find(name); iter != std::end(KrkrRuntime::arguments)) {
         result = iter->second;
         return true;
@@ -54,7 +54,7 @@ bool KrkrRuntime::get_argument(tjs_string name, tjs_string &result) {
     return false;
 }
 
-void KrkrRuntime::set_argument(tjs_string name, tjs_string value) {
+void KrkrRuntime::set_argument(const tjs_string& name, const tjs_string &value) {
     KrkrRuntime::arguments[name] = value;
 }
 
