@@ -6,7 +6,7 @@ using namespace LibRuntime;
 std::vector<tTJSVariantClosure> continuous_handlers;
 
 bool EventManager::init() {
-
+    return true;
 }
 
 void EventManager::add_continuous_handler(tTJSVariantClosure clo) {
