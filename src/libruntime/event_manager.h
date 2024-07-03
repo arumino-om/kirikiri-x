@@ -1,9 +1,6 @@
 #pragma once
-#include <algorithm>
-#include <tjsVariant.h>
+#include "tjsVariant.h"
 #include <vector>
-
-#include "tjsTypes.h"
 
 namespace LibRuntime {
     class EventManager {

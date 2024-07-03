@@ -1,9 +1,8 @@
 #include "event_manager.h"
 
-#include <tjsError.h>
-
 using namespace LibRuntime;
-std::vector<tTJSVariantClosure> continuous_handlers;
+
+std::vector<tTJSVariantClosure> EventManager::continuous_handlers;
 
 bool EventManager::init() {
     return true;
