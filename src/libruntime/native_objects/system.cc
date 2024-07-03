@@ -54,6 +54,13 @@ SystemNativeClass::SystemNativeClass() : tTJSNativeClass(TJS_W("System")) {
             if (numparams < 2) return TJS_E_BADPARAMCOUNT;
             ScriptManager::assign_message(param[0]->GetString(), param[1]->GetString());
         TJS_END_NATIVE_METHOD_DECL(assignMessage)
+
+        TJS_BEGIN_NATIVE_METHOD_DECL(shellExecute)
+            if (numparams < 1) return TJS_E_BADPARAMCOUNT;
+            const tjs_char *program = param[0]->GetString();
+            const tjs_char *args = numparams > 1 ? param[1]->GetString() : nullptr;
+            KrkrRuntime::sysfunc->execute(program, args);
+        TJS_END_NATIVE_METHOD_DECL(shellExecute)
     TJS_END_NATIVE_MEMBERS
 }
 
