@@ -3,6 +3,7 @@
 #include <map>
 #include "interfaces/filesystem.h"
 #include "interfaces/console.h"
+#include "interfaces/sysfunc.h"
 
 namespace LibRuntime {
     typedef struct RuntimeConfig {
@@ -19,6 +20,7 @@ namespace LibRuntime {
 
         static Interfaces::IFileSystem *filesystem;
         static Interfaces::IConsole *console;
+        static Interfaces::ISysFunc *sysfunc;
 
     private:
         static bool interpreter();

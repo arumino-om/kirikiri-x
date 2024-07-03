@@ -5,13 +5,13 @@
 #include "messages.h"
 #include <tjsError.h>
 #include "script_manager.h"
-#include <iostream>
 
 using namespace LibRuntime;
 
 // --- Init global variables ---
 Interfaces::IFileSystem* KrkrRuntime::filesystem = new Interfaces::FileSystemFallbackImpl();
 Interfaces::IConsole* KrkrRuntime::console = new Interfaces::ConsoleFallbackImpl();
+Interfaces::ISysFunc* KrkrRuntime::sysfunc = new Interfaces::SysFuncFallbackImpl();
 std::map<tjs_string, tjs_string> KrkrRuntime::arguments;
 
 int KrkrRuntime::start_runtime(int argc, char *argv[]) {
