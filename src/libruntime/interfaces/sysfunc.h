@@ -12,6 +12,7 @@ namespace LibRuntime::Interfaces {
     class ISysFunc {
     public:
         virtual void execute(const tjs_char *program, const tjs_char *params) = 0;
+        virtual bool create_app_lock(const tjs_char *lockname) = 0;
     };
 
     /**
@@ -30,6 +31,11 @@ namespace LibRuntime::Interfaces {
             std::string narrow_text;
             TVPUtf16ToUtf8(narrow_text, system_text);
             system(narrow_text.c_str());
+        }
+
+        bool create_app_lock(const tjs_char *lockname) override {
+            //NOTE: 各プラットフォーム毎で実装する
+            return true;
         }
     };
 }
