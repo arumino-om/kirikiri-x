@@ -13,6 +13,8 @@ Interfaces::IFileSystem* KrkrRuntime::filesystem = new Interfaces::FileSystemFal
 Interfaces::IConsole* KrkrRuntime::console = new Interfaces::ConsoleFallbackImpl();
 Interfaces::ISysFunc* KrkrRuntime::sysfunc = new Interfaces::SysFuncFallbackImpl();
 std::map<tjs_string, tjs_string> KrkrRuntime::arguments;
+bool KrkrRuntime::quit_required = false;
+int KrkrRuntime::quit_code = 0;
 
 int KrkrRuntime::start_runtime(int argc, char *argv[]) {
     console->write(TJS_W("--- Kirikiri X Runtime ---\n"));
@@ -60,7 +62,7 @@ void KrkrRuntime::set_argument(const tjs_string& name, const tjs_string &value) 
 
 bool KrkrRuntime::interpreter() {
     console->write(TJS_W("You are currently in interpreter mode. Type \"exit();\" to exit.\n"));
-    while (true) {
+    while (!quit_required) {
         tjs_string readresult;
         console->write(TJS_W(">> "));
         console->readline(readresult);
@@ -79,6 +81,7 @@ bool KrkrRuntime::interpreter() {
     return true;
 }
 
-void KrkrRuntime::request_exit(int code = 0) {
-
+void KrkrRuntime::request_quit(int code = 0) {
+    quit_required = true;
+    quit_code = code;
 }

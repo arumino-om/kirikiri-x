@@ -21,7 +21,7 @@ SystemNativeClass::SystemNativeClass() : tTJSNativeClass(TJS_W("System")) {
         TJS_END_NATIVE_METHOD_DECL(exit)
 
         TJS_BEGIN_NATIVE_METHOD_DECL(terminate)
-            KrkrRuntime::request_exit(param[0]->AsInteger());
+            KrkrRuntime::request_quit(param[0]->AsInteger());
             return TJS_S_OK;
         TJS_END_NATIVE_METHOD_DECL(terminate)
 
@@ -64,7 +64,9 @@ SystemNativeClass::SystemNativeClass() : tTJSNativeClass(TJS_W("System")) {
 
         TJS_BEGIN_NATIVE_METHOD_DECL(createAppLock)
             if (numparams < 1) return TJS_E_BADPARAMCOUNT;
-            KrkrRuntime::sysfunc->create_app_lock(param[0]->GetString());
+            auto func_result=  KrkrRuntime::sysfunc->create_app_lock(param[0]->GetString());
+            if (result != nullptr) *result = func_result;
+            return TJS_S_OK;
         TJS_END_NATIVE_METHOD_DECL(createAppLock)
     TJS_END_NATIVE_MEMBERS
 }
