@@ -3,6 +3,7 @@
 #include <tjsTypes.h>
 #include "libruntime.h"
 #include "messages.h"
+#include "event_manager.h"
 #include <tjsError.h>
 #include "script_manager.h"
 
@@ -63,6 +64,7 @@ void KrkrRuntime::set_argument(const tjs_string& name, const tjs_string &value) 
 bool KrkrRuntime::interpreter() {
     console->write(TJS_W("You are currently in interpreter mode. Type \"exit();\" to exit.\n"));
     while (!quit_required) {
+        LibRuntime::EventManager::call_event(0);
         tjs_string readresult;
         console->write(TJS_W(">> "));
         console->readline(readresult);
