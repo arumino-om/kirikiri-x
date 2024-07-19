@@ -41,6 +41,7 @@ SystemNativeClass::SystemNativeClass() : tTJSNativeClass(TJS_W("System")) {
         TJS_BEGIN_NATIVE_METHOD_DECL(setArgument)
             if (numparams < 2) return TJS_E_BADPARAMCOUNT;
             KrkrRuntime::set_argument(param[0]->GetString(), param[1]->GetString());
+            return TJS_S_OK;
         TJS_END_NATIVE_METHOD_DECL(setArgument)
 
         TJS_BEGIN_NATIVE_METHOD_DECL(addContinuousHandler)
