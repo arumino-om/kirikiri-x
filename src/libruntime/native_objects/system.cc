@@ -28,6 +28,7 @@ SystemNativeClass::SystemNativeClass() : tTJSNativeClass(TJS_W("System")) {
         TJS_BEGIN_NATIVE_METHOD_DECL(assignMessage)
             if (numparams < 2) return TJS_E_BADPARAMCOUNT;
             ScriptManager::assign_message(param[0]->GetString(), param[1]->GetString());
+            return TJS_S_OK;
         TJS_END_NATIVE_METHOD_DECL(assignMessage)
 
 
@@ -37,6 +38,27 @@ SystemNativeClass::SystemNativeClass() : tTJSNativeClass(TJS_W("System")) {
             if (result != nullptr) *result = func_result;
             return TJS_S_OK;
         TJS_END_NATIVE_METHOD_DECL(createAppLock)
+
+
+        TJS_BEGIN_NATIVE_METHOD_DECL(createUUID)
+            return TJS_E_NOTIMPL;
+        TJS_END_NATIVE_METHOD_DECL(createUUID)
+
+
+        TJS_BEGIN_NATIVE_METHOD_DECL(doCompact)
+            return TJS_E_NOTIMPL;
+        TJS_END_NATIVE_METHOD_DECL(doCompact)
+
+
+        TJS_BEGIN_NATIVE_METHOD_DECL(dumpHeap)
+            return TJS_E_NOTIMPL;
+        TJS_END_NATIVE_METHOD_DECL(dumpHeap)
+
+
+        TJS_BEGIN_NATIVE_METHOD_DECL(exit)
+                exit(param[0]->AsInteger());
+                return TJS_S_OK;    //関数が戻ることはないはず
+        TJS_END_NATIVE_METHOD_DECL(exit)
 
 
         TJS_BEGIN_NATIVE_METHOD_DECL(getArgument)
@@ -53,10 +75,29 @@ SystemNativeClass::SystemNativeClass() : tTJSNativeClass(TJS_W("System")) {
         TJS_END_NATIVE_METHOD_DECL(getArgument)
 
 
-        TJS_BEGIN_NATIVE_METHOD_DECL(exit)
-            exit(param[0]->AsInteger());
-            return TJS_S_OK;    //関数が戻ることはないはず
-        TJS_END_NATIVE_METHOD_DECL(exit)
+        TJS_BEGIN_NATIVE_METHOD_DECL(getKeyState)
+            return TJS_E_NOTIMPL;
+        TJS_END_NATIVE_METHOD_DECL(getKeyState)
+
+
+        TJS_BEGIN_NATIVE_METHOD_DECL(getTickCount)
+            return TJS_E_NOTIMPL;
+        TJS_END_NATIVE_METHOD_DECL(getTickCount)
+
+
+        TJS_BEGIN_NATIVE_METHOD_DECL(inform)
+            return TJS_E_NOTIMPL;
+        TJS_END_NATIVE_METHOD_DECL(inform)
+
+
+        TJS_BEGIN_NATIVE_METHOD_DECL(readRegValue)
+            return TJS_E_NOTIMPL;
+        TJS_END_NATIVE_METHOD_DECL(readRegValue)
+
+
+        TJS_BEGIN_NATIVE_METHOD_DECL(removeContinuousHandler)
+            return TJS_E_NOTIMPL;
+        TJS_END_NATIVE_METHOD_DECL(removeContinuousHandler)
 
 
         TJS_BEGIN_NATIVE_METHOD_DECL(setArgument)
@@ -71,13 +112,29 @@ SystemNativeClass::SystemNativeClass() : tTJSNativeClass(TJS_W("System")) {
             const tjs_char *program = param[0]->GetString();
             const tjs_char *args = numparams > 1 ? param[1]->GetString() : nullptr;
             KrkrRuntime::sysfunc->execute(program, args);
+            return TJS_S_OK;
         TJS_END_NATIVE_METHOD_DECL(shellExecute)
 
 
+        TJS_BEGIN_NATIVE_METHOD_DECL(showVersion)
+            return TJS_E_NOTIMPL;
+        TJS_END_NATIVE_METHOD_DECL(showVersion)
+
+
         TJS_BEGIN_NATIVE_METHOD_DECL(terminate)
-                KrkrRuntime::request_quit(param[0]->AsInteger());
-                return TJS_S_OK;
+            KrkrRuntime::request_quit(param[0]->AsInteger());
+            return TJS_S_OK;
         TJS_END_NATIVE_METHOD_DECL(terminate)
+
+
+        TJS_BEGIN_NATIVE_METHOD_DECL(toActualColor)
+            return TJS_E_NOTIMPL;
+        TJS_END_NATIVE_METHOD_DECL(toActualColor)
+
+
+        TJS_BEGIN_NATIVE_METHOD_DECL(touchImages)
+                return TJS_E_NOTIMPL;
+        TJS_END_NATIVE_METHOD_DECL(touchImages)
     TJS_END_NATIVE_MEMBERS
 }
 
