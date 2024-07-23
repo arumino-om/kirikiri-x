@@ -13,6 +13,8 @@ namespace LibRuntime {
 
         static void call_event(int event_id);
 
+        static bool is_event_enabled;
+
     private:
         static std::vector<tTJSVariantClosure> continuous_handlers;
     };

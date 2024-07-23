@@ -3,6 +3,7 @@
 using namespace LibRuntime;
 
 std::vector<tTJSVariantClosure> EventManager::continuous_handlers;
+bool EventManager::is_event_enabled = true;
 
 bool EventManager::init() {
     return true;
