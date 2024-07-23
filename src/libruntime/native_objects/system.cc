@@ -220,6 +220,11 @@ SystemNativeClass::SystemNativeClass() : tTJSNativeClass(TJS_W("System")) {
         }
         TJS_END_NATIVE_STATIC_PROP_DECL(versionInformation)
     TJS_END_NATIVE_MEMBERS
+
+    tTJSVariant val(nullptr, nullptr);
+    PropSet(TJS_MEMBERENSURE, TJS_W("exceptionHandler"), nullptr, &val, this);
+    PropSet(TJS_MEMBERENSURE, TJS_W("onActivate"), nullptr, &val, this);
+    PropSet(TJS_MEMBERENSURE, TJS_W("onDeactivate"), nullptr, &val, this);
 }
 
 tTJSNativeInstance *SystemNativeClass::CreateNativeInstance() {
