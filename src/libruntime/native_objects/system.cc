@@ -136,7 +136,59 @@ SystemNativeClass::SystemNativeClass() : tTJSNativeClass(TJS_W("System")) {
                 return TJS_E_NOTIMPL;
         TJS_END_NATIVE_METHOD_DECL(touchImages)
 
+
         //===== PROPERTIES =====
+        TJS_BEGIN_NATIVE_PROP_DECL(appDataPath)
+        {
+            TJS_BEGIN_NATIVE_PROP_GETTER
+                {
+                    tjs_string app_data_path;
+                    KrkrRuntime::filesystem->get_appdata_directory(app_data_path);
+                    *result = app_data_path.c_str();
+                    return TJS_S_OK;
+                }
+            TJS_END_NATIVE_PROP_GETTER
+
+            TJS_DENY_NATIVE_PROP_SETTER
+        }
+        TJS_END_NATIVE_PROP_DECL(appDataPath)
+
+
+        TJS_BEGIN_NATIVE_PROP_DECL(dataPath)
+        {
+            TJS_BEGIN_NATIVE_PROP_GETTER
+                {
+                    tjs_string app_data_path;
+                    KrkrRuntime::filesystem->get_appdata_directory(app_data_path);
+                    *result = app_data_path.c_str();
+                    return TJS_S_OK;
+                }
+            TJS_END_NATIVE_PROP_GETTER
+
+            TJS_DENY_NATIVE_PROP_SETTER
+        }
+        TJS_END_NATIVE_PROP_DECL(dataPath)
+
+
+        TJS_BEGIN_NATIVE_PROP_DECL(eventDisabled)
+        {
+            TJS_BEGIN_NATIVE_PROP_GETTER
+            {
+                *result = EventManager::is_event_enabled;
+                return TJS_S_OK;
+            }
+            TJS_END_NATIVE_PROP_GETTER
+
+            TJS_BEGIN_NATIVE_PROP_SETTER
+            {
+                EventManager::is_event_enabled = *param;
+                return TJS_S_OK;
+            }
+            TJS_END_NATIVE_PROP_SETTER
+        }
+        TJS_END_NATIVE_PROP_DECL(eventDisabled)
+
+
         TJS_BEGIN_NATIVE_PROP_DECL(versionString)
         {
             TJS_BEGIN_NATIVE_PROP_GETTER
@@ -152,7 +204,8 @@ SystemNativeClass::SystemNativeClass() : tTJSNativeClass(TJS_W("System")) {
         }
         TJS_END_NATIVE_STATIC_PROP_DECL(versionString)
 
-            TJS_BEGIN_NATIVE_PROP_DECL(versionInformation)
+
+        TJS_BEGIN_NATIVE_PROP_DECL(versionInformation)
         {
             TJS_BEGIN_NATIVE_PROP_GETTER
                 {
