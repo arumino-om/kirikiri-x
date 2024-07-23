@@ -12,6 +12,8 @@ public:
     bool directory_exists(const tjs_char *path) override;
 
     tjs_int get_maxpath_length() override;
+    bool get_home_directory(tjs_string &result) override;
+    bool get_appdata_directory(tjs_string &result) override;
 
     bool path_combine(const tjs_char *path1, const tjs_char *path2, tjs_char *out) override;
 };

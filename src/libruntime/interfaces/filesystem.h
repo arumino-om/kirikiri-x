@@ -1,7 +1,6 @@
 #pragma once
 #include "tjs.h"
 #include "tjsTypes.h"
-#include <fstream>
 
 namespace LibRuntime::Interfaces {
     /**
@@ -9,16 +8,23 @@ namespace LibRuntime::Interfaces {
      */
     class IFileSystem {
     public:
+        // カレントディレクトリ
         virtual size_t get_current_directory(tjs_char *result) = 0;
         virtual bool set_current_directory(const tjs_char *path) = 0;
 
+        // ファイル開閉
         virtual tTJSBinaryStream *open(const tjs_char *path, tjs_uint32 flags) = 0;
 
+        // 存在確認
         virtual bool file_exists(const tjs_char *path) = 0;
         virtual bool directory_exists(const tjs_char *path) = 0;
 
+        // ファイルシステム情報関連
         virtual tjs_int get_maxpath_length() = 0;
+        virtual bool get_home_directory(tjs_string &result) = 0;
+        virtual bool get_appdata_directory(tjs_string &result) = 0;
 
+        // ユーティリティ
         virtual bool path_combine(const tjs_char *path1, const tjs_char *path2, tjs_char *out) = 0;
     };
 
@@ -49,6 +55,14 @@ namespace LibRuntime::Interfaces {
         tjs_int get_maxpath_length() override {
             return 260;
         };
+
+        bool get_home_directory(tjs_string &result) override {
+            return false;
+        }
+
+        bool get_appdata_directory(tjs_string &result) override {
+            return false;
+        }
 
         bool path_combine(const tjs_char *path1, const tjs_char *path2, tjs_char *out) override {
             return false;
