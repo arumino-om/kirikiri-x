@@ -1,8 +1,10 @@
 #include "messages.h"
-#include "tjsCommHead.h"
-#include "tjsError.h"
 
 using namespace LibRuntime;
+
+#define LR_MSG_DEF(name, msg) tTJSMessageHolder Messages::name(TJS_W(#name), msg, false);
+LR_MSG_DEF(LRInterpreterMode, TJS_W("現在，インタプリタモードに入っています．ここから抜けるには exit(); と入力します．\n"))
+#undef LR_MSG_DEF
 
 /**
  * TJSで使用されるメッセージを初期化します。
@@ -82,5 +84,9 @@ bool Messages::init_tjs_messages() {
     TJSNotSupportedUnpackLP.AssignMessage(TJS_W("'p' unpack はサポートしていません"));
     TJSNotSupportedUnpackP.AssignMessage(TJS_W("'P' unpack はサポートしていません"));
 
+    return true;
+}
+
+bool Messages::init_libruntime_messages() {
     return true;
 }

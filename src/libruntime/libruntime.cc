@@ -62,7 +62,7 @@ void KrkrRuntime::set_argument(const tjs_string& name, const tjs_string &value) 
 }
 
 bool KrkrRuntime::interpreter() {
-    console->write(TJS_W("You are currently in interpreter mode. Type \"exit();\" to exit.\n"));
+    console->write(Messages::LRInterpreterMode);
     while (!quit_required) {
         LibRuntime::EventManager::call_event(0);
         tjs_string readresult;
