@@ -88,7 +88,20 @@ bool KrkrRuntime::interpreter() {
         if (readresult == TJS_W("exit();")) break;
 
         try {
-            ScriptManager::run(readresult);
+            auto res = ScriptManager::eval(readresult);
+            switch (res.Type()) {
+            case tvtObject:
+                console->write(TJS_W("Object"));
+                break;
+            case tvtVoid:
+                break;
+            default:
+                res.ToString();
+                console->write(res.GetString());
+                break;
+            }
+            console->write(TJS_W("\n"));
+
         } catch (eTJSError &err) {
             console->error(TJS_W("[ERR] "));
             console->error(err.GetMessage().c_str());
