@@ -23,6 +23,7 @@ int KrkrRuntime::start_runtime(int argc, char *argv[]) {
 
     KrkrRuntime::parse_args(argc, argv);
     Messages::init_tjs_messages();
+    Messages::init_libruntime_messages();
     ScriptManager::init(TJS_W("startup.tjs"), TJS_W("UTF-8"), 1);
 
     KrkrRuntime::interpreter();
