@@ -61,6 +61,21 @@ void KrkrRuntime::set_argument(const tjs_string& name, const tjs_string &value) 
     KrkrRuntime::arguments[name] = value;
 }
 
+void KrkrRuntime::get_runtime_version(tjs_string &verstr) {
+    ttstr version_major(KrkrRuntime::LIBRUNTIME_VERSION_MAJOR);
+    ttstr version_minor(KrkrRuntime::LIBRUNTIME_VERSION_MINOR);
+    ttstr version_patch(KrkrRuntime::LIBRUNTIME_VERSION_PATCH);
+
+    ttstr verstr2 = version_major + TJS_W(".") + version_minor + TJS_W(".") + version_patch;
+    verstr = verstr2.AsStdString();
+}
+
+void KrkrRuntime::get_runtime_version_full(tjs_string &verstr) {
+    tjs_string runtime_version;
+    KrkrRuntime::get_runtime_version(runtime_version);
+    verstr = TJS_W("Kirikiri X Runtime ") + runtime_version;
+}
+
 bool KrkrRuntime::interpreter() {
     console->write(Messages::LRInterpreterMode);
     while (!quit_required) {

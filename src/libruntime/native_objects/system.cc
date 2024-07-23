@@ -135,6 +135,37 @@ SystemNativeClass::SystemNativeClass() : tTJSNativeClass(TJS_W("System")) {
         TJS_BEGIN_NATIVE_METHOD_DECL(touchImages)
                 return TJS_E_NOTIMPL;
         TJS_END_NATIVE_METHOD_DECL(touchImages)
+
+        //===== PROPERTIES =====
+        TJS_BEGIN_NATIVE_PROP_DECL(versionString)
+        {
+            TJS_BEGIN_NATIVE_PROP_GETTER
+                {
+                    tjs_string runtime_str;
+                    KrkrRuntime::get_runtime_version(runtime_str);
+                    *result = runtime_str.c_str();
+                    return TJS_S_OK;
+                }
+            TJS_END_NATIVE_PROP_GETTER
+
+            TJS_DENY_NATIVE_PROP_SETTER
+        }
+        TJS_END_NATIVE_STATIC_PROP_DECL(versionString)
+
+            TJS_BEGIN_NATIVE_PROP_DECL(versionInformation)
+        {
+            TJS_BEGIN_NATIVE_PROP_GETTER
+                {
+                    tjs_string runtime_str;
+                    KrkrRuntime::get_runtime_version_full(runtime_str);
+                    *result = runtime_str.c_str();
+                    return TJS_S_OK;
+                }
+            TJS_END_NATIVE_PROP_GETTER
+
+            TJS_DENY_NATIVE_PROP_SETTER
+        }
+        TJS_END_NATIVE_STATIC_PROP_DECL(versionInformation)
     TJS_END_NATIVE_MEMBERS
 }
 
