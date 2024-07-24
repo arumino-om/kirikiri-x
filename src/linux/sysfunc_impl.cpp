@@ -31,3 +31,11 @@ void UnixSysFunc::release_all_app_lock() {
         unlink(app_lock.second.c_str());
     }
 }
+
+void UnixSysFunc::get_os_name(tjs_string &os_name) {
+    struct utsname uname_buf;
+    uname(&uname_buf);
+
+    ttstr sysname(uname_buf.sysname);
+    os_name = sysname.AsStdString();
+}

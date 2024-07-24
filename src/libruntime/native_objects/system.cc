@@ -189,6 +189,34 @@ SystemNativeClass::SystemNativeClass() : tTJSNativeClass(TJS_W("System")) {
         TJS_END_NATIVE_PROP_DECL(eventDisabled)
 
 
+        TJS_BEGIN_NATIVE_PROP_DECL(exeBits)
+        {
+            TJS_BEGIN_NATIVE_PROP_GETTER
+            {
+                *result = sizeof(void*) == 8 ? 64 : 32;
+            }
+            TJS_END_NATIVE_PROP_GETTER
+
+            TJS_DENY_NATIVE_PROP_SETTER
+        }
+        TJS_END_NATIVE_PROP_DECL(exeBits)
+
+
+        TJS_BEGIN_NATIVE_PROP_DECL(osName)
+        {
+            TJS_BEGIN_NATIVE_PROP_GETTER
+            {
+                tjs_string osname;
+                KrkrRuntime::sysfunc->get_os_name(osname);
+                *result = osname;
+            }
+            TJS_END_NATIVE_PROP_GETTER
+
+            TJS_DENY_NATIVE_PROP_SETTER
+        }
+        TJS_END_NATIVE_PROP_DECL(osName)
+
+
         TJS_BEGIN_NATIVE_PROP_DECL(versionString)
         {
             TJS_BEGIN_NATIVE_PROP_GETTER
