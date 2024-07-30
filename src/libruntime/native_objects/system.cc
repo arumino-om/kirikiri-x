@@ -189,6 +189,23 @@ SystemNativeClass::SystemNativeClass() : tTJSNativeClass(TJS_W("System")) {
         TJS_END_NATIVE_PROP_DECL(eventDisabled)
 
 
+        TJS_BEGIN_NATIVE_PROP_DECL(exceptionHandler)
+        {
+            TJS_BEGIN_NATIVE_PROP_GETTER
+            {
+                return TJS_E_NOTIMPL;
+            }
+            TJS_END_NATIVE_PROP_GETTER
+
+            TJS_BEGIN_NATIVE_PROP_SETTER
+            {
+                return TJS_E_NOTIMPL;
+            }
+            TJS_END_NATIVE_PROP_SETTER
+        }
+        TJS_END_NATIVE_PROP_DECL(exceptionHandler)
+
+
         TJS_BEGIN_NATIVE_PROP_DECL(exeBits)
         {
             TJS_BEGIN_NATIVE_PROP_GETTER
@@ -200,6 +217,100 @@ SystemNativeClass::SystemNativeClass() : tTJSNativeClass(TJS_W("System")) {
             TJS_DENY_NATIVE_PROP_SETTER
         }
         TJS_END_NATIVE_PROP_DECL(exeBits)
+
+
+        TJS_BEGIN_NATIVE_PROP_DECL(exeName)
+        {
+            TJS_BEGIN_NATIVE_PROP_GETTER
+            {
+                return TJS_E_NOTIMPL;
+            }
+            TJS_END_NATIVE_PROP_GETTER
+
+            TJS_DENY_NATIVE_PROP_SETTER
+        }
+        TJS_END_NATIVE_PROP_DECL(exeName)
+
+
+        TJS_BEGIN_NATIVE_PROP_DECL(exePath)
+        {
+            TJS_BEGIN_NATIVE_PROP_GETTER
+            {
+                return TJS_E_NOTIMPL;
+            }
+            TJS_END_NATIVE_PROP_GETTER
+
+            TJS_DENY_NATIVE_PROP_SETTER
+        }
+        TJS_END_NATIVE_PROP_DECL(exeName)
+
+
+        TJS_BEGIN_NATIVE_PROP_DECL(exitOnWindowClose)
+        {
+            TJS_BEGIN_NATIVE_PROP_GETTER
+            {
+                return TJS_E_NOTIMPL;
+            }
+            TJS_END_NATIVE_PROP_GETTER
+
+            TJS_BEGIN_NATIVE_PROP_SETTER
+            {
+                return TJS_E_NOTIMPL;
+            }
+            TJS_END_NATIVE_PROP_SETTER
+        }
+        TJS_END_NATIVE_PROP_DECL(exitOnWindowClose)
+
+
+        TJS_BEGIN_NATIVE_PROP_DECL(graphicCacheLimit)
+        {
+            TJS_BEGIN_NATIVE_PROP_GETTER
+            {
+                return TJS_E_NOTIMPL;
+            }
+            TJS_END_NATIVE_PROP_GETTER
+
+            TJS_BEGIN_NATIVE_PROP_SETTER
+            {
+                return TJS_E_NOTIMPL;
+            }
+            TJS_END_NATIVE_PROP_SETTER
+        }
+        TJS_END_NATIVE_PROP_DECL(graphicCacheLimit)
+
+
+        TJS_BEGIN_NATIVE_PROP_DECL(onActivate)
+        {
+            TJS_BEGIN_NATIVE_PROP_GETTER
+            {
+                return TJS_E_NOTIMPL;
+            }
+            TJS_END_NATIVE_PROP_GETTER
+
+            TJS_BEGIN_NATIVE_PROP_SETTER
+            {
+                return TJS_E_NOTIMPL;
+            }
+            TJS_END_NATIVE_PROP_SETTER
+        }
+        TJS_END_NATIVE_PROP_DECL(onActivate)
+
+
+        TJS_BEGIN_NATIVE_PROP_DECL(onDeactivate)
+        {
+            TJS_BEGIN_NATIVE_PROP_GETTER
+            {
+                return TJS_E_NOTIMPL;
+            }
+            TJS_END_NATIVE_PROP_GETTER
+
+            TJS_BEGIN_NATIVE_PROP_SETTER
+            {
+                return TJS_E_NOTIMPL;
+            }
+            TJS_END_NATIVE_PROP_SETTER
+        }
+        TJS_END_NATIVE_PROP_DECL(onDeactivate)
 
 
         TJS_BEGIN_NATIVE_PROP_DECL(osName)
@@ -215,6 +326,88 @@ SystemNativeClass::SystemNativeClass() : tTJSNativeClass(TJS_W("System")) {
             TJS_DENY_NATIVE_PROP_SETTER
         }
         TJS_END_NATIVE_PROP_DECL(osName)
+
+
+        TJS_BEGIN_NATIVE_PROP_DECL(personalPath)
+        {
+            TJS_BEGIN_NATIVE_PROP_GETTER
+            {
+                return TJS_E_NOTIMPL;
+            }
+            TJS_END_NATIVE_PROP_GETTER
+
+            TJS_DENY_NATIVE_PROP_SETTER
+        }
+        TJS_END_NATIVE_PROP_DECL(personalPath)
+
+
+        TJS_BEGIN_NATIVE_PROP_DECL(platformName)
+        {
+            TJS_BEGIN_NATIVE_PROP_GETTER
+            {
+                return TJS_E_NOTIMPL;
+            }
+            TJS_END_NATIVE_PROP_GETTER
+
+            TJS_DENY_NATIVE_PROP_SETTER
+        }
+        TJS_END_NATIVE_PROP_DECL(platformName)
+
+
+        TJS_BEGIN_NATIVE_PROP_DECL(savedGamesPath)
+        {
+            TJS_BEGIN_NATIVE_PROP_GETTER
+            {
+                return TJS_E_NOTIMPL;
+            }
+            TJS_END_NATIVE_PROP_GETTER
+
+            TJS_DENY_NATIVE_PROP_SETTER
+        }
+        TJS_END_NATIVE_PROP_DECL(savedGamesPath)
+
+
+        TJS_BEGIN_NATIVE_PROP_DECL(screenHeight)
+        {
+            TJS_BEGIN_NATIVE_PROP_GETTER
+            {
+                return TJS_E_NOTIMPL;
+            }
+            TJS_END_NATIVE_PROP_GETTER
+
+            TJS_DENY_NATIVE_PROP_SETTER
+        }
+        TJS_END_NATIVE_PROP_DECL(screenHeight)
+
+
+        TJS_BEGIN_NATIVE_PROP_DECL(screenWidth)
+        {
+            TJS_BEGIN_NATIVE_PROP_GETTER
+            {
+                return TJS_E_NOTIMPL;
+            }
+            TJS_END_NATIVE_PROP_GETTER
+
+            TJS_DENY_NATIVE_PROP_SETTER
+        }
+        TJS_END_NATIVE_PROP_DECL(screenWidth)
+
+
+        TJS_BEGIN_NATIVE_PROP_DECL(title)
+        {
+            TJS_BEGIN_NATIVE_PROP_GETTER
+            {
+                return TJS_E_NOTIMPL;
+            }
+            TJS_END_NATIVE_PROP_GETTER
+
+            TJS_BEGIN_NATIVE_PROP_SETTER
+            {
+                return TJS_E_NOTIMPL;
+            }
+            TJS_END_NATIVE_PROP_SETTER
+        }
+        TJS_END_NATIVE_PROP_DECL(title)
 
 
         TJS_BEGIN_NATIVE_PROP_DECL(versionString)
