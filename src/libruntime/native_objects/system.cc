@@ -211,6 +211,7 @@ SystemNativeClass::SystemNativeClass() : tTJSNativeClass(TJS_W("System")) {
             TJS_BEGIN_NATIVE_PROP_GETTER
             {
                 *result = sizeof(void*) == 8 ? 64 : 32;
+                return TJS_S_OK;
             }
             TJS_END_NATIVE_PROP_GETTER
 
@@ -320,6 +321,7 @@ SystemNativeClass::SystemNativeClass() : tTJSNativeClass(TJS_W("System")) {
                 tjs_string osname;
                 KrkrRuntime::sysfunc->get_os_name(osname);
                 *result = osname;
+                return TJS_S_OK;
             }
             TJS_END_NATIVE_PROP_GETTER
 
