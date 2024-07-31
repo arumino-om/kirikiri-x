@@ -1,4 +1,4 @@
-#include "window_class.h"
+#include "window.h"
 
 using namespace LibRuntime::NativeClasses;
 

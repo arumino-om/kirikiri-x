@@ -6,6 +6,7 @@
 #include "event_manager.h"
 #include <tjsError.h>
 #include "script_manager.h"
+#include "window_manager.h"
 
 using namespace LibRuntime;
 
@@ -27,6 +28,17 @@ int KrkrRuntime::start_runtime(int argc, char *argv[]) {
     ScriptManager::init(TJS_W("startup.tjs"), TJS_W("UTF-8"), 1);
 
     KrkrRuntime::interpreter();
+
+    if (WindowManager::has_windows()) {
+        SDL_Event event;
+        while (true) {
+            while (SDL_PollEvent(&event)) {
+                if (event.type == SDL_QUIT) {
+                    return 0;
+                }
+            }
+        }
+    }
 
     return 0;
 }
@@ -80,7 +92,7 @@ void KrkrRuntime::get_runtime_version_full(tjs_string &verstr) {
 bool KrkrRuntime::interpreter() {
     console->write(Messages::LRInterpreterMode);
     while (!quit_required) {
-        LibRuntime::EventManager::call_event(0);
+        LibRuntime::EventManager::dispatch_continuous_event();
         tjs_string readresult;
         console->write(TJS_W(">> "));
         console->readline(readresult);
