@@ -14,7 +14,7 @@ namespace LibRuntime {
         static void remove_continuous_handler(tTJSVariantClosure clo);
 
         static void add_window_instance(NativeInstances::WindowNativeInstance *instance);
-        static void remove_window_instance(const NativeInstances::WindowNativeInstance& instance);
+        static void remove_window_instance(NativeInstances::WindowNativeInstance *instance);
 
         static void dispatch_continuous_event();
         static void dispatch_window_update_event();

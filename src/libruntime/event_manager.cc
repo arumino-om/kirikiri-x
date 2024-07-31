@@ -30,7 +30,7 @@ void EventManager::add_window_instance(NativeInstances::WindowNativeInstance *in
     window_instances.push_back(instance);
 }
 
-void EventManager::remove_window_instance(const NativeInstances::WindowNativeInstance& instance) {
+void EventManager::remove_window_instance(NativeInstances::WindowNativeInstance *instance) {
     auto iter = std::find(window_instances.begin(), window_instances.end(), instance);
     if (iter == window_instances.end()) return;  //インスタンスが存在しない場合は何もしない
 
