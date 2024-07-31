@@ -24,7 +24,9 @@ add_library(libruntime STATIC
         native_classes/window_class.cc
         native_classes/window_class.h
         native_instances/window_instance.cc
-        native_instances/window_instance.h)
+        native_instances/window_instance.h
+        window_manager.cc
+        window_manager.h)
 
 target_include_directories(libruntime PUBLIC ../libtjs2)
 target_include_directories(libruntime PUBLIC ../libsdl2/include)
