@@ -1,8 +1,9 @@
 #include <tjsTypes.h>
-#include "native_classes/minimal.h"
 #include "script_manager.h"
+#include "native_classes/minimal.h"
 #include "native_classes/system.h"
-#include "native_classes/window_class.h"
+#include "native_classes/window.h"
+#include "native_classes/layer.h"
 
 using namespace LibRuntime;
 
@@ -52,6 +53,7 @@ bool ScriptManager::init(const ttstr &startup_script_name, const ttstr &encoding
     REGISTER_OBJECT(mini, NativeClasses::MinimalNativeClass);
     REGISTER_OBJECT(System, NativeClasses::SystemNativeClass);
     REGISTER_OBJECT(Window, NativeClasses::WindowNativeClass);
+    REGISTER_OBJECT(Layer, NativeClasses::LayerNativeClass);
 
     // --- Finalize ---
     initialized = true;
