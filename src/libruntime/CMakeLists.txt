@@ -19,7 +19,10 @@ add_library(libruntime STATIC
         graphics.cc
         graphics.h
         native_objects/system.cc
-        native_objects/system.h)
+        native_objects/system.h
+        event_manager.cc
+        event_manager.h
+        interfaces/sysfunc.h)
 
 target_include_directories(libruntime PUBLIC ../libtjs2)
 target_include_directories(libruntime PUBLIC ../libsdl2/include)

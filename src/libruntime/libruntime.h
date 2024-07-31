@@ -1,6 +1,9 @@
 #pragma once
+
+#include <map>
 #include "interfaces/filesystem.h"
 #include "interfaces/console.h"
+#include "interfaces/sysfunc.h"
 
 namespace LibRuntime {
     typedef struct RuntimeConfig {
@@ -10,13 +13,27 @@ namespace LibRuntime {
 
     class KrkrRuntime {
     public:
-        static int start_runtime();
-        static void request_exit(int code);
+        constexpr static int LIBRUNTIME_VERSION_MAJOR = 0;
+        constexpr static int LIBRUNTIME_VERSION_MINOR = 0;
+        constexpr static int LIBRUNTIME_VERSION_PATCH = 1;
+
+        static int start_runtime(int argc, char *argv[]);
+        static bool get_argument(const tjs_string &name, tjs_string &result);
+        static void set_argument(const tjs_string &name, const tjs_string &value);
+        static void get_runtime_version(tjs_string &verstr);
+        static void get_runtime_version_full(tjs_string &verstr);
+
+        static void request_quit(int code);
 
         static Interfaces::IFileSystem *filesystem;
         static Interfaces::IConsole *console;
+        static Interfaces::ISysFunc *sysfunc;
 
     private:
         static bool interpreter();
+        static void parse_args(int argc, char *argv[]);
+        static std::map<tjs_string, tjs_string> arguments;
+        static bool quit_required;
+        static int quit_code;
     };
 }

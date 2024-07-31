@@ -1,7 +1,5 @@
 cmake_minimum_required(VERSION 3.21)
 project(kirikiri_x LANGUAGES C CXX)
-set(CMAKE_C_STANDARD 17)
-set(CMAKE_CXX_STANDARD 20)
 
 # Define the C/C++ standard
 set(CMAKE_C_STANDARD 17)
@@ -17,7 +15,9 @@ add_subdirectory(src/libruntime)
 # Add the krkrx executable
 if (UNIX)
     # Kirikiri X for Linux
-    add_executable(krkrx src/linux/main.cc)
+    add_executable(krkrx src/linux/main.cc
+            src/linux/sysfunc_impl.cpp
+            src/linux/sysfunc_impl.h)
 elseif (WIN32)
     # Kirikiri X for Windows
     add_compile_definitions(UNICODE)

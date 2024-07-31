@@ -16,7 +16,7 @@ void alloc_console() {
     freopen("CON", "w", stderr);
 }
 
-int main(int argv, char** args) {
+int main(int argv, char* args[]) {
     alloc_console();
     setlocale(LC_ALL,"");
     UINT sav = GetConsoleOutputCP();
@@ -24,7 +24,7 @@ int main(int argv, char** args) {
 
     LibRuntime::KrkrRuntime::filesystem = new WindowsFileSystem();
     LibRuntime::KrkrRuntime::console = new WindowsConsole();
-    LibRuntime::KrkrRuntime::start_runtime();
+    LibRuntime::KrkrRuntime::start_runtime(argv, args);
 
     SetConsoleOutputCP(sav);
 

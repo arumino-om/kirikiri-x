@@ -1,6 +1,7 @@
 #include <tjsTypes.h>
 #include "native_objects/minimal.h"
 #include "script_manager.h"
+#include "native_objects/system.h"
 
 using namespace LibRuntime;
 
@@ -48,6 +49,7 @@ bool ScriptManager::init(const ttstr &startup_script_name, const ttstr &encoding
         global->PropSet(TJS_MEMBERENSURE|TJS_IGNOREPROP, TJS_W(#classname), NULL, \
             &val, global);
     REGISTER_OBJECT(mini, NativeObjects::MinimalNativeClass);
+    REGISTER_OBJECT(System, NativeObjects::SystemNativeClass);
 
     // --- Finalize ---
     initialized = true;
@@ -56,5 +58,41 @@ bool ScriptManager::init(const ttstr &startup_script_name, const ttstr &encoding
 
 
 void ScriptManager::run(const ttstr &script) {
-    ScriptManager::tjs_engine->ExecScript(script);
+    try {
+        ScriptManager::tjs_engine->ExecScript(script);
+    } catch (eTJSScriptException &error) {
+        handle_script_error(error);
+    }
+}
+
+tTJSVariant ScriptManager::eval(const ttstr &script) {
+    tTJSVariant result;
+    ScriptManager::tjs_engine->EvalExpression(script, &result);
+    return result;
+}
+
+bool ScriptManager::assign_message(const tjs_string& msg, const tjs_string& val) {
+    return TJSAssignMessage(msg.c_str(), val.c_str());
+}
+
+bool ScriptManager::handle_script_error(eTJSScriptException &error) {
+    auto global_clo = tjs_engine->GetGlobalNoAddRef();
+    if (global_clo == nullptr) return false;
+
+    tTJSVariant system;
+    auto result = global_clo->PropGet(TJS_MEMBERMUSTEXIST, TJS_W("System"), nullptr, &system, global_clo);
+    if (TJS_FAILED(result)) return false;
+    auto system_clo = system.AsObjectClosureNoAddRef();
+
+    tTJSVariant exception_handler;
+    result = system_clo.PropGet(TJS_MEMBERMUSTEXIST, TJS_W("exceptionHandler"), nullptr, &exception_handler, nullptr);
+    if (TJS_FAILED(result) || exception_handler.Type() != tvtObject) return false;
+
+    tTJSVariant param_obj = error.GetValue();
+    tTJSVariant *param[] = { &param_obj };
+    tTJSVariant exec_result;
+
+    exception_handler.AsObjectClosureNoAddRef().FuncCall(0, nullptr, nullptr, &exec_result, 1, param, nullptr);
+
+    return exec_result;
 }
