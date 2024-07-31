@@ -1,14 +1,15 @@
 #pragma once
 #include "tjs.h"
 #include "tjsNative.h"
+#include "../native_instances/window_instance.h"
 
-namespace LibRuntime::NativeObjects {
+namespace LibRuntime::NativeClasses {
     /**
      * 動作確認に必要な最小限の機能を実装したクラス。
      */
-    class MinimalNativeClass : public tTJSNativeClass {
+    class WindowNativeClass : public tTJSNativeClass {
     public:
-        MinimalNativeClass();
+        WindowNativeClass();
 
         static tjs_uint32 ClassID;
         tTJSNativeInstance *CreateNativeInstance() override;

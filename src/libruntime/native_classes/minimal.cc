@@ -3,7 +3,7 @@
 #include "minimal.h"
 #include "../libruntime.h"
 
-using namespace LibRuntime::NativeObjects;
+using namespace LibRuntime::NativeClasses;
 
 tjs_uint32 MinimalNativeClass::ClassID = -1;
 

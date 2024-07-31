@@ -8,21 +8,23 @@ endif()
 add_library(libruntime STATIC
         interfaces/filesystem.h
         interfaces/console.h
-        native_objects/minimal.cc
-        native_objects/minimal.h
+        native_classes/minimal.cc
+        native_classes/minimal.h
         libruntime.cc
         libruntime.h
         script_manager.cc
         script_manager.h
         messages.cc
         messages.h
-        graphics.cc
-        graphics.h
-        native_objects/system.cc
-        native_objects/system.h
+        native_classes/system.cc
+        native_classes/system.h
         event_manager.cc
         event_manager.h
-        interfaces/sysfunc.h)
+        interfaces/sysfunc.h
+        native_classes/window_class.cc
+        native_classes/window_class.h
+        native_instances/window_instance.cc
+        native_instances/window_instance.h)
 
 target_include_directories(libruntime PUBLIC ../libtjs2)
 target_include_directories(libruntime PUBLIC ../libsdl2/include)

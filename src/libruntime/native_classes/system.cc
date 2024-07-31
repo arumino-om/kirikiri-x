@@ -2,7 +2,7 @@
 #include "minimal.h"
 #include "../event_manager.h"
 
-using namespace LibRuntime::NativeObjects;
+using namespace LibRuntime::NativeClasses;
 
 tjs_uint32 SystemNativeClass::ClassID = -1;
 
