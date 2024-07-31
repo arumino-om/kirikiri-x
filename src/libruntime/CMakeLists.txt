@@ -21,12 +21,16 @@ add_library(libruntime STATIC
         event_manager.cc
         event_manager.h
         interfaces/sysfunc.h
-        native_classes/window_class.cc
-        native_classes/window_class.h
+        native_classes/window.cc
+        native_classes/window.h
         native_instances/window_instance.cc
         native_instances/window_instance.h
         window_manager.cc
-        window_manager.h)
+        window_manager.h
+        native_instances/layer_instance.cc
+        native_instances/layer_instance.h
+        native_classes/layer.cc
+        native_classes/layer.h)
 
 target_include_directories(libruntime PUBLIC ../libtjs2)
 target_include_directories(libruntime PUBLIC ../libsdl2/include)
