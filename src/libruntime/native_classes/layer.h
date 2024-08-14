@@ -1,5 +1,6 @@
 #pragma once
-#include "../native_instances/layer_instance.h"
+#include <tjs.h>
+#include <tjsNative.h>
 
 namespace LibRuntime::NativeClasses {
     class LayerNativeClass : public tTJSNativeClass {

@@ -1,8 +1,6 @@
 #pragma once
 #include <tjs.h>
-#include "tjsNative.h"
-#include "../script_manager.h"
-#include "../libruntime.h"
+#include <tjsNative.h>
 
 namespace LibRuntime::NativeClasses {
     /**

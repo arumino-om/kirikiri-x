@@ -1,4 +1,5 @@
 #include "layer.h"
+#include "../native_instances/layer_instance.h"
 
 using namespace LibRuntime::NativeClasses;
 

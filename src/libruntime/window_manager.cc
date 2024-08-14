@@ -1,4 +1,5 @@
 #include "window_manager.h"
+#include <algorithm>
 
 using namespace LibRuntime;
 using namespace LibRuntime::NativeInstances;

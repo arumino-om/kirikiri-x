@@ -1,5 +1,4 @@
 #pragma once
-#include "tjs.h"
 #include "tjsNative.h"
 
 namespace LibRuntime::NativeClasses {

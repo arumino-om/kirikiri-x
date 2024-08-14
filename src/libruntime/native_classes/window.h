@@ -1,7 +1,6 @@
 #pragma once
 #include "tjs.h"
 #include "tjsNative.h"
-#include "../native_instances/window_instance.h"
 
 namespace LibRuntime::NativeClasses {
     /**
