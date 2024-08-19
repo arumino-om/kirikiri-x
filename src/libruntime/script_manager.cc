@@ -1,7 +1,9 @@
 #include <tjsTypes.h>
-#include "native_objects/minimal.h"
 #include "script_manager.h"
-#include "native_objects/system.h"
+#include "native_classes/minimal.h"
+#include "native_classes/system.h"
+#include "native_classes/window.h"
+#include "native_classes/layer.h"
 
 using namespace LibRuntime;
 
@@ -48,8 +50,10 @@ bool ScriptManager::init(const ttstr &startup_script_name, const ttstr &encoding
         dsp->Release(); \
         global->PropSet(TJS_MEMBERENSURE|TJS_IGNOREPROP, TJS_W(#classname), NULL, \
             &val, global);
-    REGISTER_OBJECT(mini, NativeObjects::MinimalNativeClass);
-    REGISTER_OBJECT(System, NativeObjects::SystemNativeClass);
+    REGISTER_OBJECT(mini, NativeClasses::MinimalNativeClass);
+    REGISTER_OBJECT(System, NativeClasses::SystemNativeClass);
+    REGISTER_OBJECT(Window, NativeClasses::WindowNativeClass);
+    REGISTER_OBJECT(Layer, NativeClasses::LayerNativeClass);
 
     // --- Finalize ---
     initialized = true;
