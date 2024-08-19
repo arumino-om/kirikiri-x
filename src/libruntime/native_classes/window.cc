@@ -25,6 +25,14 @@ WindowNativeClass::WindowNativeClass() : tTJSNativeClass(TJS_W("Window")) {
             return TJS_S_OK;
         }
         TJS_END_NATIVE_METHOD_DECL(add)
+
+        TJS_BEGIN_NATIVE_METHOD_DECL(remove) {
+            TJS_GET_NATIVE_INSTANCE(_this, NativeInstances::WindowNativeInstance)
+            if (numparams < 1) return TJS_E_BADPARAMCOUNT;
+            auto clo = param[0]->AsObjectClosureNoAddRef();
+            _this->remove_object(clo);
+        }
+        TJS_END_NATIVE_METHOD_DECL(remove)
     }
     TJS_END_NATIVE_MEMBERS
 }
