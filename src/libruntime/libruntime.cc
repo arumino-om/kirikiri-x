@@ -36,6 +36,7 @@ int KrkrRuntime::start_runtime(int argc, char *argv[]) {
                 if (event.type == SDL_QUIT) {
                     return 0;
                 }
+                EventManager::dispatch_all_events();
             }
         }
     }
