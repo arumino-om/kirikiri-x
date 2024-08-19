@@ -2,6 +2,7 @@
 #include "../window_manager.h"
 #include "../rendering/layer_tree.h"
 #include <algorithm>
+#include "../event_manager.h"
 
 using namespace LibRuntime::NativeInstances;
 
@@ -14,6 +15,7 @@ tjs_error TJS_INTF_METHOD WindowNativeInstance::Construct(tjs_int numparams, tTJ
     this->renderer = SDL_CreateRenderer(this->window, -1, SDL_RENDERER_ACCELERATED);
     this->layer_tree = std::make_shared<Rendering::LayerTree>();
     WindowManager::register_window(this);
+    EventManager::add_window_instance(this);
     return TJS_S_OK;
 }
 
@@ -29,6 +31,7 @@ void TJS_INTF_METHOD WindowNativeInstance::Invalidate() {
     }
 
     WindowManager::unregister_window(this);
+    EventManager::remove_window_instance(this);
 }
 
 void WindowNativeInstance::add_object(tTJSVariantClosure clo) {
@@ -42,12 +45,14 @@ void WindowNativeInstance::remove_object(tTJSVariantClosure clo) {
     auto it = std::find(objects.begin(), objects.end(), clo);
     if (it == objects.end()) return;
 
-    clo.Release();
     objects.erase(it);
+    clo.Release();
 }
 
 void WindowNativeInstance::update() {
-    
+    SDL_RenderClear(this->renderer);
+    layer_tree->render(this->renderer);
+    SDL_RenderPresent(this->renderer);
 }
 
 std::shared_ptr<LibRuntime::Rendering::LayerTree> WindowNativeInstance::get_layer_tree() {

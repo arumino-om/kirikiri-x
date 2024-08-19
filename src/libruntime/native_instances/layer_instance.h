@@ -12,12 +12,18 @@ namespace LibRuntime::NativeInstances {
 
         void add_children(LayerNativeInstance *child);
         void remove_children(LayerNativeInstance *child);
+        void set_position(tjs_int x, tjs_int y);
+        void set_size(tjs_int width, tjs_int height);
 
-        void render(SDL_Renderer *renderer);
+        SDL_Texture *render(SDL_Renderer *renderer);
+
+        SDL_Rect get_render_rect() { return _renderRect; }
 
     private:
         tTJSVariantClosure _owner_window;
         tTJSVariantClosure _parent_layer;
         std::vector<LayerNativeInstance *> _children;
+
+        SDL_Rect _renderRect;
     };
 }

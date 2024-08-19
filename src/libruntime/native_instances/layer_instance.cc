@@ -3,6 +3,7 @@
 #include <tjsNative.h>
 #include "layer_instance.h"
 #include "window_instance.h"
+#include "../libruntime.h"
 #include "../native_classes/window.h"
 #include "../native_classes/layer.h"
 #include "../rendering/layer_tree.h"
@@ -61,6 +62,41 @@ void LayerNativeInstance::remove_children(LayerNativeInstance *child) {
     _children.erase(iter);
 }
 
-void LayerNativeInstance::render(SDL_Renderer *renderer) {
+void LayerNativeInstance::set_position(tjs_int x, tjs_int y) {
+    _renderRect.x = x;
+    _renderRect.y = y;
+}
 
+void LayerNativeInstance::set_size(tjs_int width, tjs_int height) {
+    _renderRect.w = width;
+    _renderRect.h = height;
+}
+
+SDL_Texture *LayerNativeInstance::render(SDL_Renderer *renderer) {
+    auto base_texture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET, _renderRect.w, _renderRect.h);
+    SDL_SetTextureBlendMode(base_texture, SDL_BLENDMODE_NONE);
+    SDL_SetRenderTarget(renderer, base_texture);
+
+    // ソフトウェアレンダリングで背景などを塗りつぶす
+    auto surface = SDL_CreateRGBSurface(0, _renderRect.w, _renderRect.h, 32, 0, 0, 0, 0);
+    SDL_FillRect(surface, nullptr, SDL_MapRGB(surface->format, 40, 40, 40));    //TODO: 色は外部から指定できるようにする
+
+    // ソフトウェアレンダリングしたものをテクスチャに変換し、レンダラーに描画
+    auto texture2 = SDL_CreateTextureFromSurface(renderer, surface);
+    SDL_RenderCopy(renderer, texture2, nullptr, nullptr);
+    SDL_DestroyTexture(texture2);
+    SDL_FreeSurface(surface);
+
+    // 子レイヤーを描画
+    for (auto child : _children) {
+        auto child_texture = child->render(renderer);
+        if (child_texture == nullptr) continue;
+
+        // 子レイヤーから返されたテクスチャをベーステクスチャに上書き描画
+        SDL_SetRenderTarget(renderer, base_texture);
+        SDL_RenderCopy(renderer, child_texture, nullptr, &child->_renderRect);
+        SDL_DestroyTexture(child_texture);
+    }
+
+    return base_texture;
 }

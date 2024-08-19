@@ -16,6 +16,9 @@ void LayerTree::remove_primary_layer(NativeInstances::LayerNativeInstance *layer
 
 void LayerTree::render(SDL_Renderer *renderer) {
     for (auto layer : primary_layers) {
-        layer->render(renderer);
+        auto texture = layer->render(renderer);
+        auto rect = layer->get_render_rect();
+        SDL_SetRenderTarget(renderer, nullptr);
+        SDL_RenderCopy(renderer, texture, nullptr, &rect);
     }
 }
