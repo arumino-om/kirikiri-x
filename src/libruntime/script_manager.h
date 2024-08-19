@@ -1,6 +1,5 @@
 #pragma once
 #include <tjs.h>
-#include <tjsError.h>
 
 namespace LibRuntime {
     class ScriptManager {

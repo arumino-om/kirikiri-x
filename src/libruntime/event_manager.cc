@@ -3,7 +3,6 @@
 using namespace LibRuntime;
 
 std::vector<tTJSVariantClosure> EventManager::continuous_handlers;
-std::vector<NativeInstances::WindowNativeInstance*> EventManager::window_instances;
 bool EventManager::is_event_enabled = true;
 
 bool EventManager::init() {
@@ -26,34 +25,15 @@ void EventManager::remove_continuous_handler(tTJSVariantClosure clo) {
     clo.Release();
 }
 
-void EventManager::add_window_instance(NativeInstances::WindowNativeInstance *instance) {
-    window_instances.push_back(instance);
-}
+void EventManager::call_event(int event_id) {
+    // 継続的に呼び出されるハンドラ (event_id = 0)
+    if (event_id == 0) {
+        for (auto clo: continuous_handlers) {
+            try {
+                clo.FuncCall(0, nullptr, nullptr, nullptr, 0, nullptr, nullptr);
+            } catch (...) {
 
-void EventManager::remove_window_instance(NativeInstances::WindowNativeInstance *instance) {
-    auto iter = std::find(window_instances.begin(), window_instances.end(), instance);
-    if (iter == window_instances.end()) return;  //インスタンスが存在しない場合は何もしない
-
-    window_instances.erase(iter);
-}
-
-void EventManager::dispatch_continuous_event() {
-    for (auto clo: continuous_handlers) {
-        try {
-            clo.FuncCall(0, nullptr, nullptr, nullptr, 0, nullptr, nullptr);
-        } catch (...) {
-
+            }
         }
     }
-}
-
-void EventManager::dispatch_window_update_event() {
-    for (auto window: window_instances) {
-        window->update();
-    }
-}
-
-void EventManager::dispatch_all_events() {
-    dispatch_window_update_event();
-    dispatch_continuous_event();
 }

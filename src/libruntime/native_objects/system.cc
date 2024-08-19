@@ -1,10 +1,8 @@
 #include "system.h"
 #include "minimal.h"
-#include "../script_manager.h"
 #include "../event_manager.h"
-#include "../libruntime.h"
 
-using namespace LibRuntime::NativeClasses;
+using namespace LibRuntime::NativeObjects;
 
 tjs_uint32 SystemNativeClass::ClassID = -1;
 

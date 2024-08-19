@@ -6,7 +6,6 @@
 #include "event_manager.h"
 #include <tjsError.h>
 #include "script_manager.h"
-#include "window_manager.h"
 
 using namespace LibRuntime;
 
@@ -28,18 +27,6 @@ int KrkrRuntime::start_runtime(int argc, char *argv[]) {
     ScriptManager::init(TJS_W("startup.tjs"), TJS_W("UTF-8"), 1);
 
     KrkrRuntime::interpreter();
-
-    if (WindowManager::has_windows()) {
-        SDL_Event event;
-        while (true) {
-            while (SDL_PollEvent(&event)) {
-                if (event.type == SDL_QUIT) {
-                    return 0;
-                }
-                EventManager::dispatch_all_events();
-            }
-        }
-    }
 
     return 0;
 }
@@ -93,7 +80,7 @@ void KrkrRuntime::get_runtime_version_full(tjs_string &verstr) {
 bool KrkrRuntime::interpreter() {
     console->write(Messages::LRInterpreterMode);
     while (!quit_required) {
-        LibRuntime::EventManager::dispatch_continuous_event();
+        LibRuntime::EventManager::call_event(0);
         tjs_string readresult;
         console->write(TJS_W(">> "));
         console->readline(readresult);
@@ -101,20 +88,19 @@ bool KrkrRuntime::interpreter() {
         if (readresult == TJS_W("exit();")) break;
 
         try {
-            // auto res = ScriptManager::eval(readresult);
-            // switch (res.Type()) {
-            // case tvtObject:
-            //     console->write(TJS_W("Object"));
-            //     break;
-            // case tvtVoid:
-            //     break;
-            // default:
-            //     res.ToString();
-            //     console->write(res.GetString());
-            //     break;
-            // }
-            // console->write(TJS_W("\n"));
-            ScriptManager::run(readresult);
+            auto res = ScriptManager::eval(readresult);
+            switch (res.Type()) {
+            case tvtObject:
+                console->write(TJS_W("Object"));
+                break;
+            case tvtVoid:
+                break;
+            default:
+                res.ToString();
+                console->write(res.GetString());
+                break;
+            }
+            console->write(TJS_W("\n"));
 
         } catch (eTJSError &err) {
             console->error(TJS_W("[ERR] "));
