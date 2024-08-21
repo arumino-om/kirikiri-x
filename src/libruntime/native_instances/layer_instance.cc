@@ -48,7 +48,13 @@ tjs_error LayerNativeInstance::Construct(tjs_int numparams, tTJSVariant **param,
 }
 
 void LayerNativeInstance::Invalidate() {
-    tTJSNativeInstance::Invalidate();
+    for (auto child : _children) {
+        child->Invalidate();
+    }
+    _owner_window.Release();
+    _parent_layer.Release();
+    _owner_window = nullptr;
+    _parent_layer = nullptr;
 }
 
 void LayerNativeInstance::add_children(LayerNativeInstance *child) {
