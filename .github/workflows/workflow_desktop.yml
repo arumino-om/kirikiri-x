@@ -1,0 +1,36 @@
+name: Multi-platform (desktop) build test
+on: push
+
+jobs:
+  job:
+    name: ${{ matrix.os }}-${{ github.workflow }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-13, macos-14, windows-latest]
+
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          submodules: true
+
+      - uses: lukka/get-cmake@latest
+
+      - name: List $RUNNER_WORKSPACE before build
+        run: find $RUNNER_WORKSPACE
+        shell: bash
+
+      - name: Setup vcpkg
+        uses: lukka/run-vcpkg@v11
+        id: runvcpkg
+
+      - name: Prints output of run-vcpkg's action.
+        run: echo "root='${{ steps.runvcpkg.outputs.RUNVCPKG_VCPKG_ROOT_OUT }}', triplet='${{ steps.runvcpkg.outputs.RUNVCPKG_VCPKG_DEFAULT_TRIPLET_OUT }}' "
+
+      - name: Run CMake with Ninja
+        uses: lukka/run-cmake@v10
+#        with:
+#          cmakeListsTxtPath: '${{ github.workspace }}/CMakeLists.txt'
+#          configurePreset: 'ninja-multi-vcpkg'
+#          buildPreset: 'ninja-multi-vcpkg'
