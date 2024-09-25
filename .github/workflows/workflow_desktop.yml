@@ -3,12 +3,21 @@ on: push
 
 jobs:
   job:
-    name: ${{ matrix.os }}-${{ github.workflow }}
+    name: ${{ matrix.readableName }}
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
       matrix:
         os: [ubuntu-latest, macos-13, macos-14, windows-latest]
+        include:
+          - os: ubuntu-latest
+            readableName: Ubuntu
+          - os: macos-13
+            readableName: MacOS (Intel)
+          - os: macos-14
+            readableName: MacOS (ARM)
+          - os: windows-latest
+            readableName: Windows
 
     steps:
       - uses: actions/checkout@v3
@@ -30,7 +39,7 @@ jobs:
 
       - name: Run CMake with Ninja
         uses: lukka/run-cmake@v10
-#        with:
-#          cmakeListsTxtPath: '${{ github.workspace }}/CMakeLists.txt'
-#          configurePreset: 'ninja-multi-vcpkg'
-#          buildPreset: 'ninja-multi-vcpkg'
+        with:
+          cmakeListsTxtPath: '${{ github.workspace }}/CMakeLists.txt'
+          configurePreset: 'default'
+          buildPreset: 'default'
