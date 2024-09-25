@@ -1,4 +1,0 @@
-cmake/*
-!cmake/Config.cmake.in
-m4/
-*.m4
