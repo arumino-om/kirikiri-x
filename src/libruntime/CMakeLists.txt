@@ -1,6 +1,5 @@
 cmake_minimum_required(VERSION 3.13)
 if (MSVC)
-    #        add_compile_options("/utf-8")
     add_compile_options("/std:c++20")
     add_compile_options("/source-charset:utf-8")
 endif()
@@ -35,6 +34,6 @@ add_library(libruntime STATIC
         rendering/layer_tree.h)
 
 target_include_directories(libruntime PUBLIC ../libtjs2)
-target_include_directories(libruntime PUBLIC ../libsdl2/include)
 
-target_link_libraries(libruntime libtjs2)
+find_package(SDL2 CONFIG REQUIRED)
+target_link_libraries(libruntime libtjs2 SDL2::SDL2)

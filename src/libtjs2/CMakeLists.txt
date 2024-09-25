@@ -12,4 +12,4 @@ add_library(libtjs2 STATIC ${LIBTJS2_SOURCES}
         encodings/uni_cp932.h)
 
 find_package(oniguruma CONFIG REQUIRED)
-target_link_libraries(libtjs2 oniguruma::onig)
+target_link_libraries(libtjs2 PRIVATE oniguruma::onig)
