@@ -21,6 +21,7 @@ namespace LibRuntime {
             void add_object(tTJSVariantClosure clo);
             void remove_object(tTJSVariantClosure clo);
             void update();
+            void bring_to_front();
 
             std::shared_ptr<Rendering::LayerTree> get_layer_tree();
         private:

@@ -14,6 +14,7 @@ namespace LibRuntime::NativeInstances {
         void remove_children(LayerNativeInstance *child);
         void set_position(tjs_int x, tjs_int y);
         void set_size(tjs_int width, tjs_int height);
+        void set_visible(bool visible);
 
         SDL_Texture *render(SDL_Renderer *renderer);
 

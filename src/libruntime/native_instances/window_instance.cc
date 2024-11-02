@@ -55,6 +55,10 @@ void WindowNativeInstance::update() {
     SDL_RenderPresent(this->renderer);
 }
 
+void WindowNativeInstance::bring_to_front() {
+    SDL_RaiseWindow(this->window);
+}
+
 std::shared_ptr<LibRuntime::Rendering::LayerTree> WindowNativeInstance::get_layer_tree() {
     return layer_tree;
 }
