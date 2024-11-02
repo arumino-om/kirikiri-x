@@ -33,6 +33,14 @@ WindowNativeClass::WindowNativeClass() : tTJSNativeClass(TJS_W("Window")) {
             _this->remove_object(clo);
         }
         TJS_END_NATIVE_METHOD_DECL(remove)
+
+        TJS_BEGIN_NATIVE_METHOD_DECL(bringToFront)
+        {
+            TJS_GET_NATIVE_INSTANCE(_this, NativeInstances::WindowNativeInstance)
+            _this->bring_to_front();
+            return TJS_S_OK;
+        }
+        TJS_END_NATIVE_METHOD_DECL(bringToFront)
     }
     TJS_END_NATIVE_MEMBERS
 }

@@ -24,6 +24,8 @@ tjs_error LayerNativeInstance::Construct(tjs_int numparams, tTJSVariant **param,
     // 親レイヤーのオブジェクトを取得
     auto parent_layer = param[1]->AsObjectClosure();
     if (parent_layer.Object == nullptr) {
+        parent_layer.Release();
+
         // 親レイヤーがNullの場合は，自身がプライマリレイヤーとなる
         WindowNativeInstance *window_instance;
         auto nis_result = window.ObjThis->NativeInstanceSupport(TJS_NIS_GETINSTANCE, NativeClasses::WindowNativeClass::ClassID, reinterpret_cast<iTJSNativeInstance **>(&window_instance));
@@ -55,6 +57,7 @@ void LayerNativeInstance::Invalidate() {
     _parent_layer.Release();
     _owner_window = nullptr;
     _parent_layer = nullptr;
+    tTJSNativeInstance::Invalidate();
 }
 
 void LayerNativeInstance::add_children(LayerNativeInstance *child) {
