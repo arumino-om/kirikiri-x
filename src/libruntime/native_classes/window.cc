@@ -41,8 +41,6 @@ WindowNativeClass::WindowNativeClass() : tTJSNativeClass(TJS_W("Window")) {
             return TJS_S_OK;
         }
         TJS_END_NATIVE_METHOD_DECL(bringToFront)
-
-
     }
     TJS_END_NATIVE_MEMBERS
 }
