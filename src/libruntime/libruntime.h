@@ -3,6 +3,7 @@
 #include <map>
 #include "interfaces/filesystem.h"
 #include "interfaces/console.h"
+#include "interfaces/filepath.h"
 #include "interfaces/sysfunc.h"
 
 namespace LibRuntime {
@@ -28,6 +29,7 @@ namespace LibRuntime {
         static Interfaces::IFileSystem *filesystem;
         static Interfaces::IConsole *console;
         static Interfaces::ISysFunc *sysfunc;
+        static Interfaces::IFilePath *filepath;
 
     private:
         static bool interpreter();

@@ -14,6 +14,7 @@ using namespace LibRuntime;
 Interfaces::IFileSystem* KrkrRuntime::filesystem = new Interfaces::FileSystemFallbackImpl();
 Interfaces::IConsole* KrkrRuntime::console = new Interfaces::ConsoleFallbackImpl();
 Interfaces::ISysFunc* KrkrRuntime::sysfunc = new Interfaces::SysFuncFallbackImpl();
+Interfaces::IFilePath* KrkrRuntime::filepath = new Interfaces::FilePathFallbackImpl();
 std::map<tjs_string, tjs_string> KrkrRuntime::arguments;
 bool KrkrRuntime::quit_required = false;
 int KrkrRuntime::quit_code = 0;

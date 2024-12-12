@@ -32,7 +32,8 @@ add_library(libruntime STATIC
         native_classes/layer.cc
         native_classes/layer.h
         rendering/layer_tree.cc
-        rendering/layer_tree.h)
+        rendering/layer_tree.h
+        interfaces/filepath.h)
 
 target_include_directories(libruntime PUBLIC ../libtjs2)
 target_include_directories(libruntime PUBLIC ../libsdl2/include)

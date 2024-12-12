@@ -19,11 +19,6 @@ namespace LibRuntime::Interfaces {
         virtual bool file_exists(const tjs_char *path) = 0;
         virtual bool directory_exists(const tjs_char *path) = 0;
 
-        // ファイルシステム情報関連
-        virtual tjs_int get_maxpath_length() = 0;
-        virtual bool get_home_directory(tjs_string &result) = 0;
-        virtual bool get_appdata_directory(tjs_string &result) = 0;
-
         // ユーティリティ
         virtual bool path_combine(const tjs_char *path1, const tjs_char *path2, tjs_char *out) = 0;
     };
@@ -50,18 +45,6 @@ namespace LibRuntime::Interfaces {
 
         tTJSBinaryStream *open(const tjs_char *path, tjs_uint32 flags) override {
             return nullptr;
-        };
-
-        tjs_int get_maxpath_length() override {
-            return 260;
-        };
-
-        bool get_home_directory(tjs_string &result) override {
-            return false;
-        }
-
-        bool get_appdata_directory(tjs_string &result) override {
-            return false;
         }
 
         bool path_combine(const tjs_char *path1, const tjs_char *path2, tjs_char *out) override {

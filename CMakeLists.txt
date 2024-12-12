@@ -17,7 +17,9 @@ if (UNIX)
     # Kirikiri X for Linux
     add_executable(krkrx src/linux/main.cc
             src/linux/sysfunc_impl.cpp
-            src/linux/sysfunc_impl.h)
+            src/linux/sysfunc_impl.h
+            src/linux/filepath_impl.cc
+            src/linux/filepath_impl.h)
 elseif (WIN32)
     # Kirikiri X for Windows
     add_compile_definitions(UNICODE)
