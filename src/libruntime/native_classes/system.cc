@@ -145,7 +145,7 @@ SystemNativeClass::SystemNativeClass() : tTJSNativeClass(TJS_W("System")) {
             TJS_BEGIN_NATIVE_PROP_GETTER
                 {
                     tjs_string app_data_path;
-                    KrkrRuntime::filesystem->get_appdata_directory(app_data_path);
+                    KrkrRuntime::filepath->get_home_directory(app_data_path);
                     *result = app_data_path.c_str();
                     return TJS_S_OK;
                 }
@@ -161,7 +161,7 @@ SystemNativeClass::SystemNativeClass() : tTJSNativeClass(TJS_W("System")) {
             TJS_BEGIN_NATIVE_PROP_GETTER
                 {
                     tjs_string app_data_path;
-                    KrkrRuntime::filesystem->get_appdata_directory(app_data_path);
+                    KrkrRuntime::filepath->get_exe_path(app_data_path);
                     *result = app_data_path.c_str();
                     return TJS_S_OK;
                 }
@@ -239,13 +239,16 @@ SystemNativeClass::SystemNativeClass() : tTJSNativeClass(TJS_W("System")) {
         {
             TJS_BEGIN_NATIVE_PROP_GETTER
             {
-                return TJS_E_NOTIMPL;
+                tjs_string exe_path;
+                KrkrRuntime::filepath->get_exe_path(exe_path);
+                *result = exe_path.c_str();
+                return TJS_S_OK;
             }
             TJS_END_NATIVE_PROP_GETTER
 
             TJS_DENY_NATIVE_PROP_SETTER
         }
-        TJS_END_NATIVE_PROP_DECL(exeName)
+        TJS_END_NATIVE_PROP_DECL(exePath)
 
 
         TJS_BEGIN_NATIVE_PROP_DECL(exitOnWindowClose)
