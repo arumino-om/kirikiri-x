@@ -32,7 +32,12 @@ add_library(libruntime STATIC
         native_classes/layer.cc
         native_classes/layer.h
         rendering/layer_tree.cc
-        rendering/layer_tree.h)
+        rendering/layer_tree.h
+        native_classes/rect.cc
+        native_classes/rect.h
+        native_instances/rect_instance.cc
+        native_instances/rect_instance.h
+        types/rect.h)
 
 target_include_directories(libruntime PUBLIC ../libtjs2)
 target_include_directories(libruntime PUBLIC ../libsdl2/include)
