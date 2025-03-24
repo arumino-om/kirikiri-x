@@ -4,6 +4,11 @@
 using namespace LibRuntime::NativeInstances;
 using namespace LibRuntime::NativeClasses;
 
+RectNativeInstance::RectNativeInstance()
+{
+    rect_ = {};
+}
+
 tjs_error RectNativeInstance::Construct(tjs_int numparams, tTJSVariant** param, iTJSDispatch2* tjs_obj)
 {
     RectNativeInstance* old_instance = nullptr;
@@ -30,7 +35,7 @@ tjs_error RectNativeInstance::Construct(tjs_int numparams, tTJSVariant** param, 
     case 4:
         // 引数が4つのときは，数値型かつ left, top, right, bottom の順番で指定されているはず．
         set(*param[0], *param[1], *param[2], *param[3]);
-        break;
+        return TJS_S_OK;
 
     default:
         return TJS_E_INVALIDPARAM;

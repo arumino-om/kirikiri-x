@@ -6,6 +6,7 @@
 #include <tjsError.h>
 #include <tjsNative.h>
 
+#include "../native_classes/rect.h"
 #include "../types/rect.h"
 
 namespace LibRuntime {
@@ -15,6 +16,8 @@ namespace LibRuntime {
 
     namespace NativeInstances {
         class RectNativeInstance : public tTJSNativeInstance {
+            friend class NativeClasses::RectNativeClass;
+
         public:
             RectNativeInstance();
             tjs_error TJS_INTF_METHOD Construct(tjs_int numparams, tTJSVariant **param, iTJSDispatch2 *tjs_obj) override;
