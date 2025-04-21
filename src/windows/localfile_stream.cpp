@@ -66,13 +66,13 @@ tjs_uint64 WindowsLocalFileStream::Seek(tjs_int64 offset, tjs_int whence) {
     return new_fileptr->QuadPart;
 }
 
-tjs_uint WindowsLocalFileStream::Read(const void *buffer, tjs_uint read_size) {
+tjs_uint WindowsLocalFileStream::Read(void *buffer, tjs_uint read_size) {
     DWORD retval = 0;
     ReadFile(_handle, buffer, read_size, &retval, nullptr);
     return retval;
 }
 
-tjs_uint WindowsLocalFileStream::Write(void *buffer, tjs_uint write_size) {
+tjs_uint WindowsLocalFileStream::Write(const void *buffer, tjs_uint write_size) {
     DWORD retval = 0;
     WriteFile(_handle, buffer, write_size, &retval, nullptr);
     return retval;
