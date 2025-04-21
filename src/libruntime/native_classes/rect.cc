@@ -342,7 +342,7 @@ RectNativeClass::RectNativeClass() : tTJSNativeClass(TJS_W("Rect")) {
             TJS_BEGIN_NATIVE_PROP_GETTER
             {
                 TJS_GET_NATIVE_INSTANCE(_this, NativeInstances::RectNativeInstance);
-                *result = tTJSVariant((tjs_intptr_t)&_this->rect_);
+                *result = tTJSVariant(reinterpret_cast<tTVInteger>(&_this->rect_));
                 return TJS_S_OK;
             }
             TJS_END_NATIVE_PROP_GETTER
