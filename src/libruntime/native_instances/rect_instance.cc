@@ -53,7 +53,7 @@ void RectNativeInstance::Invalidate()
 void RectNativeInstance::add_offset(tjs_int x, tjs_int y)
 {
     rect_.left += x;
-    rect_.right += y;
+    rect_.right += x;
     rect_.top += y;
     rect_.bottom += y;
 }
