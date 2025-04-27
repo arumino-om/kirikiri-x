@@ -39,7 +39,7 @@ add_library(libruntime STATIC
         native_instances/rect_instance.h
         types/rect.h)
 
-target_include_directories(libruntime PUBLIC ../libtjs2)
+target_include_directories(libruntime PUBLIC ../tjs2)
 target_include_directories(libruntime PUBLIC ../libsdl2/include)
 
 target_link_libraries(libruntime libtjs2)
