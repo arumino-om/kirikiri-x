@@ -1,8 +1,9 @@
 enable_testing()
 
 add_executable(
-    krkrx_test
-    main.cc
+        krkrx_test
+        main.cc
+        core/native_instances/rect.cc
 )
 
 target_link_libraries(
