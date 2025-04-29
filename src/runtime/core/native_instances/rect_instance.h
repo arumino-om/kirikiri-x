@@ -1,9 +1,5 @@
 #pragma once
-#include <memory>
-#include <vector>
-#include <SDL.h>
 #include <tjs.h>
-#include <tjsError.h>
 #include <tjsNative.h>
 
 #include "../native_classes/rect.h"
