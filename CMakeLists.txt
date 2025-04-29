@@ -43,9 +43,7 @@ elseif(UNIX)
     # UNIX, Linux 向けビルド
     add_subdirectory(src/platforms/linux EXCLUDE_FROM_ALL)
     set(PLATFORM_IMPL_TARGET linux_impl)
-    set(PLATFORM_ENTRY_POINT_FILE src/platforms/linux/main.cc
-            src/tests/main.cc
-            src/tests/main.h)
+    set(PLATFORM_ENTRY_POINT_FILE src/platforms/linux/main.cc)
 
 else()
     message(FATAL_ERROR "Unsupported platform: ${CMAKE_SYSTEM_NAME}")
