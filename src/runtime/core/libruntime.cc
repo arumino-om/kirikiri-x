@@ -22,6 +22,8 @@ int KrkrRuntime::start_runtime(int argc, char *argv[]) {
     console->write(TJS_W("--- Kirikiri X Runtime ---\n"));
     console->write(TJS_W("Initializing runtime\n"));
 
+    SDL_Init(SDL_INIT_VIDEO);
+
     KrkrRuntime::parse_args(argc, argv);
     Messages::init_tjs_messages();
     Messages::init_libruntime_messages();
@@ -41,6 +43,7 @@ int KrkrRuntime::start_runtime(int argc, char *argv[]) {
         }
     }
 
+    SDL_Quit();
     return 0;
 }
 
@@ -101,19 +104,6 @@ bool KrkrRuntime::interpreter() {
         if (readresult == TJS_W("exit();")) break;
 
         try {
-            // auto res = ScriptManager::eval(readresult);
-            // switch (res.Type()) {
-            // case tvtObject:
-            //     console->write(TJS_W("Object"));
-            //     break;
-            // case tvtVoid:
-            //     break;
-            // default:
-            //     res.ToString();
-            //     console->write(res.GetString());
-            //     break;
-            // }
-            // console->write(TJS_W("\n"));
             ScriptManager::run(readresult);
 
         } catch (eTJSError &err) {

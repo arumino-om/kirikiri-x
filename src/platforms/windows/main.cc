@@ -1,6 +1,5 @@
 #include "filesystem_impl.h"
 #include "console_impl.h"
-#include "SDL.h"
 #include "libruntime.h"
 #include <iostream>
 #include <windows.h>
@@ -22,11 +21,9 @@ int main(int argv, char* args[]) {
     UINT sav = GetConsoleOutputCP();
     SetConsoleOutputCP(65001);
 
-    SDL_Init(SDL_INIT_VIDEO);
     LibRuntime::KrkrRuntime::filesystem = new WindowsFileSystem();
     LibRuntime::KrkrRuntime::console = new WindowsConsole();
     LibRuntime::KrkrRuntime::start_runtime(argv, args);
-    SDL_Quit();
 
     SetConsoleOutputCP(sav);
 

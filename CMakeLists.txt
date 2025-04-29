@@ -1,47 +1,60 @@
-cmake_minimum_required(VERSION 3.21)
-project(kirikiri_x LANGUAGES C CXX)
+# ============= KIRIKIRI X =============
+# Kirikiri X is a cross-platform game engine based on Kirikiri Z
+# ======================================
 
-# Define the C/C++ standard
+cmake_minimum_required(VERSION 3.21)
+project(krkrx LANGUAGES C CXX)
+
 set(CMAKE_C_STANDARD 17)
 set(CMAKE_CXX_STANDARD 20)
-set(CMAKE_CXX_STANDARD_REQUIRED True)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-# Add the subdirectories
-add_subdirectory(src/liboniguruma)
-add_subdirectory(src/libsdl2 EXCLUDE_FROM_ALL)
-add_subdirectory(src/libtjs2)
-add_subdirectory(src/libruntime)
+# === 外部ライブラリをインポート ===
+include(FetchContent)
+FetchContent_Declare(
+        googletest
+        DOWNLOAD_EXTRACT_TIMESTAMP ON
+        URL https://github.com/google/googletest/archive/03597a01ee50ed33e9dfd640b249b4be3799d395.zip
+)
+FetchContent_Declare(
+        sdl2
+        DOWNLOAD_EXTRACT_TIMESTAMP ON
+        URL https://github.com/libsdl-org/SDL/archive/refs/tags/release-2.32.2.zip
+)
+set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)  # For Windows: Prevent overriding the parent project's compiler/linker settings
+FetchContent_MakeAvailable(googletest)
+FetchContent_MakeAvailable(sdl2)
+add_subdirectory(src/third_party/oniguruma EXCLUDE_FROM_ALL)
 
-# Add the krkrx executable
-if (UNIX)
-    # Kirikiri X for Linux
-    add_executable(krkrx src/linux/main.cc
-            src/linux/sysfunc_impl.cpp
-            src/linux/sysfunc_impl.h)
-elseif (WIN32)
-    # Kirikiri X for Windows
+# === 吉里吉里X本体 ===
+add_subdirectory(src/runtime EXCLUDE_FROM_ALL)
+
+if(WIN32)
+    # Windows 向けビルド
     add_compile_definitions(UNICODE)
     if (MSVC)
-#        add_compile_options("/utf-8")
-        add_compile_options("/std:c++20")
         add_compile_options("/source-charset:utf-8")
     endif()
-    add_executable(krkrx WIN32 src/windows/main.cc src/windows/filesystem_impl.cc src/windows/filesystem_impl.h src/windows/console_impl.cc src/windows/console_impl.h
-            src/windows/localfile_stream.cpp
-            src/windows/localfile_stream.h)
+    add_subdirectory(src/platforms/windows EXCLUDE_FROM_ALL)
+    set(PLATFORM_IMPL_TARGET win32_impl)
+    set(PLATFORM_ENTRY_POINT_FILE src/platforms/windows/main.cc)
 
-    target_link_libraries(krkrx PUBLIC pathcch) # Uses in PathCchCombine()
-endif (UNIX)
+elseif(UNIX)
+    # UNIX, Linux 向けビルド
+    add_subdirectory(src/platforms/linux EXCLUDE_FROM_ALL)
+    set(PLATFORM_IMPL_TARGET linux_impl)
+    set(PLATFORM_ENTRY_POINT_FILE src/platforms/linux/main.cc)
 
-# Add the include directories
-target_include_directories(krkrx PUBLIC src/libtjs2)
-target_include_directories(krkrx PUBLIC src/libruntime)
-
-# Link the SDL2
-if(TARGET SDL2::SDL2main)
-    target_link_libraries(krkrx PRIVATE SDL2::SDL2main)
+else()
+    message(FATAL_ERROR "Unsupported platform: ${CMAKE_SYSTEM_NAME}")
 endif()
-target_link_libraries(krkrx PUBLIC SDL2::SDL2)
 
-# Link other required libraries
-target_link_libraries(krkrx PUBLIC onig libtjs2 libruntime)
+add_executable(${PROJECT_NAME} ${PLATFORM_ENTRY_POINT_FILE})
+target_link_libraries(${PROJECT_NAME} PRIVATE
+        runtime
+        ${PLATFORM_IMPL_TARGET}
+)
+
+# === テスト ===
+# src/tests/CMakeLists.txt にテスト用の定義が記載されている
+add_subdirectory(src/tests)

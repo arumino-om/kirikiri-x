@@ -43,22 +43,22 @@ else()
   check_symbol_exists(alloca "stdlib.h;malloc.h" HAVE_ALLOCA)
 endif()
 
-configure_file(${CMAKE_CURRENT_SOURCE_DIR}/src/config.h.cmake.in ${CMAKE_CURRENT_BINARY_DIR}/config.h)
+configure_file(src/config.h.cmake.in ${CMAKE_CURRENT_BINARY_DIR}/config.h)
 
 set(_SRCS src/regint.h src/regparse.h src/regenc.h src/st.h
- src/regerror.c src/regparse.c src/regext.c src/regcomp.c src/regexec.c
- src/reggnu.c src/regenc.c src/regsyntax.c src/regtrav.c src/regversion.c
- src/st.c src/onig_init.c
- src/unicode.c src/ascii.c src/utf8.c src/utf16_be.c src/utf16_le.c
- src/utf32_be.c src/utf32_le.c src/euc_jp.c src/sjis.c src/iso8859_1.c
- src/iso8859_2.c src/iso8859_3.c src/iso8859_4.c src/iso8859_5.c
- src/iso8859_6.c src/iso8859_7.c src/iso8859_8.c src/iso8859_9.c
- src/iso8859_10.c src/iso8859_11.c src/iso8859_13.c src/iso8859_14.c
- src/iso8859_15.c src/iso8859_16.c src/euc_tw.c src/euc_kr.c src/big5.c
- src/gb18030.c src/koi8_r.c src/cp1251.c
- src/euc_jp_prop.c src/sjis_prop.c
- src/unicode_unfold_key.c
- src/unicode_fold1_key.c src/unicode_fold2_key.c src/unicode_fold3_key.c)
+        src/regerror.c src/regparse.c src/regext.c src/regcomp.c src/regexec.c
+        src/reggnu.c src/regenc.c src/regsyntax.c src/regtrav.c src/regversion.c
+        src/st.c src/onig_init.c
+        src/unicode.c src/ascii.c src/utf8.c src/utf16_be.c src/utf16_le.c
+        src/utf32_be.c src/utf32_le.c src/euc_jp.c src/sjis.c src/iso8859_1.c
+        src/iso8859_2.c src/iso8859_3.c src/iso8859_4.c src/iso8859_5.c
+        src/iso8859_6.c src/iso8859_7.c src/iso8859_8.c src/iso8859_9.c
+        src/iso8859_10.c src/iso8859_11.c src/iso8859_13.c src/iso8859_14.c
+        src/iso8859_15.c src/iso8859_16.c src/euc_tw.c src/euc_kr.c src/big5.c
+        src/gb18030.c src/koi8_r.c src/cp1251.c
+        src/euc_jp_prop.c src/sjis_prop.c
+        src/unicode_unfold_key.c
+        src/unicode_fold1_key.c src/unicode_fold2_key.c src/unicode_fold3_key.c)
 
 set(_INST_HEADERS src/oniguruma.h src/oniggnu.h)
 
@@ -82,7 +82,7 @@ target_compile_definitions(onig PUBLIC
 
 if(BUILD_SHARED_LIBS)
   # Parse SOVERSION information from LTVERSION in configure.ac
-  file(STRINGS "${CMAKE_CURRENT_SOURCE_DIR}/configure.ac" LTVERSION REGEX "^LTVERSION *= *\"?[0-9]+:[0-9]+:[0-9]+\"?")
+  file(STRINGS "configure.ac" LTVERSION REGEX "^LTVERSION *= *\"?[0-9]+:[0-9]+:[0-9]+\"?")
   string(REGEX REPLACE "^LTVERSION *= *\"?([0-9]+:[0-9]+:[0-9]+)\"?.*$" "\\1" LTVERSION "${LTVERSION}")
   string(REGEX REPLACE "^([0-9]+):([0-9]+):([0-9]+)" "\\1" LTCURRENT ${LTVERSION})
   string(REGEX REPLACE "^([0-9]+):([0-9]+):([0-9]+)" "\\2" LTREVISION ${LTVERSION})
@@ -199,9 +199,9 @@ install(
 # Documentation (uses onig not oniguruma for directory)
 if(INSTALL_DOCUMENTATION)
 install(FILES doc/API doc/API.ja doc/RE doc/RE.ja doc/FAQ doc/FAQ.ja
-              doc/CALLOUTS.BUILTIN doc/CALLOUTS.BUILTIN.ja
-              doc/CALLOUTS.API doc/CALLOUTS.API.ja
-              doc/UNICODE_PROPERTIES
+        doc/CALLOUTS.BUILTIN doc/CALLOUTS.BUILTIN.ja
+        doc/CALLOUTS.API doc/CALLOUTS.API.ja
+        doc/UNICODE_PROPERTIES
         DESTINATION "${CMAKE_INSTALL_DATADIR}/doc/${PACKAGE}")
 
 # Other files (uses onig not oniguruma for directory)
@@ -212,19 +212,19 @@ endif()
 # Examples
 if(INSTALL_EXAMPLES)
 install(FILES sample/bug_fix.c sample/callback_each_match.c
-              sample/callout.c sample/count.c sample/crnl.c
-              sample/echo.c sample/encode.c sample/listcap.c
-              sample/names.c sample/posix.c sample/regset.c
-              sample/scan.c sample/simple.c sample/sql.c
-              sample/syntax.c sample/user_property.c
+        sample/callout.c sample/count.c sample/crnl.c
+        sample/echo.c sample/encode.c sample/listcap.c
+        sample/names.c sample/posix.c sample/regset.c
+        sample/scan.c sample/simple.c sample/sql.c
+        sample/syntax.c sample/user_property.c
         DESTINATION "${CMAKE_INSTALL_DATADIR}/examples/${PACKAGE}")
 endif()
 
 # pkg-config
 
-configure_file(${CMAKE_CURRENT_SOURCE_DIR}/oniguruma.pc.cmake.in ${CMAKE_CURRENT_BINARY_DIR}/oniguruma.pc @ONLY)
+configure_file(oniguruma.pc.cmake.in ${CMAKE_CURRENT_BINARY_DIR}/oniguruma.pc @ONLY)
 
-configure_file(${CMAKE_CURRENT_SOURCE_DIR}/onig-config.cmake.in ${CMAKE_CURRENT_BINARY_DIR}/onig-config @ONLY)
+configure_file(onig-config.cmake.in ${CMAKE_CURRENT_BINARY_DIR}/onig-config @ONLY)
 
 install(FILES ${CMAKE_CURRENT_BINARY_DIR}/oniguruma.pc
         DESTINATION ${CMAKE_INSTALL_LIBDIR}/pkgconfig)
