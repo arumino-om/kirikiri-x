@@ -1,9 +1,10 @@
 #include <gtest/gtest.h>
 #include <native_instances/rect_instance.h>
 
-#define PROPERTY_EXPECT(dispatch, propname, expected) \
-    dispatch->PropGet(TJS_MEMBERMUSTEXIST, TJS_W(propname), nullptr, &funcResult, dispatch); \
-    EXPECT_EQ(funcResult.AsInteger(), expected);
+#define PROPERTY_EXPECT_EQ(dispatch, propname, expected) \
+    tTJSVariant result_macro_##propname; \
+    dispatch->PropGet(TJS_MEMBERMUSTEXIST, TJS_W(#propname), nullptr, &result_macro_##propname, dispatch); \
+    EXPECT_EQ(result_macro_##propname.AsInteger(), expected);
 
 #define BUILD_SINGLE_PARAM(name, arg1) \
     auto **name = new tTJSVariant*[1]; \
@@ -24,17 +25,16 @@
 TEST(CoreNativeInstances_RectTest, EqualProperties) {
     auto rect_nc = LibRuntime::NativeClasses::RectNativeClass();
     iTJSDispatch2 *rect;
-    tTJSVariant funcResult;
 
     BUILD_QUADRUPLE_PARAMS(rectParam, 10, 12, 24, 58);
     rect_nc.CreateNew(TJS_MEMBERMUSTEXIST, nullptr, nullptr, &rect, 4, rectParam, nullptr);
 
-    PROPERTY_EXPECT(rect, "left", 10);
-    PROPERTY_EXPECT(rect, "top", 12);
-    PROPERTY_EXPECT(rect, "right", 24);
-    PROPERTY_EXPECT(rect, "bottom", 58);
-    PROPERTY_EXPECT(rect, "width", 24 - 10); //right - left
-    PROPERTY_EXPECT(rect, "height", 58 - 12); //bottom - top
+    PROPERTY_EXPECT_EQ(rect, left, 10);
+    PROPERTY_EXPECT_EQ(rect, top, 12);
+    PROPERTY_EXPECT_EQ(rect, right, 24);
+    PROPERTY_EXPECT_EQ(rect, bottom, 58);
+    PROPERTY_EXPECT_EQ(rect, width, 24 - 10); //right - left
+    PROPERTY_EXPECT_EQ(rect, height, 58 - 12); //bottom - top
 
     delete[] rectParam;
 
@@ -52,12 +52,12 @@ TEST(CoreNativeInstances_RectTest, addOffset) {
     rect->FuncCall(TJS_MEMBERMUSTEXIST, TJS_W("addOffset"), nullptr, nullptr, 2, offsetParam, rect);
 
     tTJSVariant funcResult;
-    PROPERTY_EXPECT(rect, "left", 10 + offsetParam[0]->AsInteger());
-    PROPERTY_EXPECT(rect, "top", 12 + offsetParam[1]->AsInteger());
-    PROPERTY_EXPECT(rect, "right", 24 + offsetParam[0]->AsInteger());
-    PROPERTY_EXPECT(rect, "bottom", 58 + offsetParam[1]->AsInteger());
-    PROPERTY_EXPECT(rect, "width", (24 + offsetParam[0]->AsInteger()) - (10 + offsetParam[0]->AsInteger())); //right - left
-    PROPERTY_EXPECT(rect, "height", (58 + offsetParam[1]->AsInteger()) - (12 + offsetParam[1]->AsInteger())); //bottom - top
+    PROPERTY_EXPECT_EQ(rect, left, 10 + offsetParam[0]->AsInteger());
+    PROPERTY_EXPECT_EQ(rect, top, 12 + offsetParam[1]->AsInteger());
+    PROPERTY_EXPECT_EQ(rect, right, 24 + offsetParam[0]->AsInteger());
+    PROPERTY_EXPECT_EQ(rect, bottom, 58 + offsetParam[1]->AsInteger());
+    PROPERTY_EXPECT_EQ(rect, width, (24 + offsetParam[0]->AsInteger()) - (10 + offsetParam[0]->AsInteger())); //right - left
+    PROPERTY_EXPECT_EQ(rect, height, (58 + offsetParam[1]->AsInteger()) - (12 + offsetParam[1]->AsInteger())); //bottom - top
 
     delete[] rectParam;
     delete[] offsetParam;
@@ -75,12 +75,12 @@ TEST(CoreNativeInstances_RectTest, clear)
     rect_nc.CreateNew(TJS_MEMBERMUSTEXIST, nullptr, nullptr, &rect, 4, rectParam, nullptr);
     rect->FuncCall(TJS_MEMBERMUSTEXIST, TJS_W("clear"), nullptr, nullptr, 0, nullptr, rect);
 
-    PROPERTY_EXPECT(rect, "left", 0);
-    PROPERTY_EXPECT(rect, "top", 0);
-    PROPERTY_EXPECT(rect, "right", 0);
-    PROPERTY_EXPECT(rect, "bottom", 0);
-    PROPERTY_EXPECT(rect, "width", 0); //right - left
-    PROPERTY_EXPECT(rect, "height", 0); //bottom - top
+    PROPERTY_EXPECT_EQ(rect, left, 0);
+    PROPERTY_EXPECT_EQ(rect, top, 0);
+    PROPERTY_EXPECT_EQ(rect, right, 0);
+    PROPERTY_EXPECT_EQ(rect, bottom, 0);
+    PROPERTY_EXPECT_EQ(rect, width, 0); //right - left
+    PROPERTY_EXPECT_EQ(rect, height, 0); //bottom - top
 
     delete[] rectParam;
 
@@ -101,12 +101,12 @@ TEST(CoreNativeInstances_RectTest, clip)
     BUILD_SINGLE_PARAM(objectParam, rect2);
     rect1->FuncCall(TJS_MEMBERMUSTEXIST, TJS_W("clip"), nullptr, nullptr, 1, objectParam, rect1);
 
-    PROPERTY_EXPECT(rect1, "left", 14);
-    PROPERTY_EXPECT(rect1, "top", 17);
-    PROPERTY_EXPECT(rect1, "right", 20);
-    PROPERTY_EXPECT(rect1, "bottom", 40);
-    PROPERTY_EXPECT(rect1, "width", 20 - 14); //right - left
-    PROPERTY_EXPECT(rect1, "height", 40 - 17); //bottom - top
+    PROPERTY_EXPECT_EQ(rect1, left, 14);
+    PROPERTY_EXPECT_EQ(rect1, top, 17);
+    PROPERTY_EXPECT_EQ(rect1, right, 20);
+    PROPERTY_EXPECT_EQ(rect1, bottom, 40);
+    PROPERTY_EXPECT_EQ(rect1, width, 20 - 14); //right - left
+    PROPERTY_EXPECT_EQ(rect1, height, 40 - 17); //bottom - top
 
     delete[] rectParam1;
     delete[] rectParam2;
