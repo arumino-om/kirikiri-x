@@ -9,18 +9,21 @@
 #define BUILD_SINGLE_PARAM(name, arg1) \
     auto **name = new tTJSVariant*[1]; \
     name[0] = new tTJSVariant(arg1); \
+    auto cleanup_##name = [&]() { delete name[0]; delete[] name; };
 
 #define BUILD_DOUBLE_PARAMS(name, arg1, arg2) \
     auto **name = new tTJSVariant*[2]; \
     name[0] = new tTJSVariant(arg1); \
     name[1] = new tTJSVariant(arg2); \
+    auto cleanup_##name = [&]() { delete name[0]; delete name[1]; delete[] name; };
 
 #define BUILD_QUADRUPLE_PARAMS(name, arg1, arg2, arg3, arg4) \
     auto **name = new tTJSVariant*[4]; \
     name[0] = new tTJSVariant(arg1); \
     name[1] = new tTJSVariant(arg2); \
     name[2] = new tTJSVariant(arg3); \
-    name[3] = new tTJSVariant(arg4);
+    name[3] = new tTJSVariant(arg4); \
+    auto cleanup_##name = [&]() { delete name[0]; delete name[1]; delete name[2]; delete name[3]; delete[] name; };
 
 TEST(CoreNativeInstances_RectTest, EqualProperties) {
     auto rect_nc = LibRuntime::NativeClasses::RectNativeClass();
