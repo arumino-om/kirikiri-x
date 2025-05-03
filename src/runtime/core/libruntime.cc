@@ -14,6 +14,7 @@ using namespace LibRuntime;
 Interfaces::IFileSystem* KrkrRuntime::filesystem = new Interfaces::FileSystemFallbackImpl();
 Interfaces::IConsole* KrkrRuntime::console = new Interfaces::ConsoleFallbackImpl();
 Interfaces::ISysFunc* KrkrRuntime::sysfunc = new Interfaces::SysFuncFallbackImpl();
+Interfaces::ISystemUI* KrkrRuntime::system_ui = new Interfaces::SystemUIFallbackImpl();
 std::map<tjs_string, tjs_string> KrkrRuntime::arguments;
 bool KrkrRuntime::quit_required = false;
 int KrkrRuntime::quit_code = 0;
@@ -91,6 +92,21 @@ void KrkrRuntime::get_runtime_version_full(tjs_string &verstr) {
     tjs_string runtime_version;
     KrkrRuntime::get_runtime_version(runtime_version);
     verstr = TJS_W("Kirikiri X Runtime ") + runtime_version;
+}
+
+ttstr KrkrRuntime::get_about_text()
+{
+    tjs_string verstr, osname;
+    get_runtime_version(verstr);
+    sysfunc->get_os_name(osname);
+    ttstr about_text;
+    about_text += TJS_W("吉里吉里X ランタイム version ") + verstr + TJS_W(" (TJS Version ") + ScriptManager::get_script_engine_version().c_str() + TJS_W(")\n");
+    about_text += TJS_W("OS: ") + osname + TJS_W("\n");
+    about_text += TJS_W("Copyright (C) 2025 Kirikiri X\n\n");
+    about_text += TJS_W("吉里吉里Xランタイムは，Apache License 2.0 に従って使用/改変/再頒布などを行えます．\n");
+    about_text += TJS_W("https://www.apache.org/licenses/LICENSE-2.0.txt\n");
+    about_text += TJS_W("----------------------------------------------------------------------------\n");
+    return about_text;
 }
 
 bool KrkrRuntime::interpreter() {

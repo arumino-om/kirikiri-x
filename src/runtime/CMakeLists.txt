@@ -17,6 +17,7 @@ message(STATUS "CORE_SOURCES: ${CORE_SOURCES}")
 add_library(runtime STATIC
         ${TJS2_SOURCES}
         ${CORE_SOURCES}
+        core/interfaces/system_ui.h
 )
 
 target_include_directories(runtime

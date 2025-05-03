@@ -43,7 +43,8 @@ SystemNativeClass::SystemNativeClass() : tTJSNativeClass(TJS_W("System")) {
 
 
         TJS_BEGIN_NATIVE_METHOD_DECL(createUUID)
-            return TJS_E_NOTIMPL;
+            if (result != nullptr) *result = KrkrRuntime::sysfunc->get_uuid();
+            return TJS_S_OK;
         TJS_END_NATIVE_METHOD_DECL(createUUID)
 
 
@@ -78,17 +79,40 @@ SystemNativeClass::SystemNativeClass() : tTJSNativeClass(TJS_W("System")) {
 
 
         TJS_BEGIN_NATIVE_METHOD_DECL(getKeyState)
-            return TJS_E_NOTIMPL;
+            if (numparams < 1) return TJS_E_BADPARAMCOUNT;
+            int numKeys = 0;
+            const tjs_uint8* arr = SDL_GetKeyboardState(&numKeys);
+
+            if (arr == nullptr || param[0]->AsInteger() >= numKeys) return TJS_E_INVALIDPARAM;
+            if (result != nullptr) {
+                *result = arr[param[0]->AsInteger()] ? 1 : 0;
+            }
+            return TJS_S_OK;
         TJS_END_NATIVE_METHOD_DECL(getKeyState)
 
 
         TJS_BEGIN_NATIVE_METHOD_DECL(getTickCount)
+            if (result != nullptr) {
+                *result = static_cast<tTVInteger>(KrkrRuntime::sysfunc->get_tick_time());
+            }
             return TJS_E_NOTIMPL;
         TJS_END_NATIVE_METHOD_DECL(getTickCount)
 
 
         TJS_BEGIN_NATIVE_METHOD_DECL(inform)
-            return TJS_E_NOTIMPL;
+            if (numparams < 1) return TJS_E_BADPARAMCOUNT;
+            ttstr message;
+            ttstr caption;
+            if (numparams > 1) {
+                message = param[0]->GetString();
+                caption = param[1]->GetString();
+            } else {
+                message = param[0]->GetString();
+                caption = TJS_W("通知");
+            }
+
+            KrkrRuntime::system_ui->show_dialog(caption, message);
+            return TJS_S_OK;
         TJS_END_NATIVE_METHOD_DECL(inform)
 
 
@@ -98,7 +122,10 @@ SystemNativeClass::SystemNativeClass() : tTJSNativeClass(TJS_W("System")) {
 
 
         TJS_BEGIN_NATIVE_METHOD_DECL(removeContinuousHandler)
-            return TJS_E_NOTIMPL;
+            if (numparams < 1) return TJS_E_BADPARAMCOUNT;
+            auto clo = param[0]->AsObjectClosureNoAddRef();
+            EventManager::remove_continuous_handler(clo);
+            return TJS_S_OK;
         TJS_END_NATIVE_METHOD_DECL(removeContinuousHandler)
 
 
@@ -119,7 +146,8 @@ SystemNativeClass::SystemNativeClass() : tTJSNativeClass(TJS_W("System")) {
 
 
         TJS_BEGIN_NATIVE_METHOD_DECL(showVersion)
-            return TJS_E_NOTIMPL;
+            KrkrRuntime::system_ui->show_version_dialog();
+            return TJS_S_OK;
         TJS_END_NATIVE_METHOD_DECL(showVersion)
 
 

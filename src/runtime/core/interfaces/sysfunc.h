@@ -14,6 +14,8 @@ namespace LibRuntime::Interfaces {
         virtual void execute(const tjs_char *program, const tjs_char *params) = 0;
         virtual bool create_app_lock(const tjs_char *lockname) = 0;
         virtual void get_os_name(tjs_string &os_name) = 0;
+        virtual unsigned long long get_tick_time() = 0;
+        virtual ttstr get_uuid() = 0;
     };
 
     /**
@@ -41,6 +43,16 @@ namespace LibRuntime::Interfaces {
 
         void get_os_name(tjs_string &os_name) override {
             os_name = TJS_W("Unknown OS");
+        }
+
+        unsigned long long get_tick_time() override {
+            //NOTE: 各プラットフォーム毎で実装する
+            return 0;
+        }
+
+        ttstr get_uuid() override {
+            //NOTE: 各プラットフォーム毎で実装する
+            return TJS_W("00000000-0000-0000-0000-000000000000");
         }
     };
 }

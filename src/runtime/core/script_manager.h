@@ -17,6 +17,7 @@ namespace LibRuntime {
         static tTJSVariant eval(const ttstr& script);
         static bool assign_message(const tjs_string& msg, const tjs_string& val);
         static bool handle_script_error(eTJSScriptException &error);
+        static ttstr get_script_engine_version();
 
     private:
         static bool debug_mode;

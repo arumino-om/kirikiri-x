@@ -4,6 +4,7 @@
 #include "interfaces/filesystem.h"
 #include "interfaces/console.h"
 #include "interfaces/sysfunc.h"
+#include "interfaces/system_ui.h"
 
 namespace LibRuntime {
     typedef struct RuntimeConfig {
@@ -22,12 +23,14 @@ namespace LibRuntime {
         static void set_argument(const tjs_string &name, const tjs_string &value);
         static void get_runtime_version(tjs_string &verstr);
         static void get_runtime_version_full(tjs_string &verstr);
+        static ttstr get_about_text();
 
         static void request_quit(int code);
 
         static Interfaces::IFileSystem *filesystem;
         static Interfaces::IConsole *console;
         static Interfaces::ISysFunc *sysfunc;
+        static Interfaces::ISystemUI *system_ui;
 
     private:
         static bool interpreter();
