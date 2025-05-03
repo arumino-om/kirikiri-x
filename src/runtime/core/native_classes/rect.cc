@@ -48,9 +48,9 @@ RectNativeClass::RectNativeClass() : tTJSNativeClass(TJS_W("Rect")) {
             TJS_GET_NATIVE_INSTANCE(_this, NativeInstances::RectNativeInstance);
 
             NativeInstances::RectNativeInstance *rect;
-            auto param0_objthis = param[0]->AsObjectThisNoAddRef();
-            if (!param0_objthis) return TJS_E_NATIVECLASSCRASH;
-            tjs_error hr = param0_objthis->NativeInstanceSupport(TJS_NIS_GETINSTANCE, RectNativeClass::ClassID, (iTJSNativeInstance **)&rect);
+            auto param0Obj = param[0]->AsObjectNoAddRef();
+            if (!param0Obj) return TJS_E_NATIVECLASSCRASH;
+            tjs_error hr = param0Obj->NativeInstanceSupport(TJS_NIS_GETINSTANCE, RectNativeClass::ClassID, (iTJSNativeInstance **)&rect);
             if (TJS_FAILED(hr)) return TJS_E_NATIVECLASSCRASH;
 
             auto retval = _this->clip(*rect);
@@ -68,9 +68,9 @@ RectNativeClass::RectNativeClass() : tTJSNativeClass(TJS_W("Rect")) {
             TJS_GET_NATIVE_INSTANCE(_this, NativeInstances::RectNativeInstance);
 
             NativeInstances::RectNativeInstance *rect;
-            auto param0_objthis = param[0]->AsObjectThisNoAddRef();
-            if (!param0_objthis) return TJS_E_NATIVECLASSCRASH;
-            tjs_error hr = param0_objthis->NativeInstanceSupport(TJS_NIS_GETINSTANCE, RectNativeClass::ClassID, (iTJSNativeInstance **)&rect);
+            auto param0Obj = param[0]->AsObjectNoAddRef();
+            if (!param0Obj) return TJS_E_NATIVECLASSCRASH;
+            tjs_error hr = param0Obj->NativeInstanceSupport(TJS_NIS_GETINSTANCE, RectNativeClass::ClassID, (iTJSNativeInstance **)&rect);
             if (TJS_FAILED(hr)) return TJS_E_NATIVECLASSCRASH;
 
             auto retval = _this->equal(*rect);
@@ -88,9 +88,9 @@ RectNativeClass::RectNativeClass() : tTJSNativeClass(TJS_W("Rect")) {
             TJS_GET_NATIVE_INSTANCE(_this, NativeInstances::RectNativeInstance);
 
             NativeInstances::RectNativeInstance *rect;
-            auto param0_objthis = param[0]->AsObjectThisNoAddRef();
-            if (!param0_objthis) return TJS_E_NATIVECLASSCRASH;
-            tjs_error hr = param0_objthis->NativeInstanceSupport(TJS_NIS_GETINSTANCE, RectNativeClass::ClassID, (iTJSNativeInstance **)&rect);
+            auto param0Obj = param[0]->AsObjectNoAddRef();
+            if (!param0Obj) return TJS_E_NATIVECLASSCRASH;
+            tjs_error hr = param0Obj->NativeInstanceSupport(TJS_NIS_GETINSTANCE, RectNativeClass::ClassID, (iTJSNativeInstance **)&rect);
             if (TJS_FAILED(hr)) return TJS_E_NATIVECLASSCRASH;
 
             auto retval = _this->included(*rect);
@@ -123,9 +123,9 @@ RectNativeClass::RectNativeClass() : tTJSNativeClass(TJS_W("Rect")) {
             TJS_GET_NATIVE_INSTANCE(_this, NativeInstances::RectNativeInstance);
 
             NativeInstances::RectNativeInstance *rect;
-            auto param0_objthis = param[0]->AsObjectThisNoAddRef();
-            if (!param0_objthis) return TJS_E_NATIVECLASSCRASH;
-            tjs_error hr = param0_objthis->NativeInstanceSupport(TJS_NIS_GETINSTANCE, RectNativeClass::ClassID, (iTJSNativeInstance **)&rect);
+            auto param0Obj = param[0]->AsObjectNoAddRef();
+            if (!param0Obj) return TJS_E_NATIVECLASSCRASH;
+            tjs_error hr = param0Obj->NativeInstanceSupport(TJS_NIS_GETINSTANCE, RectNativeClass::ClassID, (iTJSNativeInstance **)&rect);
             if (TJS_FAILED(hr)) return TJS_E_NATIVECLASSCRASH;
 
             auto retval = _this->intersects(*rect);
@@ -197,9 +197,9 @@ RectNativeClass::RectNativeClass() : tTJSNativeClass(TJS_W("Rect")) {
             TJS_GET_NATIVE_INSTANCE(_this, NativeInstances::RectNativeInstance);
 
             NativeInstances::RectNativeInstance *rect;
-            auto param0_objthis = param[0]->AsObjectThisNoAddRef();
-            if (!param0_objthis) return TJS_E_NATIVECLASSCRASH;
-            tjs_error hr = param0_objthis->NativeInstanceSupport(TJS_NIS_GETINSTANCE, RectNativeClass::ClassID, (iTJSNativeInstance **)&rect);
+            auto param0Obj = param[0]->AsObjectNoAddRef();
+            if (!param0Obj) return TJS_E_NATIVECLASSCRASH;
+            tjs_error hr = param0Obj->NativeInstanceSupport(TJS_NIS_GETINSTANCE, RectNativeClass::ClassID, (iTJSNativeInstance **)&rect);
             if (TJS_FAILED(hr)) return TJS_E_NATIVECLASSCRASH;
 
             auto retval = _this->union_rect(*rect);
