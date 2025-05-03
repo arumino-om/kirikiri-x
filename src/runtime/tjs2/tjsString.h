@@ -382,7 +382,7 @@ public:
 	}
 
 	TJS_METHOD_DEF(void, Replace,
-		(const tTJSString &from, const tTJSString &to, bool forall = true));
+		(const tTJSString &replaceTarget, const tTJSString &replaceTo, bool forall = true));
 
 	tTJSString AsLowerCase() const;
 	tTJSString AsUpperCase() const;
