@@ -39,7 +39,7 @@ TEST(CoreNativeInstances_RectTest, EqualProperties) {
     PROPERTY_EXPECT_EQ(rect, width, 24 - 10); //right - left
     PROPERTY_EXPECT_EQ(rect, height, 58 - 12); //bottom - top
 
-    delete[] rectParam;
+    cleanup_rectParam();
 
     rect->Release();
 }
@@ -62,8 +62,8 @@ TEST(CoreNativeInstances_RectTest, addOffset) {
     PROPERTY_EXPECT_EQ(rect, width, (24 + offsetParam[0]->AsInteger()) - (10 + offsetParam[0]->AsInteger())); //right - left
     PROPERTY_EXPECT_EQ(rect, height, (58 + offsetParam[1]->AsInteger()) - (12 + offsetParam[1]->AsInteger())); //bottom - top
 
-    delete[] rectParam;
-    delete[] offsetParam;
+    cleanup_rectParam();
+    cleanup_offsetParam();
 
     rect->Release();
 }
@@ -85,7 +85,7 @@ TEST(CoreNativeInstances_RectTest, clear)
     PROPERTY_EXPECT_EQ(rect, width, 0); //right - left
     PROPERTY_EXPECT_EQ(rect, height, 0); //bottom - top
 
-    delete[] rectParam;
+    cleanup_rectParam();
 
     rect->Release();
 }
@@ -111,9 +111,9 @@ TEST(CoreNativeInstances_RectTest, clip)
     PROPERTY_EXPECT_EQ(rect1, width, 20 - 14); //right - left
     PROPERTY_EXPECT_EQ(rect1, height, 40 - 17); //bottom - top
 
-    delete[] rectParam1;
-    delete[] rectParam2;
-    delete[] objectParam;
+    cleanup_rectParam1();
+    cleanup_rectParam2();
+    cleanup_objectParam();
 
     rect1->Release();
 }
@@ -137,8 +137,9 @@ TEST(CoreNativeInstances_RectTest, equal)
     rect1->FuncCall(TJS_MEMBERMUSTEXIST, TJS_W("equal"), nullptr, &funcResult, 1, objectParam, rect1);
     ASSERT_EQ(funcResult.AsInteger(), 1);   //ここでは一致しているはず
 
-    delete[] rectParam1;
-    delete[] rectParam2;
+    cleanup_rectParam1();
+    cleanup_rectParam2();
+    cleanup_objectParam();
 
     rect1->Release();
 }
