@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.1)
+cmake_minimum_required(VERSION 3.6)
 project(oniguruma
   VERSION 6.9.8
   LANGUAGES C)

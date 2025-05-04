@@ -19,7 +19,7 @@ FetchContent_Declare(
 FetchContent_Declare(
         sdl2
         DOWNLOAD_EXTRACT_TIMESTAMP ON
-        URL https://github.com/libsdl-org/SDL/archive/refs/tags/release-2.32.2.zip
+        URL https://github.com/libsdl-org/SDL/archive/refs/tags/release-2.32.4.zip
 )
 set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)  # For Windows: Prevent overriding the parent project's compiler/linker settings
 FetchContent_MakeAvailable(googletest)
