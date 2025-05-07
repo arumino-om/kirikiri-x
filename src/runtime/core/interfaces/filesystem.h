@@ -23,9 +23,10 @@ namespace LibRuntime::Interfaces {
         virtual tjs_int get_maxpath_length() = 0;
         virtual bool get_home_directory(tjs_string &result) = 0;
         virtual bool get_appdata_directory(tjs_string &result) = 0;
+        virtual bool get_savedata_directory(tjs_string &result) = 0;
 
         // ユーティリティ
-        virtual bool path_combine(const tjs_char *path1, const tjs_char *path2, tjs_char *out) = 0;
+        virtual bool path_combine(const tjs_string &path1, const tjs_string &path2, tjs_string &result) = 0;
     };
 
     /**
@@ -64,7 +65,11 @@ namespace LibRuntime::Interfaces {
             return false;
         }
 
-        bool path_combine(const tjs_char *path1, const tjs_char *path2, tjs_char *out) override {
+        bool get_savedata_directory(tjs_string &result) override {
+            return false;
+        }
+
+        bool path_combine(const tjs_string &path1, const tjs_string &path2, tjs_string &result) override {
             return false;
         }
     };

@@ -189,7 +189,10 @@ SystemNativeClass::SystemNativeClass() : tTJSNativeClass(TJS_W("System")) {
             TJS_BEGIN_NATIVE_PROP_GETTER
                 {
                     tjs_string app_data_path;
-                    KrkrRuntime::filesystem->get_appdata_directory(app_data_path);
+                    if (!(KrkrRuntime::get_argument(TJS_W("-datapath"), app_data_path) || KrkrRuntime::filesystem->get_savedata_directory(app_data_path))) {
+                        result->Clear();
+                        return TJS_E_FAIL;
+                    }
                     *result = app_data_path.c_str();
                     return TJS_S_OK;
                 }

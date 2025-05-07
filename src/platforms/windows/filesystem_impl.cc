@@ -63,7 +63,32 @@ bool WindowsFileSystem::get_appdata_directory(tjs_string &result) {
     return true;
 }
 
-bool WindowsFileSystem::path_combine(const tjs_char *path1, const tjs_char *path2, tjs_char *out) {
-    HRESULT result = PathCchCombine((PWSTR)out, sizeof(out), (PCWSTR)path1, (PCWSTR)path2);
-    return result == S_OK;
+bool WindowsFileSystem::get_savedata_directory(tjs_string &result) {
+    tjs_char current_dir[MAX_PATH];
+    if (get_current_directory(current_dir) == 0) {
+        result.clear();
+        return false;
+    }
+
+    tjs_string combined_path;
+    if (!path_combine(current_dir, TJS_W("savedata"), combined_path)) {
+        result.clear();
+        return false;
+    }
+
+    result = combined_path;
+    return true;
+}
+
+
+bool WindowsFileSystem::path_combine(const tjs_string &path1, const tjs_string &path2, tjs_string &result) {
+    tjs_char combined_path[MAX_PATH];
+    HRESULT hr = PathCchCombine((PWSTR)combined_path, sizeof(combined_path), (PCWSTR)path1.c_str(), (PCWSTR)path2.c_str());
+    if (hr != S_OK) {
+        result.clear();
+        return false;
+    }
+
+    result = combined_path;
+    return true;
 }
