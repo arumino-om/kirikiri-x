@@ -74,6 +74,7 @@ void tTJSString::Replace(const tTJSString &replaceTarget, const tTJSString &repl
 	if(replaceTarget.IsEmpty()) return;
 
 	tjs_int fromlen = replaceTarget.GetLen();
+	tjs_int tolen = replaceTo.GetLen();
 	tTJSString replaced;
 	const tjs_char *curpos = c_str();
 
@@ -86,12 +87,13 @@ void tTJSString::Replace(const tTJSString &replaceTarget, const tTJSString &repl
 				replaced += curpos + fromlen;
 				break;
 			}
+			curpos += fromlen;
 		}
 		else
 		{
 			replaced += *curpos;
+			curpos++;
 		}
-		curpos++;
 	}
 
 	*this = replaced;
