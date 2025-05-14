@@ -257,7 +257,8 @@ SystemNativeClass::SystemNativeClass() : tTJSNativeClass(TJS_W("System")) {
         {
             TJS_BEGIN_NATIVE_PROP_GETTER
             {
-                return TJS_E_NOTIMPL;
+                *result = KrkrRuntime::environment->get_execution_path().c_str();
+                return TJS_S_OK;
             }
             TJS_END_NATIVE_PROP_GETTER
 

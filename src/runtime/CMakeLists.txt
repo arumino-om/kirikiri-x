@@ -18,6 +18,9 @@ add_library(runtime STATIC
         ${TJS2_SOURCES}
         ${CORE_SOURCES}
         core/interfaces/system_ui.h
+        core/interfaces/environment.h
+        core/storages/unified_path.cc
+        core/storages/unified_path.h
 )
 
 target_include_directories(runtime

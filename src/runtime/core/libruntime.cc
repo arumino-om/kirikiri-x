@@ -7,6 +7,7 @@
 #include <tjsError.h>
 #include "script_manager.h"
 #include "window_manager.h"
+#include "interfaces/environment.h"
 
 using namespace LibRuntime;
 
@@ -15,6 +16,7 @@ Interfaces::IFileSystem* KrkrRuntime::filesystem = new Interfaces::FileSystemFal
 Interfaces::IConsole* KrkrRuntime::console = new Interfaces::ConsoleFallbackImpl();
 Interfaces::ISysFunc* KrkrRuntime::sysfunc = new Interfaces::SysFuncFallbackImpl();
 Interfaces::ISystemUI* KrkrRuntime::system_ui = new Interfaces::SystemUIFallbackImpl();
+Interfaces::IEnvironment* KrkrRuntime::environment = new Interfaces::EnvironmentFallbackImpl();
 std::map<tjs_string, tjs_string> KrkrRuntime::arguments;
 bool KrkrRuntime::quit_required = false;
 int KrkrRuntime::quit_code = 0;

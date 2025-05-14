@@ -5,6 +5,7 @@
 #include "interfaces/console.h"
 #include "interfaces/sysfunc.h"
 #include "interfaces/system_ui.h"
+#include "interfaces/environment.h"
 
 namespace LibRuntime {
     typedef struct RuntimeConfig {
@@ -31,6 +32,7 @@ namespace LibRuntime {
         static Interfaces::IConsole *console;
         static Interfaces::ISysFunc *sysfunc;
         static Interfaces::ISystemUI *system_ui;
+        static Interfaces::IEnvironment *environment;
 
     private:
         static bool interpreter();
