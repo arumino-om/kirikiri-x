@@ -1,6 +1,7 @@
 #pragma once
 #include "tjs.h"
 #include "tjsTypes.h"
+#include "storages/unified_path.h"
 
 namespace LibRuntime::Interfaces {
     /**
@@ -27,6 +28,8 @@ namespace LibRuntime::Interfaces {
 
         // ユーティリティ
         virtual bool path_combine(const tjs_string &path1, const tjs_string &path2, tjs_string &result) = 0;
+        virtual Storages::UnifiedPath fpath_to_upath(const ttstr &fpath) = 0;
+        virtual ttstr upath_to_fpath(const Storages::UnifiedPath &upath) = 0;
     };
 
     /**
