@@ -10,6 +10,10 @@ jobs:
         with:
           submodules: recursive
 
+      - name: Install required packages
+        run: |
+          apt install libgtk-4-dev -y
+
       - name: Initialize
         run: |
           mkdir build
