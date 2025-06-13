@@ -82,16 +82,18 @@ void tTJSString::Replace(const tTJSString &replaceTarget, const tTJSString &repl
 		if (*curpos == *replaceTarget.c_str() && TJS_strncmp(curpos, replaceTarget.c_str(), fromlen) == 0)
 		{
 			replaced += replaceTo;
+			curpos += fromlen;
 			if(!forall) {
-				replaced += curpos + fromlen;
+				// forall が false なら，最初に見つかった replaceTarget を置換して終了
+				replaced += curpos; 
 				break;
 			}
 		}
 		else
 		{
 			replaced += *curpos;
+			curpos++;
 		}
-		curpos++;
 	}
 
 	*this = replaced;
