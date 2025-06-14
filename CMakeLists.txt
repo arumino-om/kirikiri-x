@@ -19,7 +19,7 @@ FetchContent_Declare(
 FetchContent_Declare(
         sdl2
         DOWNLOAD_EXTRACT_TIMESTAMP ON
-        URL https://github.com/libsdl-org/SDL/archive/refs/tags/release-2.32.2.zip
+        URL https://github.com/libsdl-org/SDL/archive/refs/tags/release-2.32.4.zip
 )
 set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)  # For Windows: Prevent overriding the parent project's compiler/linker settings
 FetchContent_MakeAvailable(googletest)
@@ -37,7 +37,11 @@ if(WIN32)
     endif()
     add_subdirectory(src/platforms/windows EXCLUDE_FROM_ALL)
     set(PLATFORM_IMPL_TARGET win32_impl)
-    set(PLATFORM_ENTRY_POINT_FILE src/platforms/windows/main.cc)
+    set(PLATFORM_ENTRY_POINT_FILE
+            src/platforms/windows/main.cc
+            src/platforms/windows/krkrx.rc
+            src/platforms/windows/resource.h
+    )
 
 elseif(UNIX)
     # UNIX, Linux 向けビルド
@@ -51,8 +55,8 @@ endif()
 
 add_executable(${PROJECT_NAME} ${PLATFORM_ENTRY_POINT_FILE})
 target_link_libraries(${PROJECT_NAME} PRIVATE
-        runtime
         ${PLATFORM_IMPL_TARGET}
+        runtime
 )
 
 # === テスト ===

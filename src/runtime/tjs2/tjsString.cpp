@@ -66,33 +66,37 @@ tjs_int64 tTJSString::AsInteger() const
 	return Ptr->ToInteger();
 }
 //---------------------------------------------------------------------------
-void tTJSString::Replace(const tTJSString &from, const tTJSString &to, bool forall)
+void tTJSString::Replace(const tTJSString &replaceTarget, const tTJSString &replaceTo, bool forall)
 {
 	// replaces the string partial "from", to "to".
 	// all "from" are replaced when "forall" is true.
 	if(IsEmpty()) return;
-	if(from.IsEmpty()) return;
+	if(replaceTarget.IsEmpty()) return;
 
-	tjs_int fromlen = from.GetLen();
+	tjs_int fromlen = replaceTarget.GetLen();
+	tTJSString replaced;
+	const tjs_char *curpos = c_str();
 
-	for(;;)
+	while (!(curpos == nullptr || *curpos == '\0'))
 	{
-		const tjs_char *st;
-		const tjs_char *p;
-		st = c_str();
-		p = TJS_strstr(st, from.c_str());
-		if(p)
+		if (*curpos == *replaceTarget.c_str() && TJS_strncmp(curpos, replaceTarget.c_str(), fromlen) == 0)
 		{
-			tTJSString name(*this, (int)(p-st));
-			tTJSString n2(p + fromlen);
-			*this = name + to + n2;
-			if(!forall) break;
+			replaced += replaceTo;
+			curpos += fromlen;
+			if(!forall) {
+				// forall が false なら，最初に見つかった replaceTarget を置換して終了
+				replaced += curpos; 
+				break;
+			}
 		}
 		else
 		{
-			break;
+			replaced += *curpos;
+			curpos++;
 		}
 	}
+
+	*this = replaced;
 }
 //---------------------------------------------------------------------------
 tTJSString tTJSString::AsLowerCase() const

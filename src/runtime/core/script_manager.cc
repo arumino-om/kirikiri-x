@@ -100,3 +100,12 @@ bool ScriptManager::handle_script_error(eTJSScriptException &error) {
 
     return exec_result;
 }
+
+ttstr ScriptManager::get_script_engine_version() {
+    tjs_char version[32];
+    TJS_snprintf(version, sizeof(version)/sizeof(tjs_char), TJS_W("%d.%d.%d"),
+        TJSVersionMajor,
+        TJSVersionMinor,
+        TJSVersionRelease);
+    return version;
+}

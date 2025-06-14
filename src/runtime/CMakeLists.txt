@@ -17,6 +17,7 @@ message(STATUS "CORE_SOURCES: ${CORE_SOURCES}")
 add_library(runtime STATIC
         ${TJS2_SOURCES}
         ${CORE_SOURCES}
+        core/interfaces/system_ui.h
 )
 
 target_include_directories(runtime
@@ -29,4 +30,4 @@ if(TARGET SDL2::SDL2main)
     target_link_libraries(runtime PRIVATE SDL2::SDL2main)
 endif()
 
-target_link_libraries(runtime PRIVATE onig SDL2::SDL2)
+target_link_libraries(runtime PRIVATE onig SDL2::SDL2-static)

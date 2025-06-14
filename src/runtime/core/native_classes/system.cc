@@ -3,6 +3,7 @@
 #include "../script_manager.h"
 #include "../event_manager.h"
 #include "../libruntime.h"
+#include "../storage/unified_storage_path.h"
 
 using namespace LibRuntime::NativeClasses;
 
@@ -43,7 +44,8 @@ SystemNativeClass::SystemNativeClass() : tTJSNativeClass(TJS_W("System")) {
 
 
         TJS_BEGIN_NATIVE_METHOD_DECL(createUUID)
-            return TJS_E_NOTIMPL;
+            if (result != nullptr) *result = KrkrRuntime::sysfunc->get_uuid();
+            return TJS_S_OK;
         TJS_END_NATIVE_METHOD_DECL(createUUID)
 
 
@@ -78,17 +80,40 @@ SystemNativeClass::SystemNativeClass() : tTJSNativeClass(TJS_W("System")) {
 
 
         TJS_BEGIN_NATIVE_METHOD_DECL(getKeyState)
-            return TJS_E_NOTIMPL;
+            if (numparams < 1) return TJS_E_BADPARAMCOUNT;
+            int numKeys = 0;
+            const tjs_uint8* arr = SDL_GetKeyboardState(&numKeys);
+
+            if (arr == nullptr || param[0]->AsInteger() >= numKeys) return TJS_E_INVALIDPARAM;
+            if (result != nullptr) {
+                *result = arr[param[0]->AsInteger()] ? 1 : 0;
+            }
+            return TJS_S_OK;
         TJS_END_NATIVE_METHOD_DECL(getKeyState)
 
 
         TJS_BEGIN_NATIVE_METHOD_DECL(getTickCount)
-            return TJS_E_NOTIMPL;
+            if (result != nullptr) {
+                *result = static_cast<tTVInteger>(KrkrRuntime::sysfunc->get_tick_time());
+            }
+            return TJS_S_OK;
         TJS_END_NATIVE_METHOD_DECL(getTickCount)
 
 
         TJS_BEGIN_NATIVE_METHOD_DECL(inform)
-            return TJS_E_NOTIMPL;
+            if (numparams < 1) return TJS_E_BADPARAMCOUNT;
+            ttstr message;
+            ttstr caption;
+            if (numparams > 1) {
+                message = param[0]->GetString();
+                caption = param[1]->GetString();
+            } else {
+                message = param[0]->GetString();
+                caption = TJS_W("通知");
+            }
+
+            KrkrRuntime::system_ui->show_dialog(caption, message);
+            return TJS_S_OK;
         TJS_END_NATIVE_METHOD_DECL(inform)
 
 
@@ -98,7 +123,10 @@ SystemNativeClass::SystemNativeClass() : tTJSNativeClass(TJS_W("System")) {
 
 
         TJS_BEGIN_NATIVE_METHOD_DECL(removeContinuousHandler)
-            return TJS_E_NOTIMPL;
+            if (numparams < 1) return TJS_E_BADPARAMCOUNT;
+            auto clo = param[0]->AsObjectClosureNoAddRef();
+            EventManager::remove_continuous_handler(clo);
+            return TJS_S_OK;
         TJS_END_NATIVE_METHOD_DECL(removeContinuousHandler)
 
 
@@ -119,7 +147,8 @@ SystemNativeClass::SystemNativeClass() : tTJSNativeClass(TJS_W("System")) {
 
 
         TJS_BEGIN_NATIVE_METHOD_DECL(showVersion)
-            return TJS_E_NOTIMPL;
+            KrkrRuntime::system_ui->show_version_dialog();
+            return TJS_S_OK;
         TJS_END_NATIVE_METHOD_DECL(showVersion)
 
 
@@ -161,8 +190,11 @@ SystemNativeClass::SystemNativeClass() : tTJSNativeClass(TJS_W("System")) {
             TJS_BEGIN_NATIVE_PROP_GETTER
                 {
                     tjs_string app_data_path;
-                    KrkrRuntime::filesystem->get_appdata_directory(app_data_path);
-                    *result = app_data_path.c_str();
+                    if (!(KrkrRuntime::get_argument(TJS_W("-datapath"), app_data_path) || KrkrRuntime::filesystem->get_savedata_directory(app_data_path))) {
+                        result->Clear();
+                        return TJS_E_FAIL;
+                    }
+                    *result = LibRuntime::Storage::UnifiedStoragePath(KrkrRuntime::filesystem->get_unified_storage_path(app_data_path));
                     return TJS_S_OK;
                 }
             TJS_END_NATIVE_PROP_GETTER
@@ -195,13 +227,16 @@ SystemNativeClass::SystemNativeClass() : tTJSNativeClass(TJS_W("System")) {
         {
             TJS_BEGIN_NATIVE_PROP_GETTER
             {
-                return TJS_E_NOTIMPL;
+                *result = EventManager::get_exception_handler();
+                return TJS_S_OK;
             }
             TJS_END_NATIVE_PROP_GETTER
 
             TJS_BEGIN_NATIVE_PROP_SETTER
             {
-                return TJS_E_NOTIMPL;
+                auto clo = param->AsObjectClosureNoAddRef();
+                EventManager::set_exception_handler(clo);
+                return TJS_S_OK;
             }
             TJS_END_NATIVE_PROP_SETTER
         }
@@ -226,7 +261,14 @@ SystemNativeClass::SystemNativeClass() : tTJSNativeClass(TJS_W("System")) {
         {
             TJS_BEGIN_NATIVE_PROP_GETTER
             {
-                return TJS_E_NOTIMPL;
+                ttstr exe_path;
+                auto get_result = KrkrRuntime::environment->get_execution_path(exe_path);
+                if (!get_result) {
+                    return TJS_E_FAIL; // Execution path could not be retrieved
+                }
+                Storage::UnifiedStoragePath path = KrkrRuntime::filesystem->get_unified_storage_path(exe_path.AsStdString());
+                *result = path.get_fullpath();
+                return TJS_S_OK;
             }
             TJS_END_NATIVE_PROP_GETTER
 
@@ -239,13 +281,19 @@ SystemNativeClass::SystemNativeClass() : tTJSNativeClass(TJS_W("System")) {
         {
             TJS_BEGIN_NATIVE_PROP_GETTER
             {
-                return TJS_E_NOTIMPL;
+                ttstr exe_path;
+                if (!KrkrRuntime::environment->get_execution_path(exe_path)) {
+                    return TJS_E_FAIL; // Execution path could not be retrieved
+                }
+                Storage::UnifiedStoragePath unified_path = KrkrRuntime::filesystem->get_unified_storage_path(exe_path.AsStdString());
+                *result = unified_path.parent_directory().get_fullpath();
+                return TJS_S_OK;
             }
             TJS_END_NATIVE_PROP_GETTER
 
             TJS_DENY_NATIVE_PROP_SETTER
         }
-        TJS_END_NATIVE_PROP_DECL(exeName)
+        TJS_END_NATIVE_PROP_DECL(exePath)
 
 
         TJS_BEGIN_NATIVE_PROP_DECL(exitOnWindowClose)
@@ -320,8 +368,8 @@ SystemNativeClass::SystemNativeClass() : tTJSNativeClass(TJS_W("System")) {
         {
             TJS_BEGIN_NATIVE_PROP_GETTER
             {
-                tjs_string osname;
-                KrkrRuntime::sysfunc->get_os_name(osname);
+                ttstr osname;
+                KrkrRuntime::environment->get_os_name(osname);
                 *result = osname;
                 return TJS_S_OK;
             }
@@ -336,7 +384,12 @@ SystemNativeClass::SystemNativeClass() : tTJSNativeClass(TJS_W("System")) {
         {
             TJS_BEGIN_NATIVE_PROP_GETTER
             {
-                return TJS_E_NOTIMPL;
+                ttstr personal_path;
+                if (!KrkrRuntime::environment->get_personal_path(personal_path)) {
+                    return TJS_E_FAIL; // Personal path could not be retrieved
+                }
+                *result = KrkrRuntime::filesystem->get_unified_storage_path(personal_path.AsStdString()).get_fullpath();
+                return TJS_S_OK;
             }
             TJS_END_NATIVE_PROP_GETTER
 
@@ -349,7 +402,12 @@ SystemNativeClass::SystemNativeClass() : tTJSNativeClass(TJS_W("System")) {
         {
             TJS_BEGIN_NATIVE_PROP_GETTER
             {
-                return TJS_E_NOTIMPL;
+                ttstr platform_name;
+                if (!KrkrRuntime::environment->get_platform_name(platform_name)) {
+                    return TJS_E_FAIL; // Platform name could not be retrieved
+                }
+                *result = platform_name;
+                return TJS_S_OK;
             }
             TJS_END_NATIVE_PROP_GETTER
 
@@ -362,7 +420,12 @@ SystemNativeClass::SystemNativeClass() : tTJSNativeClass(TJS_W("System")) {
         {
             TJS_BEGIN_NATIVE_PROP_GETTER
             {
-                return TJS_E_NOTIMPL;
+                ttstr saved_games_path;
+                if (!KrkrRuntime::environment->get_saved_games_path(saved_games_path)) {
+                    return TJS_E_FAIL; // Saved games path could not be retrieved
+                }
+                *result = KrkrRuntime::filesystem->get_unified_storage_path(saved_games_path.AsStdString()).get_fullpath();
+                return TJS_S_OK;
             }
             TJS_END_NATIVE_PROP_GETTER
 
@@ -375,7 +438,10 @@ SystemNativeClass::SystemNativeClass() : tTJSNativeClass(TJS_W("System")) {
         {
             TJS_BEGIN_NATIVE_PROP_GETTER
             {
-                return TJS_E_NOTIMPL;
+                SDL_DisplayMode dm;
+                SDL_GetCurrentDisplayMode(0, &dm);
+                *result = static_cast<tTVInteger>(dm.h);
+                return TJS_S_OK;
             }
             TJS_END_NATIVE_PROP_GETTER
 
@@ -388,7 +454,10 @@ SystemNativeClass::SystemNativeClass() : tTJSNativeClass(TJS_W("System")) {
         {
             TJS_BEGIN_NATIVE_PROP_GETTER
             {
-                return TJS_E_NOTIMPL;
+                SDL_DisplayMode dm;
+                SDL_GetCurrentDisplayMode(0, &dm);
+                *result = static_cast<tTVInteger>(dm.w);
+                return TJS_S_OK;
             }
             TJS_END_NATIVE_PROP_GETTER
 

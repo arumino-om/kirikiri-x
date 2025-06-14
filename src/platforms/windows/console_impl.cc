@@ -15,9 +15,33 @@ void WindowsConsole::error(const tjs_char *text) {
 }
 
 size_t WindowsConsole::readline(tjs_string &result) {
-    //TODO: 絵文字が入力できないのをなんとかしたい
+    HANDLE hStdin = GetStdHandle(STD_INPUT_HANDLE);
     std::wstring readresult;
-    std::getline(std::wcin, readresult);
+    const size_t CHUNK_SIZE = 1024;
+    wchar_t buffer[CHUNK_SIZE];
+    DWORD charsRead;
+    bool hasMore = true;
+    
+    // バッファサイズを超える入力に対応するため、チャンク単位で読み込む
+    while (hasMore) {
+        if (ReadConsoleW(hStdin, buffer, CHUNK_SIZE, &charsRead, nullptr)) {
+            // 改行文字を探し，見つかれば読み取り終了
+            for (size_t i = 0; i < charsRead; i++) {
+                if (buffer[i] == L'\r' && i + 1 < charsRead && buffer[i + 1] == L'\n') {
+                    readresult.append(buffer, i);
+                    hasMore = false;
+                    break;
+                }
+            }
+            
+            // 改行文字が見つからない場合はバッファの内容を追加
+            if (hasMore) readresult.append(buffer, charsRead);
+        } else {
+            // 読み込みに失敗した場合は仕方ないので，読み取り終了
+            hasMore = false;
+            break;
+        }
+    }
 
 #ifdef _MSC_VER
     result = readresult;
