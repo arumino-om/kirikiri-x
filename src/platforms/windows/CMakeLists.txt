@@ -12,6 +12,8 @@ add_library(win32_impl STATIC
         system_ui_impl.h
         sysfunc_impl.cc
         sysfunc_impl.h
+        environment_impl.cc
+        environment_impl.h
 )
 
 if (MSVC)
