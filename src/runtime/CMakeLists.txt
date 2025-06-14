@@ -30,4 +30,4 @@ if(TARGET SDL2::SDL2main)
     target_link_libraries(runtime PRIVATE SDL2::SDL2main)
 endif()
 
-target_link_libraries(runtime PRIVATE onig SDL2::SDL2)
+target_link_libraries(runtime PRIVATE onig SDL2::SDL2-static)
