@@ -12,7 +12,8 @@ jobs:
 
       - name: Install required packages
         run: |
-          apt install libgtk-4-dev -y
+          sudo apt update
+          sudo apt install libgtk-4-dev
 
       - name: Initialize
         run: |
