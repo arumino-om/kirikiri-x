@@ -3,6 +3,7 @@
 #include "libruntime.h"
 #include <windows.h>
 #include <fcntl.h>
+#include "environment_impl.h"
 #include "sysfunc_impl.h"
 #include "system_ui_impl.h"
 
@@ -27,6 +28,7 @@ int main(int argv, char* args[]) {
     LibRuntime::KrkrRuntime::console = new WindowsConsole();
     LibRuntime::KrkrRuntime::system_ui = new WindowsSystemUI();
     LibRuntime::KrkrRuntime::sysfunc = new WindowsSysFunc();
+    LibRuntime::KrkrRuntime::environment = new WindowsEnvironment();
     LibRuntime::KrkrRuntime::start_runtime(argv, args);
 
     SetConsoleOutputCP(sav);

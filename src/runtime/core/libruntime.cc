@@ -15,6 +15,7 @@ Interfaces::IFileSystem* KrkrRuntime::filesystem = new Interfaces::FileSystemFal
 Interfaces::IConsole* KrkrRuntime::console = new Interfaces::ConsoleFallbackImpl();
 Interfaces::ISysFunc* KrkrRuntime::sysfunc = new Interfaces::SysFuncFallbackImpl();
 Interfaces::ISystemUI* KrkrRuntime::system_ui = new Interfaces::SystemUIFallbackImpl();
+Interfaces::IEnvironment* KrkrRuntime::environment = new Interfaces::EnvironmentFallbackImpl();
 std::map<tjs_string, tjs_string> KrkrRuntime::arguments;
 bool KrkrRuntime::quit_required = false;
 int KrkrRuntime::quit_code = 0;
@@ -96,9 +97,10 @@ void KrkrRuntime::get_runtime_version_full(tjs_string &verstr) {
 
 ttstr KrkrRuntime::get_about_text()
 {
-    tjs_string verstr, osname;
+    tjs_string verstr;
+    ttstr osname;
     get_runtime_version(verstr);
-    sysfunc->get_os_name(osname);
+    environment->get_os_name(osname);
     ttstr about_text;
     about_text += TJS_W("吉里吉里X ランタイム version ") + verstr + TJS_W(" (TJS Version ") + ScriptManager::get_script_engine_version().c_str() + TJS_W(")\n");
     about_text += TJS_W("OS: ") + osname + TJS_W("\n");

@@ -1,6 +1,7 @@
 #pragma once
 #include "tjs.h"
 #include "tjsTypes.h"
+#include "../storage/unified_storage_path.h"
 
 namespace LibRuntime::Interfaces {
     /**
@@ -27,6 +28,10 @@ namespace LibRuntime::Interfaces {
 
         // ユーティリティ
         virtual bool path_combine(const tjs_string &path1, const tjs_string &path2, tjs_string &result) = 0;
+
+        // ユニファイドストレージパス
+        virtual LibRuntime::Storage::UnifiedStoragePath get_unified_storage_path(const tjs_string &path) = 0;
+        virtual tjs_string get_filesystem_path(const LibRuntime::Storage::UnifiedStoragePath &path) = 0;
     };
 
     /**
@@ -72,6 +77,15 @@ namespace LibRuntime::Interfaces {
         bool path_combine(const tjs_string &path1, const tjs_string &path2, tjs_string &result) override {
             return false;
         }
+
+        LibRuntime::Storage::UnifiedStoragePath get_unified_storage_path(const tjs_string &path) override {
+            return LibRuntime::Storage::UnifiedStoragePath(TJS_W(""), TJS_W(""), path);
+        }
+        
+        tjs_string get_filesystem_path(const LibRuntime::Storage::UnifiedStoragePath &path) override {
+            return tjs_string(path.get_fullpath().c_str());
+        }
+        
     };
 }
 

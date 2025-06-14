@@ -3,6 +3,8 @@
 #include <windows.h>
 #include <pathcch.h>
 #include <ShlObj_core.h>
+#include <algorithm>
+#include <cwctype>
 
 size_t WindowsFileSystem::get_current_directory(tjs_char *result) {
     DWORD buflen = GetCurrentDirectoryW(0, nullptr);
@@ -92,3 +94,59 @@ bool WindowsFileSystem::path_combine(const tjs_string &path1, const tjs_string &
     result = combined_path;
     return true;
 }
+
+UnifiedStoragePath WindowsFileSystem::get_unified_storage_path(const tjs_string &path) {
+    // path には Windows ファイルシステムで有効なパスが入っている．これを統合ストレージ名に変換する
+    // パスを正規化する
+    tjs_char normalized_path[MAX_PATH];
+    if (PathCchCanonicalize((PWSTR)normalized_path, MAX_PATH, (PCWSTR)path.c_str()) != S_OK) {
+        return UnifiedStoragePath(TJS_W(""), TJS_W(""), path);
+    }
+
+    // ドライブ文字を取得 (例: C:\path -> c)
+    ttstr drive;
+    if (normalized_path[1] == L':') {
+        drive = ttstr(normalized_path[0]);
+        drive = drive.AsLowerCase();
+    } else {
+        drive = ttstr();
+    }
+
+    // パスからドライブ部分を除去してスラッシュに変換 (例: C:\path -> /path)
+    tjs_string path_part = normalized_path;
+    if (path_part.length() >= 2 && path_part[1] == L':') {
+        path_part = path_part.substr(2);
+    }
+    std::replace(path_part.begin(), path_part.end(), L'\\', L'/');
+
+    drive += path_part;
+    
+    return UnifiedStoragePath("file", TJS_W("."), drive);
+}
+
+tjs_string WindowsFileSystem::get_filesystem_path(const UnifiedStoragePath &path) {
+    // path には 統合ストレージパスが入っている．これを Windows ファイルシステムのパスに変換する
+    // ドライブ文字を取得 (例: c: -> C:\)
+    tjs_string drive;
+    if (path.get_media_name() == TJS_W("file")) {
+        drive = path.get_path()[0];
+    } else {
+        drive = TJS_W("");
+    }
+
+    // パスを結合する
+    tjs_string path_part = path.get_path().c_str();
+    if (path_part.length() >= 2 && path_part[1] == L'/') {
+        path_part = path_part.substr(2);
+    }
+    std::replace(path_part.begin(), path_part.end(), L'/', L'\\');
+
+    // Windows API でノーマライズする
+    tjs_char normalized_path[MAX_PATH];
+    if (PathCchCanonicalize((PWSTR)normalized_path, MAX_PATH, (PCWSTR)path.get_fullpath().c_str()) != S_OK) {
+        return tjs_string();
+    }
+    
+    return tjs_string(normalized_path);
+}
+
