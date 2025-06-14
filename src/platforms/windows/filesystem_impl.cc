@@ -6,6 +6,8 @@
 #include <algorithm>
 #include <cwctype>
 
+using namespace LibRuntime::Storage;
+
 size_t WindowsFileSystem::get_current_directory(tjs_char *result) {
     DWORD buflen = GetCurrentDirectoryW(0, nullptr);
     if (result == nullptr) {

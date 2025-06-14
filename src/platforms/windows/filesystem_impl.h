@@ -1,8 +1,6 @@
 #pragma once
 #include "interfaces/filesystem.h"
 
-using namespace LibRuntime::Storage;
-
 class WindowsFileSystem: public LibRuntime::Interfaces::IFileSystem {
 public:
     size_t get_current_directory(tjs_char *result) override;
@@ -20,6 +18,6 @@ public:
 
     bool path_combine(const tjs_string &path1, const tjs_string &path2, tjs_string &result) override;
 
-    UnifiedStoragePath get_unified_storage_path(const tjs_string &path) override;
-    tjs_string get_filesystem_path(const UnifiedStoragePath &path) override;
+    LibRuntime::Storage::UnifiedStoragePath get_unified_storage_path(const tjs_string &path) override;
+    tjs_string get_filesystem_path(const LibRuntime::Storage::UnifiedStoragePath &path) override;
 };
