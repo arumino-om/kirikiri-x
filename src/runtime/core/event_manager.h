@@ -22,8 +22,13 @@ namespace LibRuntime {
 
         static bool is_event_enabled;
 
+        static void set_exception_handler(tTJSVariantClosure clo);
+        static const tTJSVariantClosure& get_exception_handler(); // 参照を返すことでコピーを防ぐ
+        static bool call_exception_handler(tTJSVariant *exception);
+
     private:
         static std::vector<tTJSVariantClosure> continuous_handlers;
         static std::vector<NativeInstances::WindowNativeInstance*> window_instances;
+        static tTJSVariantClosure exception_handler;
     };
 }

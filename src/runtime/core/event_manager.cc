@@ -5,6 +5,7 @@ using namespace LibRuntime;
 std::vector<tTJSVariantClosure> EventManager::continuous_handlers;
 std::vector<NativeInstances::WindowNativeInstance*> EventManager::window_instances;
 bool EventManager::is_event_enabled = true;
+tTJSVariantClosure EventManager::exception_handler;
 
 bool EventManager::init() {
     return true;
@@ -56,4 +57,22 @@ void EventManager::dispatch_window_update_event() {
 void EventManager::dispatch_all_events() {
     dispatch_window_update_event();
     dispatch_continuous_event();
+}
+
+void EventManager::set_exception_handler(tTJSVariantClosure clo) {
+    exception_handler = clo;
+}
+
+const tTJSVariantClosure& EventManager::get_exception_handler() {
+    return exception_handler;
+}
+
+bool EventManager::call_exception_handler(tTJSVariant *exception) {
+    try {
+        tTJSVariant result;
+        exception_handler.FuncCall(0, nullptr, nullptr, &result, 1, &exception, nullptr);
+        return result.AsInteger() == 1;
+    } catch (...) {
+        return false;
+    }
 }
