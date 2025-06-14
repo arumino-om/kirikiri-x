@@ -85,7 +85,7 @@ bool WindowsFileSystem::get_savedata_directory(tjs_string &result) {
 
 bool WindowsFileSystem::path_combine(const tjs_string &path1, const tjs_string &path2, tjs_string &result) {
     tjs_char combined_path[MAX_PATH];
-    HRESULT hr = PathCchCombine((PWSTR)combined_path, sizeof(combined_path), (PCWSTR)path1.c_str(), (PCWSTR)path2.c_str());
+    HRESULT hr = PathCchCombine((PWSTR)combined_path, MAX_PATH, (PCWSTR)path1.c_str(), (PCWSTR)path2.c_str());
     if (hr != S_OK) {
         result.clear();
         return false;
