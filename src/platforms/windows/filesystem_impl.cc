@@ -123,7 +123,7 @@ UnifiedStoragePath WindowsFileSystem::get_unified_storage_path(const tjs_string 
 
     drive += path_part;
     
-    return UnifiedStoragePath("file", TJS_W("."), drive);
+    return UnifiedStoragePath(TJS_W("file"), TJS_W("."), drive);
 }
 
 tjs_string WindowsFileSystem::get_filesystem_path(const UnifiedStoragePath &path) {

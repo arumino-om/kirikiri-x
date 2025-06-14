@@ -36,5 +36,5 @@ LRESULT WindowsSystemUI::DialogProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPAR
 
 void WindowsSystemUI::show_version_dialog()
 {
-    DialogBox(nullptr, MAKEINTRESOURCE(IDD_KRKRX_ABOUT), nullptr, (DLGPROC)WindowsSystemUI::DialogProc);
+    DialogBox(GetModuleHandle(nullptr), MAKEINTRESOURCE(IDD_KRKRX_ABOUT), nullptr, (DLGPROC)WindowsSystemUI::DialogProc);
 }
